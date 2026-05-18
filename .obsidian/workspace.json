@@ -4,19 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "335d0b5e4d8f9337",
+        "id": "f6ce3161071f7d87",
         "type": "tabs",
         "children": [
           {
-            "id": "8527580cff2945e9",
+            "id": "dc89a268a585c421",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "Experiments/exp0/led_matrix/CleanShot 2026-05-18 at 16.25.16@2x.png"
+                "file": "Reports.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-image",
-              "title": "CleanShot 2026-05-18 at 16.25.16@2x"
+              "icon": "lucide-file",
+              "title": "Reports"
             }
           }
         ]
@@ -72,11 +74,12 @@
               "title": "Bookmarks"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 200
   },
   "right": {
     "id": "3ae26cd8c8aba1b6",
@@ -92,7 +95,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "CODE/led_blink/led_blink.png",
+                "file": "Reports.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +105,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for led_blink"
+              "title": "Backlinks for Reports"
             }
           },
           {
@@ -153,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Experiments/exp0/led_matrix/CleanShot 2026-05-18 at 16.25.16@2x.png",
+                "file": "Reports.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of CleanShot 2026-05-18 at 16.25.16@2x"
+              "title": "Outline of Reports"
             }
           },
           {
@@ -188,14 +191,18 @@
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
       "bases:Create new base": false,
-      "obsidian-git:Open Git source control": false
+      "obsidian-git:Open Git source control": false,
+      "templater-obsidian:Templater": false
     }
   },
-  "active": "63c6391e6c9cb4e4",
+  "active": "dc89a268a585c421",
   "lastOpenFiles": [
+    "Experiments/sketch_may18a.ino",
+    "Experiments/exp0/led_matrix/led_matrix_T.png",
+    "Reports.md",
     "Experiments/exp0/7_segment_display/7-segment-display.png",
+    "Experiments/exp0/led_blink/led_blink.png",
     "Experiments/exp0/led_matrix/led_matrix.sim1",
-    "Experiments/exp0/led_matrix/CleanShot 2026-05-18 at 16.25.16@2x.png",
     "Experiments/exp0/led_matrix/build/arduino.avr.uno/sketch_may18a.ino.with_bootloader.hex",
     "Experiments/exp0/led_matrix/build/arduino.avr.uno/sketch_may18a.ino.with_bootloader.bin",
     "Experiments/exp0/led_matrix/build/arduino.avr.uno/sketch_may18a.ino.hex",
@@ -208,8 +215,6 @@
     "Experiments/exp0/CleanShot 2026-05-18 at 16.25.16@2x.png",
     "Experiments/exp0/led_Matrix/CleanShot 2026-05-18 at 16.25.16@2x.png",
     "Experiments/exp0/Led Matrix/CleanShot 2026-05-18 at 16.25.16@2x.png",
-    "Experiments/exp0/led_blink/led_blink.png",
-    "Reports.md",
     "Experiments/led_blink/led_blink.png",
     "Experiments/7_segment_display/7-segment-display.png",
     "Experiments/CleanShot 2026-05-18 at 15.17.34@2x.png",
