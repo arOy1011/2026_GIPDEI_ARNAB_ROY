@@ -13,10 +13,10 @@
             "state": {
               "type": "image",
               "state": {
-                "file": "Experiments/exp0/7_segment_display/7-segment-display.png"
+                "file": "Experiments/exp0/led_matrix/CleanShot 2026-05-18 at 16.25.16@2x.png"
               },
               "icon": "lucide-image",
-              "title": "7-segment-display"
+              "title": "CleanShot 2026-05-18 at 16.25.16@2x"
             }
           }
         ]
@@ -153,13 +153,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Experiments/exp0/7_segment_display/7-segment-display.png",
+                "file": "Experiments/exp0/led_matrix/CleanShot 2026-05-18 at 16.25.16@2x.png",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 7-segment-display"
+              "title": "Outline of CleanShot 2026-05-18 at 16.25.16@2x"
             }
           },
           {
@@ -191,22 +191,26 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "8527580cff2945e9",
+  "active": "63c6391e6c9cb4e4",
   "lastOpenFiles": [
-    "Experiments/exp0/led_blink/led_blink.png",
     "Experiments/exp0/7_segment_display/7-segment-display.png",
+    "Experiments/exp0/led_matrix/led_matrix.sim1",
+    "Experiments/exp0/led_matrix/CleanShot 2026-05-18 at 16.25.16@2x.png",
+    "Experiments/exp0/led_matrix/build/arduino.avr.uno/sketch_may18a.ino.with_bootloader.hex",
+    "Experiments/exp0/led_matrix/build/arduino.avr.uno/sketch_may18a.ino.with_bootloader.bin",
+    "Experiments/exp0/led_matrix/build/arduino.avr.uno/sketch_may18a.ino.hex",
+    "Experiments/exp0/led_matrix/build/arduino.avr.uno/sketch_may18a.ino.elf",
+    "Experiments/exp0/led_matrix/build/arduino.avr.uno/sketch_may18a.ino.eep",
+    "Experiments/exp0/led_matrix/build/arduino.avr.uno/led_matrix.ino.with_bootloader.hex",
+    "Experiments/exp0/led_matrix/build/arduino.avr.uno/led_matrix.ino.with_bootloader.bin",
+    "Experiments/exp0/led_matrix/build/arduino.avr.uno/led_matrix.ino.hex",
+    "Experiments/exp0/led_matrix/build/arduino.avr.uno/led_matrix.ino.elf",
+    "Experiments/exp0/CleanShot 2026-05-18 at 16.25.16@2x.png",
+    "Experiments/exp0/led_Matrix/CleanShot 2026-05-18 at 16.25.16@2x.png",
+    "Experiments/exp0/Led Matrix/CleanShot 2026-05-18 at 16.25.16@2x.png",
+    "Experiments/exp0/led_blink/led_blink.png",
     "Reports.md",
     "Experiments/led_blink/led_blink.png",
-    "Experiments/exp0/led_blink/build/arduino.avr.uno/led_blink.ino.with_bootloader.hex",
-    "Experiments/exp0/led_blink/build/arduino.avr.uno/led_blink.ino.with_bootloader.bin",
-    "Experiments/exp0/led_blink/build/arduino.avr.uno/led_blink.ino.hex",
-    "Experiments/exp0/led_blink/build/arduino.avr.uno/led_blink.ino.elf",
-    "Experiments/exp0/led_blink/build/arduino.avr.uno/led_blink.ino.eep",
-    "Experiments/exp0/led_blink/build/arduino.avr.uno",
-    "Experiments/exp0/led_blink/led_blink_red.sim1",
-    "Experiments/exp0/led_blink/led_blink.ino",
-    "Experiments/exp0/led_blink/build",
-    "Experiments/exp0/led_blink",
     "Experiments/7_segment_display/7-segment-display.png",
     "Experiments/CleanShot 2026-05-18 at 15.17.34@2x.png",
     "Experiments/7_segment_display/CleanShot 2026-05-18 at 15.17.34@2x.png",
