@@ -25,7 +25,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "this is just for testing.md",
+                "file": "CODE/this is just for testing.md",
                 "mode": "source",
                 "source": false
               },
@@ -168,7 +168,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "this is just for testing.md",
+                "file": "CODE/this is just for testing.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -209,7 +209,7 @@
   "active": "63c6391e6c9cb4e4",
   "lastOpenFiles": [
     "CODE/led_blink/led_blink.png",
-    "this is just for testing.md",
+    "CODE/this is just for testing.md",
     "ARDUINO"
   ]
 }
