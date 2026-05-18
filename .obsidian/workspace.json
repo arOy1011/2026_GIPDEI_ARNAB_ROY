@@ -13,24 +13,24 @@
             "state": {
               "type": "image",
               "state": {
-                "file": "CODE/led_blink/led_blink.png"
+                "file": "Experiments/led_blink/led_blink.png"
               },
               "icon": "lucide-image",
               "title": "led_blink"
             }
           },
           {
-            "id": "8d29be6e90798743",
+            "id": "8527580cff2945e9",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "CODE/this is just for testing.md",
+                "file": "Reports.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "this is just for testing"
+              "title": "Reports"
             }
           }
         ],
@@ -168,13 +168,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "CODE/this is just for testing.md",
+                "file": "Reports.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of this is just for testing"
+              "title": "Outline of Reports"
             }
           },
           {
@@ -206,10 +206,11 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "63c6391e6c9cb4e4",
+  "active": "8527580cff2945e9",
   "lastOpenFiles": [
-    "CODE/led_blink/led_blink.png",
-    "CODE/this is just for testing.md",
+    "Experiments/this is just for testing.md",
+    "Reports.md",
+    "Experiments/led_blink/led_blink.png",
     "ARDUINO"
   ]
 }
