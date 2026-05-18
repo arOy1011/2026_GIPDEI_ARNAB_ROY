@@ -18,8 +18,23 @@
               "icon": "lucide-image",
               "title": "led_blink"
             }
+          },
+          {
+            "id": "8d29be6e90798743",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "this is just for testing.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "this is just for testing"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -153,20 +168,31 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "this is just for testing.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline"
+              "title": "Outline of this is just for testing"
+            }
+          },
+          {
+            "id": "3911add8cd9cc01b",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
             }
           }
-        ]
+        ],
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 200
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -180,9 +206,10 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "e23198aee38241bd",
+  "active": "63c6391e6c9cb4e4",
   "lastOpenFiles": [
-    "ARDUINO",
-    "CODE/led_blink/led_blink.png"
+    "CODE/led_blink/led_blink.png",
+    "this is just for testing.md",
+    "ARDUINO"
   ]
 }
