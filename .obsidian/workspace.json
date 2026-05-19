@@ -207,8 +207,10 @@
       "templater-obsidian:Templater": false
     }
   },
-  "active": "363e528f0a0996e3",
+  "active": "63c6391e6c9cb4e4",
   "lastOpenFiles": [
+    "Experiments/exp0/Exp 00.pdf",
+    "Experiments/exp1/ELP305 Exp No - 1.pdf",
     "Experiments/exp1/weather_forecast/hot.png",
     "Reports.md",
     "Experiments/exp1/weather_forecast/cold.png",
@@ -222,7 +224,6 @@
     "Experiments/exp1/tmp_control_buzzer 2/build/arduino.avr.uno/sketch_may19c.ino.with_bootloader.hex",
     "Experiments/exp1/tmp_control_buzzer 2/build/arduino.avr.uno/sketch_may19c.ino.with_bootloader.bin",
     "Experiments/exp1/tmp_control_buzzer 2/build/arduino.avr.uno/sketch_may19c.ino.hex",
-    "Experiments/exp1/tmp_control_buzzer 2/build/arduino.avr.uno/sketch_may19c.ino.eep",
     "Experiments/exp1/tmp_control_buzzer 2/Heating.png",
     "Experiments/exp1/tmp_control_buzzer 2/Cooling.png",
     "Experiments/exp1/tmp_control_buzzer 2/Buzzer(cooling).png",

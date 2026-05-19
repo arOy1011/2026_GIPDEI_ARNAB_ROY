@@ -1,12 +1,12 @@
 <circuit version="1.1.0-SR2" rev="260312" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="0" >
 
 <item itemtype="Subcircuit" CircId="Uno-1" mainComp="false" Show_id="true" Show_Val="false" Pos="152,44" rotation="0" hflip="1" vflip="1" label="Uno-1" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" Logic_Symbol="false">
-<mainCompProps MainCompId="mega328-109" Frequency="16 MHz" Program="../../../../../../extreme_climate1/build/arduino.avr.uno/extreme_climate1.ino.hex" Auto_Load="false" saveEepr="true" MainMcu="true" SerialMon="-1" />
+<mainCompProps MainCompId="mega328-109" Frequency="16 MHz" Program="../../../../../../extreme_climate123/build/arduino.avr.uno/extreme_climate123.ino.hex" Auto_Load="false" saveEepr="true" MainMcu="true" SerialMon="-1" />
 </item>
 
 <item itemtype="DcMotor" CircId="DcMotor-5" mainComp="false" Show_id="true" Show_Val="false" Pos="80,172" rotation="90" hflip="1" vflip="1" label="DcMotor-5" idLabPos="-22,-48" labelrot="0" valLabPos="-14,36" valLabRot="0" RPM_Nominal="60 _RPM" Volt_Nominal="5 V" Resistance="100 Ω" />
 
-<item itemtype="Dht22" CircId="Dht22-38" mainComp="false" Show_id="false" Show_Val="false" Pos="236,84" rotation="0" hflip="1" vflip="1" label="Dht22-38" idLabPos="-28,-32" labelrot="0" valLabPos="-16,20" valLabRot="0" DHT22="DHT22" TempInc="2.5 °C" HumiInc="10 _%" />
+<item itemtype="Dht22" CircId="Dht22-38" mainComp="false" Show_id="false" Show_Val="false" Pos="236,88" rotation="0" hflip="1" vflip="1" label="Dht22-38" idLabPos="-28,-32" labelrot="0" valLabPos="-16,20" valLabRot="0" DHT22="DHT22" TempInc="2.5 °C" HumiInc="10 _%" />
 
 <item itemtype="Led" CircId="Led-39" mainComp="false" Show_id="false" Show_Val="false" Pos="112,68" rotation="0" hflip="1" vflip="1" label="Led-39" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Color="Green" Grounded="false" Threshold="3.5 V" MaxCurrent="30 mA" Resistance="0.6 Ω" />
 
@@ -26,7 +26,7 @@
 
 <item itemtype="Connector" uid="Connector-66" startpinid="DcMotor-5-lPin" endpinid="Uno-1-8" pointList="80,132,160,132" />
 
-<item itemtype="Connector" uid="Connector-96" startpinid="Dht22-38-inPin" endpinid="Uno-1-2" pointList="200,80,160,80,160,76" />
+<item itemtype="Connector" uid="Connector-96" startpinid="Dht22-38-inPin" endpinid="Uno-1-2" pointList="200,84,160,84,160,76" />
 
 <item itemtype="Connector" uid="Connector-100" startpinid="Resistor-40-rPin" endpinid="Led-39-lPin" pointList="88,68,96,68" />
 
@@ -35,8 +35,6 @@
 <item itemtype="Connector" uid="Connector-104" startpinid="Node-41-2" endpinid="Uno-1-GND2" pointList="164,184,160,184,160,180" />
 
 <item itemtype="Connector" uid="Connector-106" startpinid="Resistor-43-rPin" endpinid="Led-42-lPin" pointList="232,16,236,16" />
-
-<item itemtype="Connector" uid="Connector-109" startpinid="Led-42-rPin" endpinid="Uno-1-GND1" pointList="268,16,268,132,304,132" />
 
 <item itemtype="Connector" uid="Connector-112" startpinid="AudioOut-45-lPin" endpinid="Uno-1-9" pointList="124,0,124,140,160,140" />
 
@@ -63,5 +61,7 @@
 <item itemtype="Connector" uid="Connector-126" startpinid="Hd44780-50-dataPin7" endpinid="Uno-1-A5" pointList="412,36,412,60,304,60" />
 
 <item itemtype="Connector" uid="Connector-111" startpinid="Resistor-43-lPin" endpinid="Uno-1-5" pointList="200,16,200,100,160,100" />
+
+<item itemtype="Connector" uid="Connector-109" startpinid="Led-42-rPin" endpinid="Uno-1-GND1" pointList="268,16,268,132,304,132" />
 
 </circuit>
