@@ -9,6 +9,9 @@
   - [[#2. 7-Segment Display]]
   - [[#3. LED Matrix Display]]
 
+- [[#Exp 1]]
+  - [[#1. Temperature Control System]]
+
 ---
 
 # Exp 0
@@ -241,3 +244,170 @@ void loop()
 The 8×8 LED matrix display was successfully interfaced with the Arduino board to display the character `T`. The experiment demonstrated how row-column scanning and multiplexing techniques are used to control multiple LEDs efficiently using limited GPIO pins.
 
 The program verified the working of binary pattern mapping, bit manipulation, and dynamic display refreshing in embedded systems using Arduino programming.
+
+
+# Exp 1
+
+## 1. Temperature Control System
+
+---
+
+### Objective
+
+To interface a temperature sensor with an Arduino board and implement an automatic temperature control system using LEDs and a DC motor. The experiment demonstrates sensor interfacing, conditional control, digital output operation, and automation using Arduino programming.
+
+---
+
+### Components Required
+
+- Arduino Uno
+- DHT22 Temperature Sensor
+- LEDs
+- 220Ω Resistors
+- DC Motor
+- Connecting Wires
+- Proteus Simulation Software
+
+---
+
+### Theory
+
+Temperature monitoring and control systems are widely used in embedded systems and industrial automation. In this experiment, the DHT22 digital temperature sensor is interfaced with the Arduino Uno to continuously monitor environmental temperature.
+
+The Arduino reads temperature data from the sensor and performs different actions depending on the temperature range:
+
+- If temperature exceeds `35°C`:
+  - Warning LED turns ON
+  - Cooling fan (DC motor) turns ON
+
+- If temperature falls below `25°C`:
+  - Heater indicator LED turns ON
+
+- If temperature remains between `25°C` and `35°C`:
+  - All outputs remain OFF
+
+The experiment demonstrates:
+- Digital sensor interfacing
+- GPIO control
+- Embedded automation
+- Conditional programming using `if-else`
+- Temperature-based decision making
+
+---
+
+### Circuit Connections
+
+| Component | Arduino Pin |
+|---|---|
+| DHT22 Output | D2 |
+| Warning LED | D3 |
+| Heater LED | D5 |
+| DC Motor/Fan | D8 |
+| GND Connections | GND |
+
+---
+
+### Arduino Code
+
+```cpp
+#include <DHT.h>
+
+#define DHTPIN 2
+#define DHTTYPE DHT22
+
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+
+  Serial.begin(9600);
+
+  dht.begin();
+
+  pinMode(3, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(8, OUTPUT);
+}
+
+void loop() {
+
+  float temp = dht.readTemperature();
+
+  Serial.println(temp);
+
+  if (isnan(temp)) {
+
+    digitalWrite(3, LOW);
+    digitalWrite(5, LOW);
+    digitalWrite(8, LOW);
+
+    return;
+  }
+
+  // HOT CONDITION
+  if(temp > 35) {
+
+    digitalWrite(3, HIGH);
+    digitalWrite(8, HIGH);
+    digitalWrite(5, LOW);
+  }
+
+  // COLD CONDITION
+  else if(temp < 25) {
+
+    digitalWrite(5, HIGH);
+    digitalWrite(3, LOW);
+    digitalWrite(8, LOW);
+  }
+
+  // NORMAL CONDITION
+  else {
+
+    digitalWrite(3, LOW);
+    digitalWrite(5, LOW);
+    digitalWrite(8, LOW);
+  }
+
+  delay(1000);
+}
+````
+
+
+---
+
+### **Screenshots**
+
+#### **Heating Condition**
+
+When temperature falls below `25°C`, the heater indicator LED turns ON.
+![Heating Simulation](Experiments/exp1/tmp_control/Heating.png)
+
+#### **Cooling Condition**
+
+When temperature rises above `35°C`, the warning LED and cooling fan turn ON.
+
+![Cooling Simulation](Experiments/exp1/tmp_control/Cooling.png)
+---
+
+### **Observations**
+
+|**Temperature Range**|**Output Condition**|
+|---|---|
+|Below 25°C|Heater LED ON|
+|25°C – 35°C|All Outputs OFF|
+|Above 35°C|Warning LED and Fan ON|
+
+---
+
+### **Conclusion**
+
+The experiment successfully demonstrated temperature sensing and automatic control using Arduino. The DHT22 sensor accurately measured temperature, and the Arduino performed appropriate control actions using conditional logic.
+
+The experiment verified practical concepts of:
+
+- Sensor interfacing
+- Embedded control systems
+- GPIO operation
+- Automation techniques
+- Real-time monitoring systems
+
+The system can be further expanded for industrial temperature monitoring, smart home automation, and environmental control applications.

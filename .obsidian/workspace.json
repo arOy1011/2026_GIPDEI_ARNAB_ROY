@@ -4,11 +4,23 @@
     "type": "split",
     "children": [
       {
-        "id": "f6ce3161071f7d87",
+        "id": "65e47cc3a547b6ba",
         "type": "tabs",
         "children": [
           {
-            "id": "dc89a268a585c421",
+            "id": "7fe0fe5bb97f84df",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "Experiments/exp1/tmp_control/Cooling.png"
+              },
+              "icon": "lucide-image",
+              "title": "Cooling"
+            }
+          },
+          {
+            "id": "363e528f0a0996e3",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -21,7 +33,8 @@
               "title": "Reports"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -74,8 +87,7 @@
               "title": "Bookmarks"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -195,30 +207,29 @@
       "templater-obsidian:Templater": false
     }
   },
-  "active": "dc89a268a585c421",
+  "active": "363e528f0a0996e3",
   "lastOpenFiles": [
-    "Experiments/sketch_may18a.ino",
-    "Experiments/exp0/led_matrix/led_matrix_T.png",
+    "Experiments/exp1/tmp_control/Heating.png",
+    "Experiments/exp1/tmp_control/Cooling.png",
     "Reports.md",
+    "Experiments/exp1/tmp_control/tmp_control.sim1",
+    "Experiments/exp1/tmp_control/build/arduino.avr.uno/tmp_control.ino.with_bootloader.hex",
+    "Experiments/exp1/tmp_control/build/arduino.avr.uno/tmp_control.ino.with_bootloader.bin",
+    "Experiments/exp1/tmp_control/build/arduino.avr.uno/tmp_control.ino.hex",
+    "Experiments/exp1/tmp_control/build/arduino.avr.uno/tmp_control.ino.elf",
+    "Experiments/exp1/tmp_control/build/arduino.avr.uno/tmp_control.ino.eep",
+    "Experiments/exp1/tmp_control/build/arduino.avr.uno",
+    "Experiments/exp1/tmp_control/build",
+    "Experiments/exp1/tmp_control/tmp_control.ino",
+    "Experiments/exp1/tmp_control",
+    "Experiments/exp0/led_matrix/led_matrix_T.png",
     "Experiments/exp0/7_segment_display/7-segment-display.png",
     "Experiments/exp0/led_blink/led_blink.png",
-    "Experiments/exp0/led_matrix/led_matrix.sim1",
-    "Experiments/exp0/led_matrix/build/arduino.avr.uno/sketch_may18a.ino.with_bootloader.hex",
-    "Experiments/exp0/led_matrix/build/arduino.avr.uno/sketch_may18a.ino.with_bootloader.bin",
-    "Experiments/exp0/led_matrix/build/arduino.avr.uno/sketch_may18a.ino.hex",
-    "Experiments/exp0/led_matrix/build/arduino.avr.uno/sketch_may18a.ino.elf",
-    "Experiments/exp0/led_matrix/build/arduino.avr.uno/sketch_may18a.ino.eep",
-    "Experiments/exp0/led_matrix/build/arduino.avr.uno/led_matrix.ino.with_bootloader.hex",
-    "Experiments/exp0/led_matrix/build/arduino.avr.uno/led_matrix.ino.with_bootloader.bin",
-    "Experiments/exp0/led_matrix/build/arduino.avr.uno/led_matrix.ino.hex",
-    "Experiments/exp0/led_matrix/build/arduino.avr.uno/led_matrix.ino.elf",
     "Experiments/exp0/CleanShot 2026-05-18 at 16.25.16@2x.png",
     "Experiments/exp0/led_Matrix/CleanShot 2026-05-18 at 16.25.16@2x.png",
     "Experiments/exp0/Led Matrix/CleanShot 2026-05-18 at 16.25.16@2x.png",
     "Experiments/led_blink/led_blink.png",
     "Experiments/7_segment_display/7-segment-display.png",
-    "Experiments/CleanShot 2026-05-18 at 15.17.34@2x.png",
-    "Experiments/7_segment_display/CleanShot 2026-05-18 at 15.17.34@2x.png",
     "Experiments/this is just for testing.md"
   ]
 }
