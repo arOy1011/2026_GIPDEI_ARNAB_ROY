@@ -1,7 +1,6 @@
 # Digital Electronics Lab Report
 
 ---
-
 # Table of Contents
 
 - [[#Exp 0]]
@@ -12,7 +11,7 @@
 - [[#Exp 1]]
   - [[#1. Temperature Control System]]
   - [[#2. Temperature Control System with Alarm Buzzer]]
-
+  - [[#3. Smart Weather Monitoring and Extreme Temperature Alert System]]
 ---
 
 # Exp 0
@@ -813,24 +812,38 @@ void loop() {
 ````
 ---
 ### **Screenshots**
+
 #### **Hot Weather Condition**
 
-When the temperature exceeds `35°C`, the warning LED and cooling fan turn ON, and the LCD displays `HOT WEATHER`.
+![[Experiments/exp1/weather_forecast/hot.png]]
+
+When the temperature exceeds `35°C`, the warning LED and cooling fan turn ON, and the LCD displays **“HOT WEATHER”**.
 
 ---
+
 #### **Cold Weather Condition**
 
-When the temperature falls below `15°C`, the heater indicator LED turns ON and the LCD displays `COLD WEATHER`.
+![[Experiments/exp1/weather_forecast/cold.png]]
+
+When the temperature falls below `15°C`, the heater indicator LED turns ON and the LCD displays **“COLD WEATHER”**.
 
 ---
+
 #### **Extreme Temperature Alert**
 
-When the temperature exceeds `45°C`, the buzzer activates along with the warning LED and cooling fan, and the LCD displays `EXTREME TEMP ALERT`.
+![[Experiments/exp1/weather_forecast/extreme.png]]
+
+When the temperature exceeds `45°C`, the buzzer activates along with the warning LED and cooling fan, and the LCD displays **“EXTREME TEMP ALERT”**.
 
 ---
+
 #### **Normal Weather Condition**
 
-When temperature and humidity remain within normal range, all indicators remain OFF and the LCD displays `NORMAL WEATHER`.
+![[Experiments/exp1/weather_forecast/normal.png]]
+
+When the temperature and humidity remain within the normal range, all indicators remain OFF and the LCD displays **“NORMAL WEATHER”**.
+
+*Extreme temperatures and rain possibility is not shown.*
 
 ---
 ### **Observations**

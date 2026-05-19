@@ -209,6 +209,10 @@
   },
   "active": "363e528f0a0996e3",
   "lastOpenFiles": [
+    "Experiments/exp1/weather_forecast/hot.png",
+    "Reports.md",
+    "Experiments/exp1/weather_forecast/cold.png",
+    "Experiments/exp1/weather_forecast/normal.png",
     "Experiments/exp1/tmp_control_buzzer 2/build/arduino.avr.uno/tmp_control_buzzer.ino.with_bootloader.bin",
     "Experiments/exp1/tmp_control_buzzer 2/build/arduino.avr.uno/tmp_control_buzzer.ino.with_bootloader.hex",
     "Experiments/exp1/tmp_control_buzzer 2/build/arduino.avr.uno/tmp_control_buzzer.ino.eep",
@@ -219,7 +223,6 @@
     "Experiments/exp1/tmp_control_buzzer 2/build/arduino.avr.uno/sketch_may19c.ino.with_bootloader.bin",
     "Experiments/exp1/tmp_control_buzzer 2/build/arduino.avr.uno/sketch_may19c.ino.hex",
     "Experiments/exp1/tmp_control_buzzer 2/build/arduino.avr.uno/sketch_may19c.ino.eep",
-    "Experiments/exp1/tmp_control_buzzer 2/build/arduino.avr.uno",
     "Experiments/exp1/tmp_control_buzzer 2/Heating.png",
     "Experiments/exp1/tmp_control_buzzer 2/Cooling.png",
     "Experiments/exp1/tmp_control_buzzer 2/Buzzer(cooling).png",
@@ -227,10 +230,6 @@
     "Experiments/exp1/tmp_control_buzzer/Cooling.png",
     "Experiments/exp1/tmp_control_buzzer/Buzzer(cooling).png",
     "Experiments/tmp_control_buzzer/Heating.png",
-    "Experiments/tmp_control_buzzer/Cooling.png",
-    "Experiments/tmp_control_buzzer/Buzzer(cooling).png",
-    "Experiments/exp1/tmp_control_buzzer/tmp_control_buzzer/Heating.png",
-    "Reports.md",
     "Experiments/this is just for testing.md"
   ]
 }
