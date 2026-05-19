@@ -258,7 +258,6 @@ The program verified the working of binary pattern mapping, bit manipulation, an
 To interface a temperature sensor with an Arduino board and implement an automatic temperature control system using LEDs and a DC motor. The experiment demonstrates sensor interfacing, conditional control, digital output operation, and automation using Arduino programming.
 
 ---
-
 ### Components Required
 
 - Arduino Uno
@@ -267,10 +266,7 @@ To interface a temperature sensor with an Arduino board and implement an automat
 - 220Ω Resistors
 - DC Motor
 - Connecting Wires
-- Proteus Simulation Software
-
 ---
-
 ### Theory
 
 Temperature monitoring and control systems are widely used in embedded systems and industrial automation. In this experiment, the DHT22 digital temperature sensor is interfaced with the Arduino Uno to continuously monitor environmental temperature.
@@ -293,21 +289,18 @@ The experiment demonstrates:
 - Embedded automation
 - Conditional programming using `if-else`
 - Temperature-based decision making
-
 ---
-
 ### Circuit Connections
 
-| Component | Arduino Pin |
-|---|---|
-| DHT22 Output | D2 |
-| Warning LED | D3 |
-| Heater LED | D5 |
-| DC Motor/Fan | D8 |
-| GND Connections | GND |
+| Component       | Arduino Pin |
+| --------------- | ----------- |
+| DHT22 Output    | D2          |
+| Warning LED     | D3          |
+| Heater LED      | D5          |
+| DC Motor/Fan    | D8          |
+| GND Connections | GND         |
 
 ---
-
 ### Arduino Code
 
 ```cpp
@@ -372,9 +365,7 @@ void loop() {
 }
 ````
 
-
 ---
-
 ### **Screenshots**
 
 #### **Heating Condition**
@@ -412,17 +403,14 @@ The experiment verified practical concepts of:
 - Real-time monitoring systems
 
 The system can be further expanded for industrial temperature monitoring, smart home automation, and environmental control applications
-
 ## 2. Temperature Control System with Alarm Buzzer
 
 ---
-
 ### Objective
 
 To interface a DHT22 temperature sensor with an Arduino Uno and implement an automatic temperature monitoring and alarm system using LEDs, a DC fan, and an audio buzzer. The experiment demonstrates sensor interfacing, conditional control, embedded automation, and alarm generation based on temperature thresholds.
 
 ---
-
 ### Components Required
 
 - Arduino Uno
@@ -432,8 +420,6 @@ To interface a DHT22 temperature sensor with an Arduino Uno and implement an aut
 - DC Motor / Fan
 - Audio Output / Buzzer
 - Connecting Wires
-- Proteus Simulation Software
-
 ---
 
 ### Theory
@@ -455,15 +441,6 @@ The Arduino compares the measured temperature with predefined threshold values a
 
 - If temperature remains between `25°C` and `35°C`:
   - All outputs remain OFF
-
-The experiment demonstrates:
-- Digital sensor interfacing
-- GPIO output control
-- Alarm systems
-- Temperature-based automation
-- Embedded control systems
-- Real-time monitoring
-
 ---
 
 ### Circuit Connections
@@ -607,3 +584,279 @@ The experiment verified:
 - Conditional programming
 
 The system can be further extended for industrial safety systems, smart home automation, fire warning systems, and environmental monitoring applications.
+## 3. Smart Weather Monitoring and Extreme Temperature Alert System
+
+---
+### Objective
+
+To design and implement a smart weather monitoring system using Arduino Uno, DHT22 sensor, LCD display, LEDs, DC motor, and buzzer. The system continuously monitors temperature and humidity conditions and displays different weather states such as normal weather, hot weather, cold weather, heat wave, and extreme temperature alerts.
+
+---
+### Components Required
+
+- Arduino Uno
+- DHT22 Temperature and Humidity Sensor
+- 16×2 LCD Display (HD44780)
+- LEDs
+- 220Ω Resistors
+- DC Motor / Fan
+- Audio Output / Buzzer
+- Connecting Wires
+---
+### Theory
+
+Smart weather monitoring systems are widely used in embedded systems, environmental monitoring, industrial automation, and safety systems. In this experiment, the DHT22 sensor continuously measures environmental temperature and humidity and sends the data digitally to the Arduino Uno.
+
+The Arduino processes the sensor values and displays different weather conditions on a 16×2 LCD display. Depending on temperature and humidity conditions, LEDs, cooling fan, and alarm systems are activated automatically.
+
+The system works according to the following conditions:
+
+- `Temperature > 45°C`
+  - Extreme Temperature Alert
+  - Buzzer ON
+  - Cooling Fan ON
+  - Warning LED ON
+
+- `Temperature > 40°C and Humidity < 30%`
+  - Heat Wave Detection
+
+- `Temperature > 35°C`
+  - Hot Weather Condition
+
+- `Temperature < 15°C`
+  - Cold Weather Condition
+
+- `Humidity > 80%`
+  - Rain Possibility Detection
+
+- Otherwise:
+  - Normal Weather Condition
+
+---
+### Circuit Connections
+
+| Component             | Arduino Pin |
+| --------------------- | ----------- |
+| DHT22 Output          | D2          |
+| Warning LED           | D3          |
+| Heater LED            | D5          |
+| Cooling Fan / Motor   | D8          |
+| Buzzer / Audio Output | D9          |
+| LCD RS                | A0          |
+| LCD EN                | A1          |
+| LCD D4                | A2          |
+| LCD D5                | A3          |
+| LCD D6                | A4          |
+| LCD D7                | A5          |
+
+---
+### Arduino Code
+
+```cpp
+#include <DHT.h>
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(A0, A1, A2, A3, A4, A5);
+
+#define DHTPIN 2
+#define DHTTYPE DHT22
+
+DHT t(DHTPIN, DHTTYPE);
+
+void setup() {
+
+  Serial.begin(9600);
+
+  t.begin();
+
+  lcd.begin(16,2);
+
+  pinMode(3, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+}
+
+void loop() {
+
+  float temp = t.readTemperature();
+  float humid = t.readHumidity();
+
+  Serial.print("Temperature: ");
+  Serial.println(temp);
+
+  Serial.print("Humidity: ");
+  Serial.println(humid);
+
+  if(isnan(temp) || isnan(humid)) {
+
+    digitalWrite(3, LOW);
+    digitalWrite(5, LOW);
+    digitalWrite(8, LOW);
+
+    noTone(9);
+
+    lcd.clear();
+
+    lcd.setCursor(0,0);
+    lcd.print("SENSOR ERROR");
+
+    delay(1000);
+
+    return;
+  }
+
+  if(temp > 45) {
+
+    tone(9,1000);
+
+    digitalWrite(3, HIGH);
+    digitalWrite(8, HIGH);
+    digitalWrite(5, LOW);
+
+    lcd.clear();
+
+    lcd.setCursor(0,0);
+    lcd.print("EXTREME TEMP");
+
+    lcd.setCursor(0,1);
+    lcd.print("ALERT");
+  }
+
+  else if(temp > 40 && humid < 30) {
+
+    noTone(9);
+
+    digitalWrite(3, HIGH);
+    digitalWrite(8, HIGH);
+    digitalWrite(5, LOW);
+
+    lcd.clear();
+
+    lcd.setCursor(0,0);
+    lcd.print("HEAT WAVE");
+
+    lcd.setCursor(0,1);
+    lcd.print("DRY WEATHER");
+  }
+
+  else if(temp > 35) {
+
+    noTone(9);
+
+    digitalWrite(3, HIGH);
+    digitalWrite(8, HIGH);
+    digitalWrite(5, LOW);
+
+    lcd.clear();
+
+    lcd.setCursor(0,0);
+    lcd.print("HOT WEATHER");
+
+    lcd.setCursor(0,1);
+    lcd.print("TEMP HIGH");
+  }
+
+  else if(temp < 15) {
+
+    noTone(9);
+
+    digitalWrite(3, LOW);
+    digitalWrite(8, LOW);
+    digitalWrite(5, HIGH);
+
+    lcd.clear();
+
+    lcd.setCursor(0,0);
+    lcd.print("COLD WEATHER");
+
+    lcd.setCursor(0,1);
+    lcd.print("TEMP LOW");
+  }
+
+  else if(humid > 80) {
+
+    noTone(9);
+
+    digitalWrite(3, LOW);
+    digitalWrite(5, LOW);
+    digitalWrite(8, LOW);
+
+    lcd.clear();
+
+    lcd.setCursor(0,0);
+    lcd.print("RAIN");
+
+    lcd.setCursor(0,1);
+    lcd.print("POSSIBILITY");
+  }
+
+  else {
+
+    noTone(9);
+
+    digitalWrite(3, LOW);
+    digitalWrite(5, LOW);
+    digitalWrite(8, LOW);
+
+    lcd.clear();
+
+    lcd.setCursor(0,0);
+    lcd.print("NORMAL");
+
+    lcd.setCursor(0,1);
+    lcd.print("WEATHER");
+  }
+
+  delay(1000);
+}
+````
+---
+### **Screenshots**
+#### **Hot Weather Condition**
+
+When the temperature exceeds `35°C`, the warning LED and cooling fan turn ON, and the LCD displays `HOT WEATHER`.
+
+---
+#### **Cold Weather Condition**
+
+When the temperature falls below `15°C`, the heater indicator LED turns ON and the LCD displays `COLD WEATHER`.
+
+---
+#### **Extreme Temperature Alert**
+
+When the temperature exceeds `45°C`, the buzzer activates along with the warning LED and cooling fan, and the LCD displays `EXTREME TEMP ALERT`.
+
+---
+#### **Normal Weather Condition**
+
+When temperature and humidity remain within normal range, all indicators remain OFF and the LCD displays `NORMAL WEATHER`.
+
+---
+### **Observations**
+
+| **Weather Condition**                 | **Output Response**                   |
+| ------------------------------------- | ------------------------------------- |
+| Temperature < 15°C                    | Heater LED ON                         |
+| 15°C – 35°C                           | Normal Weather                        |
+| Temperature > 35°C                    | Warning LED + Cooling Fan ON          |
+| Temperature > 45°C                    | Warning LED + Cooling Fan + Buzzer ON |
+| Humidity > 80%                        | Rain Possibility Detection            |
+| Temperature > 40°C and Humidity < 30% | Heat Wave Detection                   |
+
+---
+### **Conclusion**
+
+The experiment successfully demonstrated a smart weather monitoring and alert system using Arduino and DHT22 sensor interfacing. The system continuously monitored temperature and humidity and automatically generated warnings and alerts based on environmental conditions.
+
+The experiment verified:
+
+- Sensor interfacing
+- LCD interfacing
+- Real-time environmental monitoring
+- Alarm systems
+- Embedded automation
+- Weather condition detection
+- Conditional control systems
+
+The project can be further extended into smart weather stations, industrial environmental monitoring systems, smart home automation, and disaster warning systems.
