@@ -2,7 +2,7 @@
 
 ---
 
-## Table of Contents
+# Table of Contents
 
 - [[#Exp 0]]
   - [[#1. LED Blink]]
@@ -11,6 +11,7 @@
 
 - [[#Exp 1]]
   - [[#1. Temperature Control System]]
+  - [[#2. Temperature Control System with Alarm Buzzer]]
 
 ---
 
@@ -410,4 +411,199 @@ The experiment verified practical concepts of:
 - Automation techniques
 - Real-time monitoring systems
 
-The system can be further expanded for industrial temperature monitoring, smart home automation, and environmental control applications.
+The system can be further expanded for industrial temperature monitoring, smart home automation, and environmental control applications
+
+## 2. Temperature Control System with Alarm Buzzer
+
+---
+
+### Objective
+
+To interface a DHT22 temperature sensor with an Arduino Uno and implement an automatic temperature monitoring and alarm system using LEDs, a DC fan, and an audio buzzer. The experiment demonstrates sensor interfacing, conditional control, embedded automation, and alarm generation based on temperature thresholds.
+
+---
+
+### Components Required
+
+- Arduino Uno
+- DHT22 Temperature Sensor
+- LEDs
+- 220Ω Resistors
+- DC Motor / Fan
+- Audio Output / Buzzer
+- Connecting Wires
+- Proteus Simulation Software
+
+---
+
+### Theory
+
+Temperature monitoring and alarm systems are important in industrial automation, environmental monitoring, and safety applications. In this experiment, the DHT22 sensor continuously measures ambient temperature and sends the data digitally to the Arduino.
+
+The Arduino compares the measured temperature with predefined threshold values and performs different actions accordingly.
+
+- If temperature exceeds `35°C`:
+  - Warning LED turns ON
+  - Cooling fan turns ON
+
+- If temperature exceeds `45°C`:
+  - Audio alarm activates
+  - Warning LED and cooling fan remain ON
+
+- If temperature falls below `25°C`:
+  - Heater indicator LED turns ON
+
+- If temperature remains between `25°C` and `35°C`:
+  - All outputs remain OFF
+
+The experiment demonstrates:
+- Digital sensor interfacing
+- GPIO output control
+- Alarm systems
+- Temperature-based automation
+- Embedded control systems
+- Real-time monitoring
+
+---
+
+### Circuit Connections
+
+| Component | Arduino Pin |
+|---|---|
+| DHT22 Output | D2 |
+| Warning LED | D3 |
+| Heater LED | D5 |
+| Cooling Fan / Motor | D8 |
+| Audio Alarm / Buzzer | D9 |
+| GND Connections | GND |
+
+---
+
+### Arduino Code
+
+```cpp
+#include <DHT.h>
+#define DHTPIN 2
+#define DHTTYPE DHT22
+
+DHT t(DHTPIN,DHTTYPE);
+
+void setup() {
+
+  Serial.begin(9600);
+
+  t.begin();
+
+  pinMode(3, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+}
+
+void loop() {
+
+  float temp = t.readTemperature();
+
+  Serial.println(temp);
+
+  if(isnan(temp)) {
+
+    digitalWrite(3, LOW);
+    digitalWrite(5, LOW);
+    digitalWrite(8, LOW);
+    digitalWrite(9, LOW);
+
+    return;
+  }
+
+  // CRITICAL HIGH TEMPERATURE
+  if (temp > 45) {
+
+    tone(9, 1000);
+
+    digitalWrite(3, HIGH);
+    digitalWrite(8, HIGH);
+    digitalWrite(5, LOW);
+  }
+
+  else {
+
+    noTone(9);
+  }
+
+  // HIGH TEMPERATURE
+  if (temp > 35) {
+
+    digitalWrite(3, HIGH);
+    digitalWrite(8, HIGH);
+    digitalWrite(5, LOW);
+  }
+
+  // LOW TEMPERATURE
+  else if(temp < 25) {
+
+    digitalWrite(3, LOW);
+    digitalWrite(8, LOW);
+    digitalWrite(5, HIGH);
+  }
+
+  // NORMAL TEMPERATURE
+  else {
+
+    digitalWrite(3, LOW);
+    digitalWrite(8, LOW);
+    digitalWrite(5, LOW);
+  }
+
+  delay(500);
+}
+````
+
+---
+
+### **Screenshots**
+
+#### **Heating Condition**
+
+When temperature falls below `25°C`, the heater indicator LED turns ON.![Heating Simulation](Experiments/exp1/tmp_control_buzzer/Heating.png)
+
+---
+
+#### **Cooling Condition**
+
+When temperature rises above `35°C`, the warning LED and cooling fan turn ON.![Cooling Simulation](Experiments/exp1/tmp_control_buzzer/Cooling.png)
+
+---
+### Critical Temperature Alarm Condition
+
+![Critical Temperature Alarm](Experiments/exp1/tmp_control_buzzer/Buzzer(cooling).png)
+
+When temperature rises above `45°C`, the warning LED, cooling fan, and audio alarm system turn ON simultaneously to indicate a critical high-temperature condition.
+
+---
+
+### **Observations**
+
+|**Temperature Range**|**Output Condition**|
+|---|---|
+|Below 25°C|Heater LED ON|
+|25°C – 35°C|All Outputs OFF|
+|Above 35°C|Warning LED + Fan ON|
+|Above 45°C|Warning LED + Fan + Audio Alarm ON|
+
+---
+
+### **Conclusion**
+
+The experiment successfully demonstrated an automatic temperature monitoring and alarm system using Arduino. The DHT22 sensor continuously measured environmental temperature, and the Arduino performed appropriate control actions based on predefined thresholds.
+
+The experiment verified:
+
+- Sensor interfacing
+- Real-time monitoring
+- Embedded automation
+- Alarm generation
+- GPIO control
+- Conditional programming
+
+The system can be further extended for industrial safety systems, smart home automation, fire warning systems, and environmental monitoring applications.
