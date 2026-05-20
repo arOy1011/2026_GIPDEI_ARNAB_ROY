@@ -23,14 +23,12 @@
             "id": "363e528f0a0996e3",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "Reports.md",
-                "mode": "source",
-                "source": false
+                "file": "Experiments/exp2/calculator/prefix_expression.png"
               },
-              "icon": "lucide-file",
-              "title": "Reports"
+              "icon": "lucide-image",
+              "title": "prefix_expression"
             }
           }
         ],
@@ -91,7 +89,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "right": {
     "id": "3ae26cd8c8aba1b6",
@@ -107,7 +106,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Reports.md",
+                "file": "Experiments/exp2/calculator/prefix_expression.png",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -117,7 +116,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Reports"
+              "title": "Backlinks for prefix_expression"
             }
           },
           {
@@ -168,13 +167,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Reports.md",
+                "file": "Experiments/exp2/calculator/prefix_expression.png",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Reports"
+              "title": "Outline of prefix_expression"
             }
           },
           {
@@ -209,10 +208,10 @@
   },
   "active": "363e528f0a0996e3",
   "lastOpenFiles": [
+    "Reports.md",
     "Experiments/exp2/calculator/prefix_expression.png",
     "Experiments/exp2/calculator/history.png",
     "Experiments/exp2/calculator/calculated.png",
-    "Reports.md",
     "Experiments/exp2/Exp 2 New.pdf",
     "Experiments/exp2/calculator/lock.png",
     "Experiments/exp2/calculator/cal.sim1",
