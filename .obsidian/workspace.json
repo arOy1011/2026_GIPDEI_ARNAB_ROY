@@ -11,28 +11,17 @@
             "id": "7fe0fe5bb97f84df",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "Experiments/exp1/tmp_control/Cooling.png"
+                "file": "Experiments/exp3/wave_generator/Math Logic Wave Generation.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-image",
-              "title": "Cooling"
-            }
-          },
-          {
-            "id": "363e528f0a0996e3",
-            "type": "leaf",
-            "state": {
-              "type": "image",
-              "state": {
-                "file": "Experiments/exp2/calculator/prefix_expression.png"
-              },
-              "icon": "lucide-image",
-              "title": "prefix_expression"
+              "icon": "lucide-file",
+              "title": "Math Logic Wave Generation"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -89,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "right": {
     "id": "3ae26cd8c8aba1b6",
@@ -106,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Experiments/exp2/calculator/prefix_expression.png",
+                "file": "Experiments/exp3/wave_generator/Math Logic Wave Generation.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -116,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for prefix_expression"
+              "title": "Backlinks for Math Logic Wave Generation"
             }
           },
           {
@@ -167,13 +155,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Experiments/exp2/calculator/prefix_expression.png",
+                "file": "Experiments/exp3/wave_generator/Math Logic Wave Generation.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of prefix_expression"
+              "title": "Outline of Math Logic Wave Generation"
             }
           },
           {
@@ -206,29 +194,31 @@
       "templater-obsidian:Templater": false
     }
   },
-  "active": "363e528f0a0996e3",
+  "active": "7fe0fe5bb97f84df",
   "lastOpenFiles": [
     "Reports.md",
-    "Experiments/exp2/calculator/prefix_expression.png",
-    "Experiments/exp2/calculator/history.png",
-    "Experiments/exp2/calculator/calculated.png",
-    "Experiments/exp2/Exp 2 New.pdf",
-    "Experiments/exp2/calculator/lock.png",
-    "Experiments/exp2/calculator/cal.sim1",
-    "Experiments/exp2/calculator/build/arduino.avr.uno/calculator.ino.with_bootloader.hex",
-    "Experiments/exp2/calculator/build/arduino.avr.uno/calculator.ino.with_bootloader.bin",
-    "Experiments/exp2/calculator/build/arduino.avr.uno/calculator.ino.hex",
-    "Experiments/exp2/calculator/build/arduino.avr.uno/calculator.ino.elf",
-    "Experiments/exp2/calculator/build/arduino.avr.uno/calculator.ino.eep",
-    "Experiments/exp2/calculator/build/arduino.avr.uno",
-    "Experiments/exp2/calculator/calculator.ino",
-    "Experiments/exp2/calculator/build",
-    "Experiments/exp2/calculator/cal.png",
-    "Experiments/exp2/calculated.png",
-    "Experiments/exp2/prefix_expression.png",
-    "Experiments/exp2/ .png",
-    "Experiments/exp2/history.png",
-    "Experiments/exp2/lock.png",
+    "Experiments/exp1/tmp_control/Cooling.png",
+    "Experiments/exp1/tmp_control_buzzer/Heating.png",
+    "Experiments/exp1/tmp_control_buzzer/Buzzer(cooling).png",
+    "Experiments/exp1/tmp_control_buzzer/Cooling.png",
+    "Experiments/exp1/tmp_control_buzzer/CleanShot 2026-05-20 at 16.53.21@2x.png",
+    "Experiments/exp1/tmp_control_buzzer/CleanShot 2026-05-20 at 16.52.47@2x.png",
+    "Experiments/exp1/tmp_control_buzzer/CleanShot 2026-05-20 at 16.52.01@2x.png",
+    "Experiments/exp1/tmp_control_buzzer 2/Heating.png",
+    "Experiments/exp1/tmp_control_buzzer/build/arduino.avr.uno/tmp_control_buzzer.ino.with_bootloader.hex",
+    "Experiments/exp1/tmp_control_buzzer/build/arduino.avr.uno/tmp_control_buzzer.ino.with_bootloader.bin",
+    "Experiments/exp1/tmp_control_buzzer/build/arduino.avr.uno/tmp_control_buzzer.ino.hex",
+    "Experiments/exp1/tmp_control_buzzer/build/arduino.avr.uno/tmp_control_buzzer.ino.elf",
+    "Experiments/exp1/tmp_control_buzzer/build/arduino.avr.uno/tmp_control_buzzer.ino.eep",
+    "Experiments/exp1/tmp_control_buzzer/build/arduino.avr.uno/sketch_may19c.ino.with_bootloader.hex",
+    "Experiments/exp1/tmp_control_buzzer/build/arduino.avr.uno/sketch_may19c.ino.with_bootloader.bin",
+    "Experiments/exp1/tmp_control_buzzer/build/arduino.avr.uno/sketch_may19c.ino.hex",
+    "Experiments/exp1/tmp_control_buzzer/build/arduino.avr.uno/sketch_may19c.ino.elf",
+    "Experiments/exp1/tmp_control_buzzer/build/arduino.avr.uno/sketch_may19c.ino.eep",
+    "Experiments/exp1/tmp_control_buzzer 2/Cooling.png",
+    "Experiments/exp1/tmp_control_buzzer 2/Buzzer(cooling).png",
+    "Experiments/exp3/wave_generator/Math Logic Wave Generation.md",
+    "noted.canvas",
     "Experiments/this is just for testing.md"
   ]
 }

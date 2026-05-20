@@ -1,0 +1,7 @@
+{
+	"nodes":[
+		{"id":"2ade8367c8b522a8","x":-269,"y":-415,"width":250,"height":60,"type":"text","text":""},
+		{"id":"b4f6d1d4794240e0","x":-160,"y":-360,"width":360,"height":300,"type":"text","text":"int dacPins[8] = {6,7,8,9,10,11,12,13};\n\nint value = 0;\n\nint direction = 1;\n\nvoid setup() {\n\n  for(int i=0;i<8;i++) {\n\n    pinMode(dacPins[i], OUTPUT);\n\n  }\n\n}\n\nvoid loop() {\n\n  outputDAC(value);\n\n  value += direction * 8;\n\n  if(value >= 255) {\n\n    value = 255;\n\n    direction = -1;\n\n  }\n\n  if(value <= 0) {\n\n    value = 0;\n\n    direction = 1;\n\n  }\n\n  delayMicroseconds(20);\n\n}\n\nvoid outputDAC(int number) {\n\n  for(int i=0;i<8;i++) {\n\n    digitalWrite(dacPins[i], (number >> i) & 1);\n\n  }\n\n}"}
+	],
+	"edges":[]
+}

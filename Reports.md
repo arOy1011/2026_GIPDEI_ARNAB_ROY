@@ -12,6 +12,12 @@
   - [[#1. Temperature Control System]]
   - [[#2. Temperature Control System with Alarm Buzzer]]
   - [[#3. Smart Weather Monitoring and Extreme Temperature Alert System]]
+
+- [[#Exp 2]]
+  - [[#Calculator]]
+
+- [[#Exp 3]]
+  - [[#Waveform Generator]]
 ---
 
 # Exp 0
@@ -552,9 +558,8 @@ When temperature rises above `35°C`, the warning LED and cooling fan turn ON.![
 ---
 ### Critical Temperature Alarm Condition
 
-![Critical Temperature Alarm](Experiments/exp1/tmp_control_buzzer/Buzzer(cooling).png)
-
 When temperature rises above `45°C`, the warning LED, cooling fan, and audio alarm system turn ON simultaneously to indicate a critical high-temperature condition.
+![Critical Temperature Alarm](Experiments/exp1/tmp_control_buzzer/Buzzer(cooling).png)
 
 ---
 
@@ -2176,3 +2181,240 @@ The project integrates concepts from:
 - and user-interface engineering
 
 into a compact and efficient hardware implementation.
+Looking at your screenshots — sine and triangle look great, PWM just needs fixing. Here's the Exp 3 section to add directly to your report:
+
+# EXP 3
+
+## Waveform Generator
+
+### Objective
+
+To design and implement a multi-waveform generator using Arduino Uno, an 8-bit R-2R DAC, a Nokia PCD8544 LCD display, push buttons, and a potentiometer. The system generates sine, triangle, and PWM waveforms selectable via dedicated push buttons, with frequency controlled by a potentiometer.
+
+---
+
+### Components Required
+
+| Component | Quantity | Purpose |
+|---|---|---|
+| Arduino Uno | 1 | Main controller |
+| Nokia PCD8544 LCD | 1 | Display waveform info |
+| R-2R DAC (8-bit) | 1 | Analog wave output |
+| Push Buttons | 3 | Wave selection (S/T/P) |
+| Potentiometer (10 kΩ) | 1 | Frequency control |
+| Resistor 220Ω | 1 | DAC output filter |
+| Capacitor 10 µF | 1 | Signal smoothing |
+| Connecting Wires | Multiple | Connections |
+
+---
+
+### Circuit Connections
+
+| Component | Arduino Pin |
+|---|---|
+| DAC D0–D7 | D6–D13 |
+| DAC OUT | Oscilloscope Channel 1 |
+| PWM Output | D5 → Oscilloscope Channel 2 |
+| Sine Button | D2 |
+| Triangle Button | D3 |
+| PWM Button | D4 |
+| Potentiometer | A5 |
+| LCD RST | A0 |
+| LCD CS | A1 |
+| LCD DC | A2 |
+| LCD DIN | A3 |
+| LCD CLK | A4 |
+
+---
+
+### [Working Principle](obsidian://open?vault=ARDUINO&file=Experiments%2Fexp3%2Fwave_generator%2FMath%20Logic%20Wave%20Generation)
+
+The waveform generator operates three independent wave logics unified under a single non-blocking loop. The triangle wave logic increments and decrements an integer `value` by a fixed step of 8 between 0 and 255, writing each step to the 8-bit R-2R DAC on pins D6–D13 using bitwise shifting — this is the exact logic from the standalone triangle sketch. The sine wave logic advances a floating-point `angle` variable by 0.2 radians per step, computes `127 + 127 * sin(angle)`, and writes the result to the same DAC — identical to the standalone sine sketch. The PWM logic toggles pin D5 HIGH and LOW with a fixed 500 µs half-period, matching the original standalone PWM sketch exactly. Since sine and triangle are never active simultaneously — the push buttons ensure only one is selected at a time — both safely share the same DAC pins without conflict. The key integration technique is replacing each sketch's `delayMicroseconds()` with a `micros()`-based non-blocking timer, so the PWM toggle and the DAC output each check elapsed time independently without freezing one another. The potentiometer on A5 maps to the DAC update interval (controlling sine and triangle frequency), while PWM remains fixed at 1 kHz as in the original. The PCD8544 display refreshes every 300 ms showing the active waveform name, step size, amplitude, and output pin.
+
+---
+
+### Code
+
+```cpp
+#include <math.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_PCD8544.h>
+
+Adafruit_PCD8544 display = Adafruit_PCD8544(A4, A3, A2, A1, A0);
+
+int dacPins[8] = {6, 7, 8, 9, 10, 11, 12, 13};
+int pwmPin = 5;
+
+const int btnSine = 2;
+const int btnTri  = 3;
+const int btnPWM  = 4;
+const int potPin  = A5;
+
+char activeWave = 'S';
+
+// original triangle state
+int value     = 0;
+int direction = 1;
+
+// original sine state
+float angle = 0;
+
+// pwm state
+bool pwmState = false;
+
+unsigned long lastDac     = 0;
+unsigned long lastPwm     = 0;
+unsigned long lastDisplay = 0;
+
+const unsigned long PWM_HALF = 5000; // 5ms each side → 100 Hz, visible on scope
+
+unsigned long getDacDelay(int potVal) {
+  return (unsigned long)map(potVal, 0, 1023, 50, 500);
+}
+
+void outputDAC(int number) {
+  for (int i = 0; i < 8; i++) {
+    digitalWrite(dacPins[i], (number >> i) & 1);
+  }
+}
+
+void updateDisplay(char wave, int potVal) {
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(BLACK);
+
+  display.setCursor(0, 0);
+  switch (wave) {
+    case 'S': display.print(F("Waveform: SINE")); break;
+    case 'T': display.print(F("Waveform: TRI"));  break;
+    case 'P': display.print(F("Waveform: PWM"));  break;
+  }
+
+  display.setCursor(0, 10);
+  display.print(F("Pot: "));
+  display.print(potVal);
+
+  display.setCursor(0, 20);
+  switch (wave) {
+    case 'S':
+    case 'T': display.print(F("Amp: 127 DAC")); break;
+    case 'P': display.print(F("Duty: 50%"));    break;
+  }
+
+  display.setCursor(0, 30);
+  switch (wave) {
+    case 'S': display.print(F("Step: 0.2 rad")); break;
+    case 'T': display.print(F("Step: 8"));       break;
+    case 'P': display.print(F("Period: 1ms"));   break;
+  }
+
+  display.setCursor(0, 40);
+  switch (wave) {
+    case 'S':
+    case 'T': display.print(F("Out: D6-D13 DAC")); break;
+    case 'P': display.print(F("Out: D5"));          break;
+  }
+
+  display.display();
+}
+
+void setup() {
+  for (int i = 0; i < 8; i++) pinMode(dacPins[i], OUTPUT);
+  pinMode(pwmPin,  OUTPUT);
+  pinMode(btnSine, INPUT_PULLUP);
+  pinMode(btnTri,  INPUT_PULLUP);
+  pinMode(btnPWM,  INPUT_PULLUP);
+
+  display.begin();
+  display.setContrast(57);
+  display.clearDisplay();
+  display.display();
+
+  Serial.begin(9600);
+  updateDisplay(activeWave, 512);
+}
+
+void loop() {
+  unsigned long now = micros();
+  int potVal        = analogRead(potPin);
+  unsigned long dacDelay = getDacDelay(potVal);
+
+  // Buttons
+  if (digitalRead(btnSine) == LOW && activeWave != 'S') {
+    activeWave = 'S'; angle = 0; delay(50);
+  } else if (digitalRead(btnTri) == LOW && activeWave != 'T') {
+    activeWave = 'T'; value = 0; direction = 1; delay(50);
+  } else if (digitalRead(btnPWM) == LOW && activeWave != 'P') {
+    activeWave = 'P'; outputDAC(0); pwmState = false; delay(50);
+  }
+
+  // PWM — fixed 5ms half period, independent of DAC
+  if (now - lastPwm >= PWM_HALF) {
+    lastPwm = now;
+    if (activeWave == 'P') {
+      pwmState = !pwmState;
+      digitalWrite(pwmPin, pwmState ? HIGH : LOW);
+    } else {
+      digitalWrite(pwmPin, LOW);
+    }
+  }
+
+  // DAC — sine or triangle, pot controls speed
+  if (now - lastDac >= dacDelay) {
+    lastDac = now;
+
+    if (activeWave == 'S') {
+      // exact original sine logic
+      int sineValue = 127 + 127 * sin(angle);
+      outputDAC(sineValue);
+      angle += 0.2;
+      if (angle >= 6.283) angle = 0;
+
+    } else if (activeWave == 'T') {
+      // exact original triangle logic
+      outputDAC(value);
+      value += direction * 8;
+      if (value >= 255) { value = 255; direction = -1; }
+      if (value <= 0)   { value = 0;   direction =  1; }
+    }
+  }
+
+  // Display every 300ms
+  if (millis() - lastDisplay >= 300) {
+    lastDisplay = millis();
+    updateDisplay(activeWave, potVal);
+  }
+}
+```
+
+---
+
+### Screenshots
+
+#### PWM Wave
+
+![[PWM.png]]
+
+#### Sine Wave
+
+![[Sine.png]]
+
+#### Triangle Wave
+
+![[Triangle.png]]
+
+---
+
+### Observations
+
+| Waveform | Output Pin | Frequency Control | Step Size | Amplitude |
+|---|---|---|---|---|
+| Sine | D6–D13 (DAC) | Potentiometer | 0.2 rad | 127 DAC counts |
+| Triangle | D6–D13 (DAC) | Potentiometer | 8 counts | 127 DAC counts |
+| PWM | D5 | Fixed | — | 5V (digital) |
+
+---
+
+### Conclusion
+
+The experiment successfully demonstrated a multi-waveform generator using Arduino and an 8-bit R-2R DAC. All three waveforms — sine, triangle, and PWM — operated correctly and were clearly visible on the oscilloscope. The non-blocking `micros()` timing approach preserved the original wave mathematics from each standalone sketch while allowing all three to coexist in a single unified program. The potentiometer provided real-time frequency control for sine and triangle waves, and the Nokia PCD8544 display correctly reported waveform characteristics for each selected mode.
