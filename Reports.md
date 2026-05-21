@@ -62,7 +62,7 @@ void loop() {
 
 ### Screenshot
 
-![LED Blink Output](led_blink/led_blink.png)
+![LED Blink Output](Experiments/exp0/led_blink/led_blink.png)
 
 ---
 
