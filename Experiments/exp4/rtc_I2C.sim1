@@ -1,0 +1,77 @@
+<circuit version="1.1.0-SR2" rev="260312" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="0" >
+
+<item itemtype="DS1307" CircId="DS1307-1" mainComp="false" Show_id="false" Show_Val="false" Pos="216,4" rotation="0" hflip="1" vflip="1" label="DS1307-1" idLabPos="-20,-34" labelrot="0" valLabPos="-16,20" valLabRot="0" Time_Updtd="false" />
+
+<item itemtype="Subcircuit" CircId="Uno-2" mainComp="false" Show_id="true" Show_Val="false" Pos="-40,-28" rotation="0" hflip="1" vflip="1" label="Uno-2" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" Logic_Symbol="false">
+<mainCompProps MainCompId="mega328-109" Frequency="16 MHz" Program="Users/arnabroy/Desktop/sketch_may21a/build/arduino.avr.uno/sketch_may21a.ino.hex" Auto_Load="false" saveEepr="true" MainMcu="true" SerialMon="-1" />
+</item>
+
+<item itemtype="Hd44780" CircId="Hd44780-7" mainComp="false" Show_id="true" Show_Val="false" Pos="-152,-40" rotation="0" hflip="1" vflip="1" label="Hd44780-7" idLabPos="70,-82" labelrot="0" valLabPos="-16,20" valLabRot="0" Rows="2" Cols="16" />
+
+<item itemtype="KeyPad" CircId="KeyPad-8" mainComp="false" Show_id="false" Show_Val="false" Pos="-124,80" rotation="0" hflip="1" vflip="1" label="KeyPad-8" idLabPos="-8,-16" labelrot="0" valLabPos="-16,20" valLabRot="0" Rows="2" Cols="2" Key_Labels="+M-S" />
+
+<item itemtype="DcMotor" CircId="DcMotor-9" mainComp="false" Show_id="true" Show_Val="false" Pos="200,80" rotation="-90" hflip="1" vflip="1" label="DcMotor-9" idLabPos="-22,-48" labelrot="0" valLabPos="-14,36" valLabRot="0" RPM_Nominal="60 _RPM" Volt_Nominal="5 V" Resistance="100 Ω" />
+
+<item itemtype="AudioOut" CircId="AudioOut-10" mainComp="false" Show_id="false" Show_Val="false" Pos="52,204" rotation="90" hflip="1" vflip="1" label="AudioOut-10" idLabPos="-20,-36" labelrot="0" valLabPos="-16,20" valLabRot="0" Buzzer="false" Impedance="8 Ω" Frequency="1 kHz" />
+
+<item itemtype="Push" CircId="Push-12" mainComp="false" Show_id="false" Show_Val="false" Pos="256,48" rotation="90" hflip="1" vflip="1" label="Push-12" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Norm_Close="false" Poles="1" />
+
+<item itemtype="DS18B20" CircId="DS18B20-18" mainComp="false" Show_id="false" Show_Val="false" Pos="188,-84" rotation="0" hflip="1" vflip="1" label="DS18B20-18" idLabPos="-24,-28" labelrot="0" valLabPos="-16,20" valLabRot="0" ROM="28 9A DA 55 1F 00 00 CF " Temp="23 °C" TempInc="0.5 °C" />
+
+<item itemtype="Resistor" CircId="Resistor-19" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="168,-40" rotation="0" hflip="1" vflip="1" label="Resistor-19" idLabPos="-16,-24" labelrot="0" valLabPos="-16,6" valLabRot="0" Resistance="4.7 kΩ" />
+
+<item itemtype="Node" CircId="Node-13" mainComp="false" Pos="196,40" />
+
+<item itemtype="Node" CircId="Node-21" mainComp="false" Pos="152,-44" />
+
+<item itemtype="Connector" uid="Connector-1" startpinid="Hd44780-7-dataPin7" endpinid="Uno-2-2" pointList="-56,-32,-56,4,-32,4" />
+
+<item itemtype="Connector" uid="Connector-2" startpinid="Hd44780-7-dataPin6" endpinid="Uno-2-3" pointList="-64,-32,-64,12,-32,12" />
+
+<item itemtype="Connector" uid="Connector-3" startpinid="Hd44780-7-dataPin5" endpinid="Uno-2-4" pointList="-72,-32,-72,20,-32,20" />
+
+<item itemtype="Connector" uid="Connector-4" startpinid="Hd44780-7-dataPin4" endpinid="Uno-2-5" pointList="-80,-32,-80,28,-32,28" />
+
+<item itemtype="Connector" uid="Connector-5" startpinid="Hd44780-7-PinRS" endpinid="Uno-2-7" pointList="-136,-32,-136,44,-32,44" />
+
+<item itemtype="Connector" uid="Connector-6" startpinid="Hd44780-7-PinEn" endpinid="Uno-2-6" pointList="-120,-32,-120,36,-32,36" />
+
+<item itemtype="Connector" uid="Connector-7" startpinid="KeyPad-8-Pin0" endpinid="Uno-2-10" pointList="-92,88,-52,88,-52,76,-32,76" />
+
+<item itemtype="Connector" uid="Connector-9" startpinid="DS1307-1-PinSDA" endpinid="Uno-2-A4" pointList="180,-8,112,-8,112,-4" />
+
+<item itemtype="Connector" uid="Connector-10" startpinid="DS1307-1-PinSCL" endpinid="Uno-2-A5" pointList="180,0,124,0,124,-12,112,-12" />
+
+<item itemtype="Connector" uid="Connector-11" startpinid="KeyPad-8-Pin1" endpinid="Uno-2-11" pointList="-92,104,-48,104,-48,84,-32,84" />
+
+<item itemtype="Connector" uid="Connector-12" startpinid="KeyPad-8-Pin2" endpinid="Uno-2-12" pointList="-124,120,-124,128,-44,128,-44,92,-32,92" />
+
+<item itemtype="Connector" uid="Connector-13" startpinid="KeyPad-8-Pin3" endpinid="Uno-2-13" pointList="-108,120,-40,120,-40,100,-32,100" />
+
+<item itemtype="Connector" uid="Connector-14" startpinid="AudioOut-10-lPin" endpinid="Uno-2-9" pointList="60,188,60,68,-32,68" />
+
+<item itemtype="Connector" uid="Connector-15" startpinid="AudioOut-10-rPin" endpinid="Uno-2-GND2" pointList="52,188,52,108,-32,108" />
+
+<item itemtype="Connector" uid="Connector-18" startpinid="DcMotor-9-lPin" endpinid="Uno-2-8" pointList="200,120,84,120,84,60,-32,60" />
+
+<item itemtype="Connector" uid="Connector-19" startpinid="DS1307-1-PinSQW" endpinid="Uno-2-A0" pointList="180,16,180,28,112,28" />
+
+<item itemtype="Connector" uid="Connector-20" startpinid="Hd44780-7-PinRW" endpinid="Uno-2-GND0" pointList="-128,-32,-128,-24,-192,-24,-192,-144,132,-144,132,52,112,52" />
+
+<item itemtype="Connector" uid="Connector-21" startpinid="Push-12-pinP0" endpinid="Uno-2-A1" pointList="256,32,112,32,112,20" />
+
+<item itemtype="Connector" uid="Connector-23" startpinid="DcMotor-9-rPin" endpinid="Node-13-0" pointList="200,40,196,40" />
+
+<item itemtype="Connector" uid="Connector-24" startpinid="Node-13-2" endpinid="Uno-2-GND1" pointList="196,40,148,40,148,60,112,60" />
+
+<item itemtype="Connector" uid="Connector-22" startpinid="Push-12-switch0pinN" endpinid="Node-13-1" pointList="256,64,232,64,232,40,196,40" />
+
+<item itemtype="Connector" uid="Connector-36" startpinid="Resistor-19-rPin" endpinid="Uno-2-5V0" pointList="184,-40,184,-20,152,-20,152,68,112,68" />
+
+<item itemtype="Connector" uid="Connector-37" startpinid="Node-21-1" endpinid="Uno-2-A2" pointList="152,-44,140,-44,140,12,112,12" />
+
+<item itemtype="Connector" uid="Connector-38" startpinid="DS18B20-18-inPin" endpinid="Node-21-0" pointList="152,-76,152,-44,148,-44" />
+
+<item itemtype="Connector" uid="Connector-39" startpinid="Node-21-2" endpinid="Resistor-19-lPin" pointList="152,-44,152,-40" />
+
+</circuit>

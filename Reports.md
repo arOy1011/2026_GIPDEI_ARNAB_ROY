@@ -18,6 +18,9 @@
 
 - [[#Exp 3]]
   - [[#Waveform Generator]]
+    
+- [[#**Exp 4 — RTC Based Smart Monitoring and Automation System using I2C Bus**]]
+  
 ---
 
 # Exp 0
@@ -2418,3 +2421,641 @@ void loop() {
 ### Conclusion
 
 The experiment successfully demonstrated a multi-waveform generator using Arduino and an 8-bit R-2R DAC. All three waveforms — sine, triangle, and PWM — operated correctly and were clearly visible on the oscilloscope. The non-blocking `micros()` timing approach preserved the original wave mathematics from each standalone sketch while allowing all three to coexist in a single unified program. The potentiometer provided real-time frequency control for sine and triangle waves, and the Nokia PCD8544 display correctly reported waveform characteristics for each selected mode.
+
+# **Exp 4 — RTC Based Smart Monitoring and Automation System using I2C Bus**
+
+## **Objective**
+
+The objective of this experiment was to interface the DS1307 Real Time Clock (RTC) module with Arduino Uno using the I2C communication protocol and display real-time clock data on a 16×2 LCD display. The project was further extended to implement alarm functionality, keypad-based time configuration, automatic motor control, and periodic temperature logging using a DS18B20 digital temperature sensor.  
+
+---
+
+## **Introduction**
+
+Real Time Clock (RTC) modules are widely used in embedded systems where accurate timekeeping is required independently of the main controller operation. The DS1307 RTC module communicates with microcontrollers using the I2C bus and maintains time even during power interruptions through a backup battery.
+
+In this experiment, the RTC module was interfaced with an Arduino Uno to create a fully functional real-time monitoring and automation system. The system was developed progressively in multiple stages:
+
+- basic RTC clock display,
+- keypad-based time and alarm setting,
+- alarm buzzer system,
+- automatic motor switching,
+- and periodic temperature recording.
+
+The experiment demonstrates practical implementation of:
+
+- I2C communication,
+- LCD interfacing,
+- keypad scanning,
+- embedded automation,
+- sensor interfacing,
+- and serial communication systems.
+
+---
+
+## **Components Required**
+
+|**Component**|**Purpose**|
+|---|---|
+|Arduino Uno|Main controller|
+|DS1307 RTC Module|Real-time clock source|
+|16×2 HD44780 LCD|Time and status display|
+|Push Button Keypad|User input and configuration|
+|Buzzer|Alarm indication|
+|DC Motor|Water pump simulation|
+|DS18B20 Temperature Sensor|Ambient temperature sensing|
+|4.7kΩ Resistor|Pull-up resistor for DS18B20|
+|Connecting Wires|Hardware interfacing|
+
+---
+
+## **Theory**
+
+## **DS1307 RTC Module**
+
+The DS1307 is a low-power Real Time Clock IC that communicates using the I2C protocol. It stores:
+
+- seconds,
+- minutes,
+- hours,
+- day,
+- date,
+- month,
+- and year information.
+
+The RTC maintains accurate time using an external crystal oscillator and battery backup.
+
+The Arduino communicates with the RTC through:
+
+- SDA (Serial Data Line)
+- SCL (Serial Clock Line)
+
+using the `Wire.h` library.
+
+---
+
+## **I2C Communication**
+
+I2C is a synchronous serial communication protocol that uses only two wires:
+
+- SDA → data transfer
+- SCL → clock signal
+
+The Arduino acts as the master device while the DS1307 acts as the slave device.
+
+Advantages:
+
+- minimal wiring,
+- multiple device support,
+- synchronized communication,
+- reliable data transfer.
+
+---
+
+## **LCD Interfacing**
+
+The 16×2 LCD was interfaced in 4-bit mode using the `LiquidCrystal` library. The LCD continuously displays:
+
+- current time,
+- temperature,
+- motor state,
+- and system modes.
+
+---
+
+## **Keypad Control System**
+
+A 2×2 keypad arrangement was implemented using four push buttons.
+
+### **Functional Buttons**
+
+|**Button**|**Function**|
+|---|---|
+|M|Change mode|
+|+|Increment values|
+|-|Decrement values|
+|S|Save configured values|
+
+The keypad allows:
+
+- time setting,
+- alarm configuration,
+- and mode navigation.
+
+---
+
+## **Temperature Logging**
+
+The DS18B20 digital sensor was used for ambient temperature monitoring.
+
+The sensor communicates using the OneWire protocol and periodically sends temperature values to the Arduino.
+
+Temperature data is:
+
+- displayed on the LCD,
+- and logged to the Serial Monitor every 15 minutes.
+
+---
+
+## **Circuit Connections**
+
+## **LCD Connections**
+
+|**LCD Pin**|**Arduino Pin**|
+|---|---|
+|RS|D7|
+|EN|D6|
+|D4|D5|
+|D5|D4|
+|D6|D3|
+|D7|D2|
+
+---
+
+## **RTC Connections**
+
+|**RTC Pin**|**Arduino Pin**|
+|---|---|
+|SDA|A4|
+|SCL|A5|
+|VCC|5V|
+|GND|GND|
+
+---
+
+## **Keypad Connections**
+
+|**Keypad Pin**|**Arduino Pin**|
+|---|---|
+|Row 1|D10|
+|Row 2|D11|
+|Column 1|D12|
+|Column 2|D13|
+
+---
+
+## **Additional Connections**
+
+|**Component**|**Arduino Pin**|
+|---|---|
+|Buzzer|D9|
+|Motor|D8|
+|Water Supply Switch|A1|
+|DS18B20 Data|A2|
+
+---
+
+## **Development and Code Progression**
+
+The project was developed incrementally in three major stages.
+
+---
+
+### **Stage 1 — Basic RTC Clock and Alarm System**
+
+The first implementation focused on RTC interfacing and user-controlled clock management.
+
+## **Features Implemented**
+
+- DS1307 RTC interfacing
+- LCD clock display
+- keypad scanning
+- time configuration
+- alarm setting
+- buzzer activation
+
+### **Main Functional Blocks**
+
+|**Function**|**Purpose**|
+|---|---|
+|`readTime()`|Reads RTC registers|
+|`setRTCTime()`|Writes updated time to RTC|
+|`scanKeypad()`|Detects keypad inputs|
+|`drawAll()`|Updates LCD contents|
+|`incrementValue()`|Increases selected parameter|
+|`decrementValue()`|Decreases selected parameter|
+
+---
+
+## **System Operation**
+
+The RTC continuously sends current time information to the Arduino. The LCD displays:
+
+```text
+HH:MM:SS
+```
+
+The user can enter configuration mode using the keypad and modify:
+
+- hour,
+- minute,
+- second,
+- alarm hour,
+- alarm minute.
+
+When current time matches alarm time:
+
+- the buzzer activates for 10 seconds.
+
+---
+
+## **Key Learning Outcomes**
+
+This stage established:
+
+- stable I2C communication,
+- LCD interfacing,
+- keypad matrix scanning,
+- and RTC register handling.
+
+Code progression reference:  
+
+---
+
+### **Stage 2 — Automatic Motor Control System**
+
+The second stage transformed the RTC system into a simple automation controller.
+
+---
+
+## **Objective**
+
+To automatically control a water pump based on water supply availability.
+
+---
+
+## **Functional Enhancements Added**
+
+### **New Variables Introduced**
+
+```cpp
+bool motorState;
+unsigned long motorStartTime;
+unsigned long waterLostTime;
+bool waterPreviouslyPresent;
+```
+
+### **New Function Added**
+
+```cpp
+void handlePumpControl()
+```
+
+---
+
+## **Working Logic**
+
+The water supply was simulated using a push-button input connected to pin A1.
+
+### **Operating Conditions**
+
+|**Water Condition**|**Motor Action**|
+|---|---|
+|Water available|Motor turns ON|
+|Water unavailable|OFF timer starts|
+|10 minutes elapsed|Motor turns OFF|
+
+---
+
+## **Automation Principle**
+
+When water becomes available:
+
+1. motor starts automatically,
+2. runtime timer starts.
+
+The motor turns OFF if:
+
+- water supply disappears,
+- or runtime exceeds 10 minutes.
+
+This introduced:
+
+- embedded automation,
+- event detection,
+- timer-based control logic,
+- and state management techniques.
+
+---
+
+## **System Improvements**
+
+The LCD was modified to additionally display motor state:
+
+```text
+ON / OFF
+```
+
+Code progression reference:  
+
+---
+
+### **Stage 3 — Temperature Logging and Monitoring**
+
+The final stage integrated environmental sensing and serial logging.
+
+---
+
+## **Objective**
+
+To periodically record ambient temperature values for temperature prediction and monitoring purposes.  
+
+---
+
+## **Sensor Used**
+
+Instead of LM35 mentioned in the experiment sheet, a DS18B20 digital temperature sensor was implemented due to:
+
+- digital accuracy,
+- easier interfacing,
+- and OneWire communication support.
+
+---
+
+## **Additional Libraries Added**
+
+```cpp
+#include <OneWire.h>
+#include <DallasTemperature.h>
+```
+
+---
+
+## **New Functionalities Added**
+
+- DS18B20 interfacing
+- LCD temperature display
+- serial temperature logging
+- periodic sensor polling
+- timestamped data recording
+
+---
+
+## **Logging Mechanism**
+
+Temperature values were logged every:
+
+```text
+15 minutes
+```
+
+using RTC timestamps.
+
+### **Sample Output**
+
+```text
+TIME: 00:15:00 TEMP: 23.00 C
+```
+
+---
+
+## **Main Function Added**
+
+```cpp
+void handleTemperatureLogging()
+```
+
+---
+
+## **Working Principle**
+
+The Arduino continuously:
+
+1. reads RTC time,
+2. acquires sensor temperature,
+3. updates LCD,
+4. checks logging interval.
+
+At every 15-minute boundary:
+
+- data is transmitted through the Serial Monitor.
+
+This stage integrated:
+
+- RTC timing,
+- sensor interfacing,
+- serial communication,
+- and periodic event scheduling.
+
+[[Experiments/exp4/Code Progression]]
+
+---
+
+## **Problems Faced During Implementation**
+
+Several practical issues were encountered during system development.
+
+---
+
+### **1. Internal Input Handling Issues**
+
+### **Problem**
+
+The keypad initially produced:
+
+- unstable inputs,
+- repeated key detections,
+- accidental mode switching.
+
+This made:
+
+- time setting inconsistent,
+- menu handling unreliable.
+
+---
+
+### **Cause**
+
+Mechanical switch bouncing and rapid polling caused multiple detections for a single press.
+
+---
+
+### **Solution**
+
+Software debouncing was implemented using:
+
+```cpp
+delay(40);
+```
+
+along with key release detection:
+
+```cpp
+while(scanKeypad()==k);
+```
+
+This stabilized keypad operation significantly.
+
+---
+
+### **2. Mode Switching and Time Setting Errors**
+
+### **Problem**
+
+While changing modes:
+
+- LCD values updated,
+- but RTC values sometimes failed to synchronize correctly.
+
+---
+
+### **Cause**
+
+The local variables and RTC registers were not refreshed immediately after writing updated time.
+
+---
+
+### **Solution**
+
+After saving:
+
+1. RTC values were re-read,
+2. display variables refreshed,
+3. mode reset correctly.
+
+This resolved synchronization inconsistencies.
+
+---
+
+### **3. Motor Turning OFF Too Quickly**
+
+### **Problem**
+
+Initially the motor turned OFF almost immediately after switching ON.
+
+---
+
+### **Cause**
+
+Incorrect timer values were used:
+
+```cpp
+10000 ms
+```
+
+which corresponds to:
+
+```text
+10 seconds
+```
+
+instead of the intended longer runtime.
+
+---
+
+### **Solution**
+
+Timer values were modified to:
+
+```cpp
+600000 ms
+```
+
+which corresponds to:
+
+```text
+10 minutes
+```
+
+The motor then operated correctly.
+
+---
+
+### **4. Temperature Reading Showing −127°C**
+
+### **Problem**
+
+The DS18B20 sensor initially displayed:
+
+```text
+-127°C
+```
+
+instead of actual temperature values.
+
+---
+
+### **Cause**
+
+This occurred due to:
+
+- improper wiring,
+- missing pull-up resistor,
+- unstable data line communication.
+
+---
+
+### **Solution**
+
+A 4.7kΩ pull-up resistor was connected between:
+
+- DATA pin,
+- and +5V.
+
+After correction:
+
+- proper temperature readings were obtained.
+
+---
+
+## **Screenshot**
+
+Final integrated system:
+![[Circuit.png]]
+
+
+---
+
+## **Observations**
+
+|**System Module**|**Observation**|
+|---|---|
+|RTC Module|Accurate timekeeping achieved|
+|LCD Display|Stable real-time updates|
+|Keypad System|Proper mode control achieved|
+|Alarm System|Successful buzzer activation|
+|Motor Automation|Correct timed switching observed|
+|Temperature Logging|Stable periodic logging achieved|
+
+---
+
+## **Time Drift**
+
+Time drift refers to the gradual deviation of RTC time from actual real-world time due to oscillator inaccuracies.
+
+In the DS1307 RTC:
+
+- small drift occurs over long durations,
+- mainly due to crystal oscillator tolerances,
+- temperature variation,
+- and power stability.
+
+However, during the experiment:
+
+- no major observable drift occurred over short-duration operation.  
+
+---
+
+## **Conclusion**
+
+The experiment successfully demonstrated implementation of a real-time embedded monitoring and automation system using the I2C protocol and DS1307 RTC module.
+
+The project progressively evolved from:
+
+- a basic RTC clock,  
+    to
+- an alarm system,
+- motor automation controller,
+- and finally a temperature logging platform.
+
+The experiment verified practical implementation of:
+
+- I2C communication,
+- RTC interfacing,
+- LCD interfacing,
+- keypad scanning,
+- embedded automation,
+- serial communication,
+- and sensor-based monitoring systems.
+
+The final system demonstrated modular embedded system design and real-world integration of multiple peripherals into a unified intelligent monitoring platform.
