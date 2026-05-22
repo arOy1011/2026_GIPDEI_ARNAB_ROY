@@ -38,7 +38,7 @@
               "type": "markdown",
               "state": {
                 "file": "Reports.md",
-                "mode": "preview",
+                "mode": "source",
                 "source": false,
                 "backlinks": true,
                 "backlinkOpts": {
@@ -215,7 +215,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 286.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -232,8 +232,10 @@
   },
   "active": "7878223b5f867d91",
   "lastOpenFiles": [
-    "Experiments/exp3_2/Untitled.md",
+    "Reports.pdf",
+    "Experiments/exp4/Circuit.png",
     "Reports.md",
+    "Experiments/exp3_2/Untitled.md",
     "Experiments/exp3_2/backup.sim1",
     "Experiments/exp3_2/wave_gen2.png",
     "Experiments/exp3_2/wave_gen2/build/arduino.avr.uno/wave_gen2.ino.with_bootloader.hex",
@@ -245,7 +247,6 @@
     "Experiments/exp3_2/wave_gen2/build/arduino.avr.uno/sketch_may22a.ino.with_bootloader.bin",
     "Experiments/exp3_2/wave_gen2/build/arduino.avr.uno/sketch_may22a.ino.hex",
     "Experiments/exp3_2/wave_gen2/build/arduino.avr.uno/sketch_may22a.ino.elf",
-    "Experiments/exp4/Circuit.png",
     "Experiments/exp4/Screenshot_simulide_22.05.2026_000018.png",
     "Experiments/exp3/wave_generator/Triangle.png",
     "Experiments/exp3_1/wave_generator/Triangle.png",
