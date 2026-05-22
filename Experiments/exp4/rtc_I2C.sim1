@@ -16,13 +16,13 @@
 
 <item itemtype="Push" CircId="Push-12" mainComp="false" Show_id="true" Show_Val="false" Pos="256,48" rotation="90" hflip="1" vflip="1" label="Water Supply" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Norm_Close="false" Poles="1" />
 
-<item itemtype="DS18B20" CircId="DS18B20-18" mainComp="false" Show_id="false" Show_Val="false" Pos="188,-84" rotation="0" hflip="1" vflip="1" label="DS18B20-18" idLabPos="-24,-28" labelrot="0" valLabPos="-16,20" valLabRot="0" ROM="28 9A DA 55 1F 00 00 CF " Temp="24 °C" TempInc="0.5 °C" />
+<item itemtype="DS18B20" CircId="DS18B20-18" mainComp="false" Show_id="false" Show_Val="false" Pos="188,-84" rotation="0" hflip="1" vflip="1" label="DS18B20-18" idLabPos="-24,-28" labelrot="0" valLabPos="-16,20" valLabRot="0" ROM="28 9A DA 55 1F 00 00 CF " Temp="24.5 °C" TempInc="0.5 °C" />
 
 <item itemtype="Resistor" CircId="Resistor-19" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="168,-40" rotation="0" hflip="1" vflip="1" label="Resistor-19" idLabPos="-16,-24" labelrot="0" valLabPos="-16,6" valLabRot="0" Resistance="4.7 kΩ" />
 
 <item itemtype="RelaySPST" CircId="RelaySPST-22" mainComp="false" Show_id="false" Show_Val="false" Pos="144,116" rotation="0" hflip="1" vflip="-1" label="RelaySPST-22" idLabPos="-16,8" labelrot="0" valLabPos="-16,6" valLabRot="0" Norm_Close="false" DT="false" Poles="1" IOn="20 mA" IOff="10 mA" Inductance="100 mH" Rcoil="100 Ω" ReaStep="0 ns" />
 
-<item itemtype="Voltage Source" CircId="Voltage Source-28" mainComp="false" ShowProp="MaxValue" Show_id="true" Show_Val="true" Pos="152,204" rotation="0" hflip="-1" vflip="-1" label="Power Supply" idLabPos="-32,-48" labelrot="0" valLabPos="-8,30" valLabRot="0" Running="true" Value_Volt="11.699 V" MaxValue="12 V" MinValue="5 V" />
+<item itemtype="Voltage Source" CircId="Voltage Source-28" mainComp="false" ShowProp="MaxValue" Show_id="true" Show_Val="true" Pos="152,204" rotation="0" hflip="-1" vflip="-1" label="Power Supply" idLabPos="-32,-48" labelrot="0" valLabPos="-8,30" valLabRot="0" Running="true" Value_Volt="12 V" MaxValue="12 V" MinValue="5 V" />
 
 <item itemtype="Ground" CircId="Ground-30" mainComp="false" Show_id="false" Show_Val="false" Pos="136,88" rotation="90" hflip="1" vflip="1" label="Ground-30" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
 

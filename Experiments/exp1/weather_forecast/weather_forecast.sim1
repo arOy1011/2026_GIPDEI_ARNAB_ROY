@@ -1,6 +1,6 @@
 <circuit version="1.1.0-SR2" rev="260312" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="0" >
 
-<item itemtype="Subcircuit" CircId="Uno-1" mainComp="false" Show_id="true" Show_Val="false" Pos="164,48" rotation="0" hflip="1" vflip="1" label="Uno-1" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" Logic_Symbol="false">
+<item itemtype="Subcircuit" CircId="Uno-1" mainComp="false" Show_id="false" Show_Val="false" Pos="164,48" rotation="0" hflip="1" vflip="1" label="Uno-1" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" Logic_Symbol="false">
 <mainCompProps MainCompId="mega328-109" Frequency="16 MHz" Program="build/arduino.avr.uno/weather_forecast.ino.hex" Auto_Load="false" saveEepr="true" MainMcu="true" SerialMon="-1" />
 </item>
 
@@ -14,7 +14,7 @@
 
 <item itemtype="AudioOut" CircId="AudioOut-45" mainComp="false" Show_id="false" Show_Val="false" Pos="132,-16" rotation="-90" hflip="-1" vflip="1" label="AudioOut-45" idLabPos="-20,-36" labelrot="0" valLabPos="-16,20" valLabRot="0" Buzzer="false" Impedance="8 Ω" Frequency="1 kHz" />
 
-<item itemtype="Hd44780" CircId="Hd44780-50" mainComp="false" Show_id="true" Show_Val="false" Pos="316,28" rotation="0" hflip="1" vflip="1" label="Hd44780-50" idLabPos="70,-82" labelrot="0" valLabPos="-16,20" valLabRot="0" Rows="2" Cols="16" />
+<item itemtype="Hd44780" CircId="Hd44780-50" mainComp="false" Show_id="true" Show_Val="false" Pos="256,36" rotation="0" hflip="1" vflip="1" label="Display" idLabPos="70,-82" labelrot="0" valLabPos="-16,20" valLabRot="0" Rows="2" Cols="16" />
 
 <item itemtype="Ground" CircId="Ground-53" mainComp="false" Show_id="false" Show_Val="false" Pos="48,132" rotation="90" hflip="1" vflip="1" label="Ground-53" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
 
@@ -22,7 +22,7 @@
 
 <item itemtype="RelaySPST" CircId="RelaySPST-56" mainComp="false" Show_id="false" Show_Val="false" Pos="220,120" rotation="0" hflip="1" vflip="-1" label="RelaySPST-56" idLabPos="-16,8" labelrot="0" valLabPos="-16,6" valLabRot="0" Norm_Close="false" DT="false" Poles="1" IOn="20 mA" IOff="10 mA" Inductance="100 mH" Rcoil="100 Ω" ReaStep="0 ns" />
 
-<item itemtype="DcMotor" CircId="DcMotor-59" mainComp="false" Show_id="true" Show_Val="false" Pos="136,184" rotation="-90" hflip="1" vflip="1" label="DcMotor-59" idLabPos="-22,-48" labelrot="0" valLabPos="-14,36" valLabRot="0" RPM_Nominal="60 _RPM" Volt_Nominal="12 V" Resistance="1 Ω" />
+<item itemtype="DcMotor" CircId="DcMotor-59" mainComp="false" Show_id="true" Show_Val="false" Pos="136,184" rotation="-90" hflip="1" vflip="1" label="Fan" idLabPos="-22,-48" labelrot="0" valLabPos="-14,36" valLabRot="0" RPM_Nominal="60 _RPM" Volt_Nominal="12 V" Resistance="1 Ω" />
 
 <item itemtype="Voltage Source" CircId="Voltage Source-60" mainComp="false" ShowProp="MaxValue" Show_id="false" Show_Val="true" Pos="264,228" rotation="0" hflip="-1" vflip="-1" label="Voltage Source-60" idLabPos="-32,-48" labelrot="0" valLabPos="-8,30" valLabRot="0" Running="true" Value_Volt="12 V" MaxValue="12 V" MinValue="0 V" />
 
@@ -42,19 +42,19 @@
 
 <item itemtype="Connector" uid="Connector-112" startpinid="AudioOut-45-lPin" endpinid="Uno-1-9" pointList="140,0,140,144,172,144" />
 
-<item itemtype="Connector" uid="Connector-120" startpinid="Hd44780-50-PinRS" endpinid="Uno-1-A0" pointList="332,36,332,104,316,104" />
+<item itemtype="Connector" uid="Connector-120" startpinid="Hd44780-50-PinRS" endpinid="Uno-1-A0" pointList="272,44,272,104,316,104" />
 
-<item itemtype="Connector" uid="Connector-121" startpinid="Hd44780-50-PinRW" endpinid="Uno-1-GND0" pointList="340,36,340,128,316,128" />
+<item itemtype="Connector" uid="Connector-121" startpinid="Hd44780-50-PinRW" endpinid="Uno-1-GND0" pointList="280,44,280,128,316,128" />
 
-<item itemtype="Connector" uid="Connector-122" startpinid="Hd44780-50-PinEn" endpinid="Uno-1-A1" pointList="348,36,348,96,316,96" />
+<item itemtype="Connector" uid="Connector-122" startpinid="Hd44780-50-PinEn" endpinid="Uno-1-A1" pointList="288,44,288,96,316,96" />
 
-<item itemtype="Connector" uid="Connector-123" startpinid="Hd44780-50-dataPin4" endpinid="Uno-1-A2" pointList="388,36,388,88,316,88" />
+<item itemtype="Connector" uid="Connector-123" startpinid="Hd44780-50-dataPin4" endpinid="Uno-1-A2" pointList="328,44,328,88,316,88" />
 
-<item itemtype="Connector" uid="Connector-124" startpinid="Hd44780-50-dataPin5" endpinid="Uno-1-A3" pointList="396,36,396,80,316,80" />
+<item itemtype="Connector" uid="Connector-124" startpinid="Hd44780-50-dataPin5" endpinid="Uno-1-A3" pointList="336,44,336,80,316,80" />
 
-<item itemtype="Connector" uid="Connector-125" startpinid="Hd44780-50-dataPin6" endpinid="Uno-1-A4" pointList="404,36,404,72,316,72" />
+<item itemtype="Connector" uid="Connector-125" startpinid="Hd44780-50-dataPin6" endpinid="Uno-1-A4" pointList="344,44,344,72,316,72" />
 
-<item itemtype="Connector" uid="Connector-126" startpinid="Hd44780-50-dataPin7" endpinid="Uno-1-A5" pointList="412,36,412,64,316,64" />
+<item itemtype="Connector" uid="Connector-126" startpinid="Hd44780-50-dataPin7" endpinid="Uno-1-A5" pointList="352,44,352,64,316,64" />
 
 <item itemtype="Connector" uid="Connector-109" startpinid="Led-42-rPin" endpinid="Uno-1-GND1" pointList="292,136,316,136" />
 

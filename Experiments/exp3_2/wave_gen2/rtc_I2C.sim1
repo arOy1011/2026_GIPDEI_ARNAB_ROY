@@ -1,0 +1,39 @@
+<circuit version="1.1.0-SR2" rev="260312" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="0" >
+
+<item itemtype="Subcircuit" CircId="Uno-1" mainComp="false" Show_id="true" Show_Val="false" Pos="-96,-136" rotation="0" hflip="1" vflip="1" label="Uno-1" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" Logic_Symbol="false">
+<mainCompProps MainCompId="mega328-109" Frequency="16 MHz" Program="Users/arnabroy/Desktop/sketch_may22a/build/arduino.avr.uno/sketch_may22a.ino.hex" Auto_Load="false" saveEepr="true" MainMcu="true" SerialMon="-1" />
+</item>
+
+<item itemtype="Oscope" CircId="Oscope-2" mainComp="false" Show_id="false" Show_Val="false" Pos="-20,112" rotation="0" hflip="1" vflip="1" label="Oscope-2" idLabPos="-90,-100" labelrot="0" valLabPos="-16,20" valLabRot="0" Basic_X="135 _px" Basic_Y="135 _px" BufferSize="600000" connectGnd="true" InputImped="10 MΩ" TimDiv="16176000000" TimPos="0,0,-5118878280791961153,-5118878280791961153," VolDiv="0.59573,0.483464,0.59573,0.59573," Tunnels=",,,," Trigger="1" Filter="0.1 V" AutoSC="0" Tracks="1" HideCh="false,false,false,false," VolPos="-1.56125e-17,-2.42481,-1.56125e-17,-1.56125e-17," />
+
+<item itemtype="Resistor" CircId="Resistor-3" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="-120,-80" rotation="0" hflip="1" vflip="1" label="Resistor-3" idLabPos="-16,-24" labelrot="0" valLabPos="-8.63541,-6.2715" valLabRot="0" Resistance="1 kΩ" />
+
+<item itemtype="opAmp" CircId="opAmp-4" mainComp="false" Show_id="false" Show_Val="false" Pos="-144,-20" rotation="90" hflip="1" vflip="1" label="opAmp-4" idLabPos="-16,-32" labelrot="0" valLabPos="-16,20" valLabRot="0" Gain="1000" Out_Imped="1e-09 Ω" Power_Pins="false" Switch_Pins="false" Volt_Pos="5 V" Volt_Neg="0 V" />
+
+<item itemtype="Capacitor" CircId="Capacitor-7" mainComp="false" ShowProp="Capacitance" Show_id="false" Show_Val="true" Pos="-164,-80" rotation="0" hflip="1" vflip="1" label="Capacitor-7" idLabPos="-16,-24" labelrot="0" valLabPos="-16,6" valLabRot="0" Capacitance="1 µF" Resistance="1 µΩ" InitVolt="0 V" ReaStep="0 ns" />
+
+<item itemtype="Ground" CircId="Ground-13" mainComp="false" Show_id="false" Show_Val="false" Pos="-196,-80" rotation="-270" hflip="1" vflip="1" label="Ground-13" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="Node" CircId="Node-11" mainComp="false" Pos="-136,-80" />
+
+<item itemtype="Node" CircId="Node-15" mainComp="false" Pos="-144,4" />
+
+<item itemtype="Connector" uid="Connector-1" startpinid="Uno-1-6" endpinid="Oscope-2-Pin0" pointList="-88,-72,-108,-72,-108,64" />
+
+<item itemtype="Connector" uid="Connector-5" startpinid="Uno-1-5" endpinid="Resistor-3-rPin" pointList="-88,-80,-104,-80" />
+
+<item itemtype="Connector" uid="Connector-29" startpinid="Capacitor-7-rPin" endpinid="Node-11-1" pointList="-148,-80,-136,-80" />
+
+<item itemtype="Connector" uid="Connector-30" startpinid="Resistor-3-lPin" endpinid="Node-11-0" pointList="-136,-80,-136,-80" />
+
+<item itemtype="Connector" uid="Connector-36" startpinid="Ground-13-Gnd" endpinid="Capacitor-7-lPin" pointList="-180,-80,-180,-80" />
+
+<item itemtype="Connector" uid="Connector-31" startpinid="Node-11-2" endpinid="opAmp-4-inputNinv" pointList="-136,-80,-136,-44" />
+
+<item itemtype="Connector" uid="Connector-41" startpinid="opAmp-4-inputInv" endpinid="Node-15-1" pointList="-152,-44,-164,-44,-164,4,-144,4" />
+
+<item itemtype="Connector" uid="Connector-42" startpinid="opAmp-4-output" endpinid="Node-15-0" pointList="-144,4,-144,4" />
+
+<item itemtype="Connector" uid="Connector-43" startpinid="Node-15-2" endpinid="Oscope-2-Pin1" pointList="-144,4,-144,96,-108,96" />
+
+</circuit>

@@ -1557,7 +1557,7 @@ Looking at your screenshots — sine and triangle look great, PWM just needs fix
 
 # EXP 3
 
-## Waveform Generator
+## 1.Waveform Generator
 
 ### Objective
 
@@ -1824,17 +1824,20 @@ The experiment demonstrates practical implementation of:
 
 ## **Components Required**
 
-|**Component**|**Purpose**|
-|---|---|
-|Arduino Uno|Main controller|
-|DS1307 RTC Module|Real-time clock source|
-|16×2 HD44780 LCD|Time and status display|
-|Push Button Keypad|User input and configuration|
-|Buzzer|Alarm indication|
-|DC Motor|Water pump simulation|
-|DS18B20 Temperature Sensor|Ambient temperature sensing|
-|4.7kΩ Resistor|Pull-up resistor for DS18B20|
-|Connecting Wires|Hardware interfacing|
+| **Component**              | **Purpose**                  |
+| -------------------------- | ---------------------------- |
+| Arduino Uno                | Main controller              |
+| DS1307 RTC Module          | Real-time clock source       |
+| 16×2 HD44780 LCD           | Time and status display      |
+| Push Button Keypad         | User input and configuration |
+| Buzzer                     | Alarm indication             |
+| DC Motor                   | Water pump simulation        |
+| DS18B20 Temperature Sensor | Ambient temperature sensing  |
+| 4.7kΩ Resistor             | Pull-up resistor for DS18B20 |
+| Connecting Wires           | Hardware interfacing         |
+| Relay                      | Switching                    |
+| Power supply               | Powering Motor               |
+| Ground                     | Grounding                    |
 
 ---
 
@@ -1943,12 +1946,12 @@ Temperature data is:
 
 ## **RTC Connections**
 
-|**RTC Pin**|**Arduino Pin**|
-|---|---|
-|SDA|A4|
-|SCL|A5|
-|VCC|5V|
-|GND|GND|
+| **RTC Pin** | **Arduino Pin** |
+| ----------- | --------------- |
+| SDA         | A4              |
+| SCL         | A5              |
+| SQW         | A0              |
+
 
 ---
 
@@ -1965,12 +1968,17 @@ Temperature data is:
 
 ## **Additional Connections**
 
-|**Component**|**Arduino Pin**|
-|---|---|
-|Buzzer|D9|
-|Motor|D8|
-|Water Supply Switch|A1|
-|DS18B20 Data|A2|
+| **Component**       | **Arduino Pin** |
+| ------------------- | --------------- |
+| Buzzer              | D9              |
+| Relay               | D8              |
+| Water Supply Switch | A1              |
+| DS18B20 Data        | A2              |
+
+| Component    | Connection |
+| ------------ | ---------- |
+| Relay        | Motor      |
+| Power Supply | Relay      |
 
 ---
 
