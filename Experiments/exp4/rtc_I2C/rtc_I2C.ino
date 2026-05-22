@@ -212,11 +212,11 @@ motorStartTime=millis();
 if(!waterPresent && waterPreviouslyPresent){
 waterLostTime=millis();
 }
-if(!waterPresent && motorState && millis()-waterLostTime>=600000){
+if(!waterPresent && motorState && millis()-waterLostTime>=60000){
 digitalWrite(motorPin,LOW);
 motorState=false;
 }
-if(motorState && millis()-motorStartTime>=600000UL){
+if(motorState && millis()-motorStartTime>=60000UL){
 digitalWrite(motorPin,LOW);
 motorState=false;
 }

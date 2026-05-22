@@ -10,8 +10,7 @@
 
 - [[#Exp 1]]
   - [[#1. Temperature Control System]]
-  - [[#2. Temperature Control System with Alarm Buzzer]]
-  - [[#3. Smart Weather Monitoring and Extreme Temperature Alert System]]
+  - [[#2. Smart Weather Monitoring and Extreme Temperature Alert System]]
 
 - [[#Exp 2]]
   - [[#Calculator]]
@@ -305,8 +304,13 @@ The experiment demonstrates:
 | DHT22 Output    | D2          |
 | Warning LED     | D3          |
 | Heater LED      | D5          |
-| DC Motor/Fan    | D8          |
+| Relay           | D8          |
 | GND Connections | GND         |
+
+| Component | Connection   |
+| --------- | ------------ |
+| Relay     | Power Supply |
+| Fan       | Relay        |
 
 ---
 ### Arduino Code
@@ -412,188 +416,7 @@ The experiment verified practical concepts of:
 
 The system can be further expanded for industrial temperature monitoring, smart home automation, and environmental control applications
 
-## 2. Temperature Control System with Alarm Buzzer
-
----
-### Objective
-
-To interface a DHT22 temperature sensor with an Arduino Uno and implement an automatic temperature monitoring and alarm system using LEDs, a DC fan, and an audio buzzer. The experiment demonstrates sensor interfacing, conditional control, embedded automation, and alarm generation based on temperature thresholds.
-
----
-### Components Required
-
-- Arduino Uno
-- DHT22 Temperature Sensor
-- LEDs
-- 220Ω Resistors
-- DC Motor / Fan
-- Audio Output / Buzzer
-- Connecting Wires
----
-
-### Theory
-
-Temperature monitoring and alarm systems are important in industrial automation, environmental monitoring, and safety applications. In this experiment, the DHT22 sensor continuously measures ambient temperature and sends the data digitally to the Arduino.
-
-The Arduino compares the measured temperature with predefined threshold values and performs different actions accordingly.
-
-- If temperature exceeds `35°C`:
-  - Warning LED turns ON
-  - Cooling fan turns ON
-
-- If temperature exceeds `45°C`:
-  - Audio alarm activates
-  - Warning LED and cooling fan remain ON
-
-- If temperature falls below `25°C`:
-  - Heater indicator LED turns ON
-
-- If temperature remains between `25°C` and `35°C`:
-  - All outputs remain OFF
----
-
-### Circuit Connections
-
-| Component            | Arduino Pin |
-| -------------------- | ----------- |
-| DHT22 Output         | D2          |
-| Warning LED          | D3          |
-| Heater LED           | D5          |
-| Cooling Fan / Motor  | D8          |
-| Audio Alarm / Buzzer | D9          |
-| GND Connections      | GND         |
-
----
-
-### Arduino Code
-
-```cpp
-#include <DHT.h>
-#define DHTPIN 2
-#define DHTTYPE DHT22
-
-DHT t(DHTPIN,DHTTYPE);
-
-void setup() {
-
-  Serial.begin(9600);
-
-  t.begin();
-
-  pinMode(3, OUTPUT);
-  pinMode(5, OUTPUT);
-  pinMode(8, OUTPUT);
-  pinMode(9, OUTPUT);
-}
-
-void loop() {
-
-  float temp = t.readTemperature();
-
-  Serial.println(temp);
-
-  if(isnan(temp)) {
-
-    digitalWrite(3, LOW);
-    digitalWrite(5, LOW);
-    digitalWrite(8, LOW);
-    digitalWrite(9, LOW);
-
-    return;
-  }
-
-  // CRITICAL HIGH TEMPERATURE
-  if (temp > 45) {
-
-    tone(9, 1000);
-
-    digitalWrite(3, HIGH);
-    digitalWrite(8, HIGH);
-    digitalWrite(5, LOW);
-  }
-
-  else {
-
-    noTone(9);
-  }
-
-  // HIGH TEMPERATURE
-  if (temp > 35) {
-
-    digitalWrite(3, HIGH);
-    digitalWrite(8, HIGH);
-    digitalWrite(5, LOW);
-  }
-
-  // LOW TEMPERATURE
-  else if(temp < 25) {
-
-    digitalWrite(3, LOW);
-    digitalWrite(8, LOW);
-    digitalWrite(5, HIGH);
-  }
-
-  // NORMAL TEMPERATURE
-  else {
-
-    digitalWrite(3, LOW);
-    digitalWrite(8, LOW);
-    digitalWrite(5, LOW);
-  }
-
-  delay(500);
-}
-````
-
----
-
-### **Screenshots**
-
-#### **Heating Condition**
-
-When temperature falls below `25°C`, the heater indicator LED turns ON.![Heating Simulation](Experiments/exp1/tmp_control_buzzer/Heating.png)
-
----
-
-#### **Cooling Condition**
-
-When temperature rises above `35°C`, the warning LED and cooling fan turn ON.![Cooling Simulation](Experiments/exp1/tmp_control_buzzer/Cooling.png)
-
----
-### Critical Temperature Alarm Condition
-
-When temperature rises above `45°C`, the warning LED, cooling fan, and audio alarm system turn ON simultaneously to indicate a critical high-temperature condition.
-![Critical Temperature Alarm](Experiments/exp1/tmp_control_buzzer/Buzzer(cooling).png)
-
----
-
-### **Observations**
-
-| **Temperature Range** | **Output Condition**               |
-| --------------------- | ---------------------------------- |
-| Below 25°C            | Heater LED ON                      |
-| 25°C – 35°C           | All Outputs OFF                    |
-| Above 35°C            | Warning LED + Fan ON               |
-| Above 45°C            | Warning LED + Fan + Audio Alarm ON |
-
----
-
-### **Conclusion**
-
-The experiment successfully demonstrated an automatic temperature monitoring and alarm system using Arduino. The DHT22 sensor continuously measured environmental temperature, and the Arduino performed appropriate control actions based on predefined thresholds.
-
-The experiment verified:
-
-- Sensor interfacing
-- Real-time monitoring
-- Embedded automation
-- Alarm generation
-- GPIO control
-- Conditional programming
-
-The system can be further extended for industrial safety systems, smart home automation, fire warning systems, and environmental monitoring applications.
-
-## 3. Smart Weather Monitoring and Extreme Temperature Alert System
+## 2. Smart Weather Monitoring and Extreme Temperature Alert System
 
 ---
 ### Objective
@@ -611,6 +434,7 @@ To design and implement a smart weather monitoring system using Arduino Uno, DHT
 - DC Motor / Fan
 - Audio Output / Buzzer
 - Connecting Wires
+- Relay
 ---
 ### Theory
 
@@ -644,19 +468,25 @@ The system works according to the following conditions:
 ---
 ### Circuit Connections
 
-| Component             | Arduino Pin |
-| --------------------- | ----------- |
-| DHT22 Output          | D2          |
-| Warning LED           | D3          |
-| Heater LED            | D5          |
-| Cooling Fan / Motor   | D8          |
-| Buzzer / Audio Output | D9          |
-| LCD RS                | A0          |
-| LCD EN                | A1          |
-| LCD D4                | A2          |
-| LCD D5                | A3          |
-| LCD D6                | A4          |
-| LCD D7                | A5          |
+| Component             | Arduino Pin  |
+| --------------------- | ------------ |
+| DHT22 Output          | D2           |
+| Warning LED           | D3           |
+| Heater LED            | D5           |
+| Relay                 | D8           |
+| Buzzer / Audio Output | D9           |
+| LCD RS                | A0           |
+| LCD EN                | A1           |
+| LCD D4                | A2           |
+| LCD D5                | A3           |
+| LCD D6                | A4           |
+| LCD D7                | A5           |
+
+| Component | Connection   |
+| --------- | ------------ |
+| Relay     | Power Supply |
+| Fan       | Relay        |
+
 
 ---
 ### Arduino Code

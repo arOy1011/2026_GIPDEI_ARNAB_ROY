@@ -1,7 +1,7 @@
 <circuit version="1.1.0-SR2" rev="260312" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="0" >
 
 <item itemtype="Subcircuit" CircId="Uno-1" mainComp="false" Show_id="true" Show_Val="false" Pos="-76,-172" rotation="0" hflip="1" vflip="1" label="Uno-1" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" Logic_Symbol="false">
-<mainCompProps MainCompId="mega328-109" Frequency="16 MHz" Program="calculator/build/arduino.avr.uno/calculator.ino.hex" Auto_Load="false" saveEepr="true" MainMcu="true" SerialMon="-1" />
+<mainCompProps MainCompId="mega328-109" Frequency="16 MHz" Program="build/arduino.avr.uno/calculator.ino.hex" Auto_Load="false" saveEepr="true" MainMcu="true" SerialMon="-1" />
 </item>
 
 <item itemtype="KeyPad" CircId="KeyPad-7" mainComp="false" Show_id="false" Show_Val="false" Pos="-164,-140" rotation="0" hflip="1" vflip="1" label="KeyPad-7" idLabPos="-8,-16" labelrot="0" valLabPos="-16,20" valLabRot="0" Rows="6" Cols="5" Key_Labels="123+-456×/789()C0.&#x3D√H{}L%^←→⌫" />
