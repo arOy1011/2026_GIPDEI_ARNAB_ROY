@@ -40,8 +40,8 @@
 13. Figure 2.1.1 — [[prefix_expression.png]]
 
 14. Figure 3.1.1 — [[PWM.png]] 
-15. Figure 3.1.3 — [[Sine.png]]  
-16. Figure 3.1.4 —[[Triangle.png]]
+15. Figure 3.1.2 — [[Sine.png]]  
+16. Figure 3.1.3 —[[Triangle.png]]
 
 17. Figure 4.1 — [[Real Time Clock.png]]
 ---
