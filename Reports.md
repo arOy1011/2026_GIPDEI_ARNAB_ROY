@@ -19,12 +19,34 @@
   - [[#Waveform Generator]]
     
 - [[#**Exp 4 — RTC Based Smart Monitoring and Automation System using I2C Bus**]]
-  
+
+---
+## List of Figures
+
+1. Figure 0.1 — [[LED Blink Circuit Diagram]]  
+2. Figure 0.2 — [[7-segment-display.png]]  
+3. Figure 0.3 — [[led_matrix_T.png]]  
+
+4. Figure 1.1.1 — [[Cooling.png]]
+5. Figure 1.1.2 — [[Heating.png]]
+6. Figure 1.2.1 — [[hot.png]]
+7. Figure 1.2.1 — [[cold.png]]
+8. Figure 1.2.1 — [[extreme.png]]
+9. Figure 1.2.1 — [[cold.png]]
+
+10. Figure 2.1.1 — [[cal.png]]
+11. Figure 2.1.1 — [[history.png]]
+12. Figure 2.1.1 — [[lock.png]]
+13. Figure 2.1.1 — [[prefix_expression.png]]
+
+14. Figure 3.1.1 — [[PWM.png]] 
+15. Figure 3.1.3 — [[Sine.png]]  
+16. Figure 3.1.4 —[[Triangle.png]]
+
+17. Figure 4.1 — [[Real Time Clock.png]]
 ---
 
 # Exp 0
-
----
 
 ## 1. LED Blink
 
@@ -383,13 +405,13 @@ void loop() {
 #### **Heating Condition**
 
 When temperature falls below `25°C`, the heater indicator LED turns ON.
-![Heating Simulation](Experiments/exp1/tmp_control/Heating.png)
+![Heating Simulation](Experiments/exp1/tmp_control/Cooling.png)
 
 #### **Cooling Condition**
 
 When temperature rises above `35°C`, the warning LED and cooling fan turn ON.
 
-![Cooling Simulation](Experiments/exp1/tmp_control/Cooling.png)
+![Cooling Simulation](Experiments/exp1/tmp_control/Heating.png)
 
 ---
 ### **Observations**
@@ -2378,7 +2400,7 @@ After correction:
 ## **Screenshot**
 
 Final integrated system:
-![[Circuit.png]]
+![[Real Time Clock.png]]
 
 
 ---

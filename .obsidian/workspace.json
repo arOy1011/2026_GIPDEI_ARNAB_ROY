@@ -215,7 +215,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 286.5
+    "width": 200
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -232,9 +232,11 @@
   },
   "active": "7878223b5f867d91",
   "lastOpenFiles": [
-    "Reports.pdf",
-    "Experiments/exp4/Circuit.png",
+    "Experiments/exp4/Real Time Clock.png",
     "Reports.md",
+    "Experiments/exp1/weather_forecast/cold.png",
+    "Reports.pdf",
+    "Experiments/exp1/tmp_control/Heating.png",
     "Experiments/exp3_2/Untitled.md",
     "Experiments/exp3_2/backup.sim1",
     "Experiments/exp3_2/wave_gen2.png",
@@ -246,7 +248,6 @@
     "Experiments/exp3_2/wave_gen2/build/arduino.avr.uno/sketch_may22a.ino.with_bootloader.hex",
     "Experiments/exp3_2/wave_gen2/build/arduino.avr.uno/sketch_may22a.ino.with_bootloader.bin",
     "Experiments/exp3_2/wave_gen2/build/arduino.avr.uno/sketch_may22a.ino.hex",
-    "Experiments/exp3_2/wave_gen2/build/arduino.avr.uno/sketch_may22a.ino.elf",
     "Experiments/exp4/Screenshot_simulide_22.05.2026_000018.png",
     "Experiments/exp3/wave_generator/Triangle.png",
     "Experiments/exp3_1/wave_generator/Triangle.png",
@@ -254,9 +255,7 @@
     "Experiments/exp3_1/wave_generator/Sine.png",
     "Experiments/exp3_1/wave_generator/Math Logic Wave Generation.md",
     "Experiments/exp3/wave_generator/Sine.png",
-    "Experiments/exp3/wave_generator/PWM.png",
     "Experiments/exp3/wave_generator/Math Logic Wave Generation.md",
-    "Experiments/exp1/weather_forecast/normal.png",
     "Experiments/exp4/Code Progression.md",
     "Experiments/exp4/Code.md",
     "().md",
