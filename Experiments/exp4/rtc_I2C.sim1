@@ -80,12 +80,12 @@
 
 <item itemtype="Connector" uid="Connector-67" startpinid="Node-31-2" endpinid="RelaySPST-22-inductor-rPin" pointList="164,88,164,116,160,116" />
 
-<item itemtype="Connector" uid="Connector-70" startpinid="DcMotor-9-rPin" endpinid="Node-31-1" pointList="212,64,212,60,164,60,164,88" />
-
 <item itemtype="Connector" uid="Connector-71" startpinid="Push-12-switch0pinN" endpinid="Uno-2-GND1" pointList="256,64,232,64,232,40,148,40,148,60,112,60" />
 
 <item itemtype="Connector" uid="Connector-13" startpinid="KeyPad-8-Pin3" endpinid="Uno-2-13" pointList="-88,120,-40,120,-40,100,-32,100" />
 
 <item itemtype="Connector" uid="Connector-76" startpinid="Hd44780-7-PinRW" endpinid="Ground-34-Gnd" pointList="-108,-28,-108,-4,-128,-4" />
+
+<item itemtype="Connector" uid="Connector-70" startpinid="DcMotor-9-rPin" endpinid="Node-31-1" pointList="212,64,212,60,164,60,164,88" />
 
 </circuit>

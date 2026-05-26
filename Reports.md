@@ -2128,13 +2128,6 @@ The motor turns OFF if:
 - water supply disappears,
 - or runtime exceeds 10 minutes.
 
-This introduced:
-
-- embedded automation,
-- event detection,
-- timer-based control logic,
-- and state management techniques.
-
 ---
 
 ## **System Improvements**

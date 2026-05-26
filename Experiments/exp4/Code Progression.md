@@ -1,5 +1,6 @@
 Only clock with mode changing i.e setting time and alarm
 Alarm runs for 10 secs
+*Display will show RTC inbuilt time*
 *Scroll to bottom for going further questions*
 ```cpp
 #include <Wire.h>
@@ -536,17 +537,21 @@ handlePumpControl();
 ```
 
  Code with previous funtionality, added temperature logging, temperature is logged through serial monitor after every 15 mins.
+ **Final code**
  
 ```cpp
 #include <Wire.h>
 #include <LiquidCrystal.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
+
 #define DS1307_ADDRESS 0x68
 #define ONE_WIRE_BUS A2
+
 LiquidCrystal lcd(7,6,5,4,3,2);
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
+
 int motorPin=8;
 int buzzerPin=9;
 int row1=10;
@@ -554,31 +559,40 @@ int row2=11;
 int col1=12;
 int col2=13;
 int waterPin=A1;
+
 int mode=0;
 int setHour=0;
 int setMinute=0;
 int setSecond=0;
+
 int alarmHour=6;
 int alarmMinute=0;
+
 bool alarmEnabled=true;
 bool motorState=false;
+bool waterPreviouslyPresent=false;
+bool alreadyLogged=false;
+
 unsigned long motorStartTime=0;
 unsigned long waterLostTime=0;
-bool waterPreviouslyPresent=false;
+
 int curHour=0;
 int curMinute=0;
 int curSecond=0;
-float currentTemp=0;
-bool alreadyLogged=false;
 
+float currentTemp=0;
+
+// Decimal to BCD conversion
 byte decToBcd(byte val){
 return ((val/10*16)+(val%10));
 }
 
+// BCD to decimal conversion
 byte bcdToDec(byte val){
 return ((val/16*10)+(val%16));
 }
 
+// Clear clock halt bit in RTC
 void clearCH(){
 Wire.beginTransmission(DS1307_ADDRESS);
 Wire.write(0x00);
@@ -593,6 +607,7 @@ Wire.endTransmission();
 }
 }
 
+// Read current RTC time
 bool readTime(int &h,int &m,int &s){
 Wire.beginTransmission(DS1307_ADDRESS);
 Wire.write(0);
@@ -609,6 +624,7 @@ s=rs;
 return true;
 }
 
+// Manually set RTC time
 void setRTCTime(int h,int m,int s){
 Wire.beginTransmission(DS1307_ADDRESS);
 Wire.write(0);
@@ -618,6 +634,7 @@ Wire.write(decToBcd(h));
 Wire.endTransmission();
 }
 
+// Scan keypad matrix
 char scanKeypad(){
 char key='N';
 digitalWrite(row1,LOW);
@@ -636,6 +653,7 @@ digitalWrite(row2,HIGH);
 return key;
 }
 
+// Debounced keypad read
 char getKey(){
 char k=scanKeypad();
 if(k=='N')return 'N';
@@ -645,6 +663,7 @@ while(scanKeypad()==k);
 return k;
 }
 
+// Increase editable values
 void incrementValue(){
 switch(mode){
 case 1:
@@ -665,6 +684,7 @@ break;
 }
 }
 
+// Decrease editable values
 void decrementValue(){
 switch(mode){
 case 1:
@@ -685,11 +705,13 @@ break;
 }
 }
 
+// Print two digit number
 void pad2(int v){
 if(v<10)lcd.print("0");
 lcd.print(v);
 }
 
+// Update LCD display
 void drawAll(){
 lcd.setCursor(0,0);
 switch(mode){
@@ -742,6 +764,7 @@ if(motorState)lcd.print("ON ");
 else lcd.print("OFF");
 }
 
+// Automatic pump control logic
 void handlePumpControl(){
 bool waterPresent=(digitalRead(waterPin)==LOW);
 if(waterPresent && !waterPreviouslyPresent){
@@ -763,6 +786,7 @@ motorState=false;
 waterPreviouslyPresent=waterPresent;
 }
 
+// Read and log temperature
 void handleTemperatureLogging(){
 static unsigned long lastTempRead=0;
 if(millis()-lastTempRead>=1000){
@@ -793,6 +817,7 @@ alreadyLogged=false;
 }
 }
 
+// Initial setup
 void setup(){
 Wire.begin();
 sensors.begin();
@@ -811,6 +836,7 @@ digitalWrite(motorPin,LOW);
 digitalWrite(buzzerPin,LOW);
 clearCH();
 delay(200);
+
 readTime(curHour,curMinute,curSecond);
 setHour=curHour;
 setMinute=curMinute;
@@ -820,9 +846,9 @@ lcd.print("RTC TEMP SYS");
 Serial.println("TEMP LOGGER");
 delay(1000);
 lcd.clear();
-// setRTCTime(12,0,0);
 }
 
+// Main loop
 void loop(){
 static unsigned long lastRTCread=0;
 if(millis()-lastRTCread>=1000){
@@ -835,7 +861,9 @@ curSecond=s;
 drawAll();
 }
 }
+
 char key=getKey();
+
 if(key=='M'){
 mode++;
 if(mode>5)mode=0;
@@ -847,14 +875,17 @@ setSecond=curSecond;
 lcd.clear();
 drawAll();
 }
+
 if(key=='+'){
 incrementValue();
 drawAll();
 }
+
 if(key=='-'){
 decrementValue();
 drawAll();
 }
+
 if(key=='S'){
 if(mode>=1&&mode<=3){
 setRTCTime(setHour,setMinute,setSecond);
@@ -869,12 +900,14 @@ drawAll();
 lastRTCread=millis();
 }
 }
+
 if(alarmEnabled && curHour==alarmHour && curMinute==alarmMinute && curSecond<10){
 tone(buzzerPin,1000);
 }
 else{
 noTone(buzzerPin);
 }
+
 handleTemperatureLogging();
 handlePumpControl();
 }
