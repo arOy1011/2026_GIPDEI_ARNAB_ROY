@@ -1801,14 +1801,18 @@ void loop() {
 
 ### Observations
 
-| Waveform | Output Pin | Frequency Control | Step Size | Amplitude |
-|---|---|---|---|---|
-| Sine | D6–D13 (DAC) | Potentiometer | 0.2 rad | 127 DAC counts |
-| Triangle | D6–D13 (DAC) | Potentiometer | 8 counts | 127 DAC counts |
-| PWM | D5 | Fixed | — | 5V (digital) |
+| Waveform | Output Pin   | Frequency Control | Step Size | Amplitude      |
+| -------- | ------------ | ----------------- | --------- | -------------- |
+| Sine     | D6–D13 (DAC) | Potentiometer     | 0.2 rad   | 127 DAC counts |
+| Triangle | D6–D13 (DAC) | Potentiometer     | 8 counts  | 127 DAC counts |
+| PWM      | D5           | Fixed             | —         | 5V (digital)   |
 
 ---
+## **Reference**
 
+ Know about Embedded System, “DAC Digital to Analog Converter,” YouTube playlist available: https://youtube.com/playlist?list=PL64VXTyRJbOoH6Zn5ddF9vljSijatvazM.
+  
+---
 ### Conclusion
 
 The experiment successfully demonstrated a multi-waveform generator using Arduino and an 8-bit R-2R DAC. All three waveforms — sine, triangle, and PWM — operated correctly and were clearly visible on the oscilloscope. The non-blocking `micros()` timing approach preserved the original wave mathematics from each standalone sketch while allowing all three to coexist in a single unified program. The potentiometer provided real-time frequency control for sine and triangle waves, and the Nokia PCD8544 display correctly reported waveform characteristics for each selected mode.
@@ -2421,13 +2425,7 @@ In the DS1307 RTC:
 - mainly due to crystal oscillator tolerances,
 - temperature variation,
 - and power stability.
-
-However, during the experiment:
-
-- no major observable drift occurred over short-duration operation.  
-
 ---
-
 ## **Conclusion**
 
 The experiment successfully demonstrated implementation of a real-time embedded monitoring and automation system using the I2C protocol and DS1307 RTC module.
