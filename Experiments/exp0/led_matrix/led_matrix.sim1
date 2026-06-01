@@ -1,7 +1,7 @@
 <circuit version="1.1.0-SR2" rev="260312" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="0" >
 
 <item itemtype="Subcircuit" CircId="Uno-2" mainComp="false" Show_id="true" Show_Val="false" Pos="-108,-264" rotation="0" hflip="1" vflip="1" label="Uno-2" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" Logic_Symbol="false">
-<mainCompProps MainCompId="mega328-109" Frequency="16 MHz" Program="../../../Desktop/prog and comp/GIPDEI_INTERNSHIP/ARDUINO/Experiments/exp0/Led Matrix/led_matrix/build/arduino.avr.uno/led_matrix.ino.hex" Auto_Load="false" saveEepr="true" MainMcu="true" SerialMon="-1" />
+<mainCompProps MainCompId="mega328-109" Frequency="16 MHz" Program="build/arduino.avr.uno/led_matrix.ino.hex" Auto_Load="false" saveEepr="true" MainMcu="true" SerialMon="-1" />
 </item>
 
 <item itemtype="LedMatrix" CircId="LedMatrix-4" mainComp="false" ShowProp="Rows" Show_id="false" Show_Val="true" Pos="8,-168" rotation="180" hflip="1" vflip="1" label="LedMatrix-4" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Color="Red" Rows="8" Cols="8" Vertical_Pins="true" Threshold="2.4 V" MaxCurrent="20 mA" Resistance="0.6 Ω" />

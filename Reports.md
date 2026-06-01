@@ -1837,15 +1837,6 @@ In this experiment, the RTC module was interfaced with an Arduino Uno to create 
 - automatic motor switching,
 - and periodic temperature recording.
 
-The experiment demonstrates practical implementation of:
-
-- I2C communication,
-- LCD interfacing,
-- keypad scanning,
-- embedded automation,
-- sensor interfacing,
-- and serial communication systems.
-
 ---
 
 ## **Components Required**
@@ -1927,12 +1918,12 @@ A 2×2 keypad arrangement was implemented using four push buttons.
 
 ### **Functional Buttons**
 
-|**Button**|**Function**|
-|---|---|
-|M|Change mode|
-|+|Increment values|
-|-|Decrement values|
-|S|Save configured values|
+| **Button** | **Function**           |
+| ---------- | ---------------------- |
+| M          | Change mode            |
+| +          | Increment values       |
+| -          | Decrement values       |
+| S          | Save configured values |
 
 The keypad allows:
 
@@ -1959,14 +1950,14 @@ Temperature data is:
 
 ## **LCD Connections**
 
-|**LCD Pin**|**Arduino Pin**|
-|---|---|
-|RS|D7|
-|EN|D6|
-|D4|D5|
-|D5|D4|
-|D6|D3|
-|D7|D2|
+| **LCD Pin** | **Arduino Pin** |
+| ----------- | --------------- |
+| RS          | D7              |
+| EN          | D6              |
+| D4          | D5              |
+| D5          | D4              |
+| D6          | D3              |
+| D7          | D2              |
 
 ---
 
@@ -1983,12 +1974,12 @@ Temperature data is:
 
 ## **Keypad Connections**
 
-|**Keypad Pin**|**Arduino Pin**|
-|---|---|
-|Row 1|D10|
-|Row 2|D11|
-|Column 1|D12|
-|Column 2|D13|
+| **Keypad Pin** | **Arduino Pin** |
+| -------------- | --------------- |
+| Row 1          | D10             |
+| Row 2          | D11             |
+| Column 1       | D12             |
+| Column 2       | D13             |
 
 ---
 
