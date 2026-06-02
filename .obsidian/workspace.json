@@ -37,7 +37,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Journal/2026/June/01 -.md",
+                "file": "Journal/2026/June/02 -.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -52,7 +52,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "01 -"
+              "title": "02 -"
             }
           }
         ],
@@ -230,12 +230,13 @@
       "templater-obsidian:Templater": false
     }
   },
-  "active": "63c6391e6c9cb4e4",
+  "active": "7878223b5f867d91",
   "lastOpenFiles": [
+    "Journal/2026/June/01 -.md",
+    "Journal/2026/June/02 -.md",
     "Journal/2026/Check-Ins/June -.md",
     "Reports.md",
     "Journal/2026/Check-Ins",
-    "Journal/2026/June/01 -.md",
     "Journal/2026/June",
     "Journal/2026",
     "Journal",
