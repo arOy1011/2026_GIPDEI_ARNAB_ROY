@@ -1,5 +1,7 @@
 [
   "obsidian-git",
   "templater-obsidian",
-  "auto-journal"
+  "auto-journal",
+  "obsidian-style-settings",
+  "obsidian-excalidraw-plugin"
 ]

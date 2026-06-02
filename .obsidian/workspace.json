@@ -37,7 +37,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Journal/2026/June/02 -.md",
+                "file": "Reports.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -52,11 +52,35 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "02 -"
+              "title": "Reports"
+            }
+          },
+          {
+            "id": "94c4b43696141cca",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "LT Spice/Op-Amp/Selection of Components.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "Selection of Components"
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -88,7 +112,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "tag:#Assignment1",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -113,7 +137,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 235.50247192382812
   },
   "right": {
     "id": "3ae26cd8c8aba1b6",
@@ -148,12 +172,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Reports.md",
-                "linksCollapsed": false,
+                "file": "LT Spice/Op-Amp/Selection of Components.md",
+                "linksCollapsed": true,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Reports"
+              "title": "Outgoing links from Selection of Components"
             }
           },
           {
@@ -219,6 +243,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "audio-recorder:Start/stop recording": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
@@ -227,15 +252,22 @@
       "command-palette:Open command palette": false,
       "bases:Create new base": false,
       "obsidian-git:Open Git source control": false,
-      "templater-obsidian:Templater": false
+      "templater-obsidian:Templater": false,
+      "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "7878223b5f867d91",
+  "active": "85dcc46e604bfb00",
   "lastOpenFiles": [
-    "Journal/2026/June/01 -.md",
-    "Journal/2026/June/02 -.md",
-    "Journal/2026/Check-Ins/June -.md",
+    "Excalidraw/Selection of Components 2026-06-02 10.10.49.excalidraw.md",
+    "LT Spice/Op-Amp/Selection of Components.md",
     "Reports.md",
+    "Excalidraw",
+    "Untitled.canvas",
+    "LT Spice/Op-Amp",
+    "LT Spice",
+    "Journal/2026/June/02 -.md",
+    "Journal/2026/June/01 -.md",
+    "Journal/2026/Check-Ins/June -.md",
     "Journal/2026/Check-Ins",
     "Journal/2026/June",
     "Journal/2026",
@@ -249,9 +281,6 @@
     "Experiments/exp3_2/backup.sim1",
     "Experiments/exp3_2/wave_gen2.png",
     "Experiments/exp3_2/wave_gen2/build/arduino.avr.uno/wave_gen2.ino.with_bootloader.hex",
-    "Experiments/exp3_2/wave_gen2/build/arduino.avr.uno/wave_gen2.ino.with_bootloader.bin",
-    "Experiments/exp3_2/wave_gen2/build/arduino.avr.uno/wave_gen2.ino.hex",
-    "Experiments/exp3_2/wave_gen2/build/arduino.avr.uno/wave_gen2.ino.elf",
     "Experiments/exp4/Screenshot_simulide_22.05.2026_000018.png",
     "Experiments/exp3/wave_generator/Triangle.png",
     "Experiments/exp3_1/wave_generator/Triangle.png",
