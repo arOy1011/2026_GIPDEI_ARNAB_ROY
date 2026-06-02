@@ -37,7 +37,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Reports.md",
+                "file": "Journal/2026/June/02 -.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -52,35 +52,11 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "Reports"
-            }
-          },
-          {
-            "id": "94c4b43696141cca",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "LT Spice/Op-Amp/Selection of Components.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": true,
-                "backlinkOpts": {
-                  "collapseAll": false,
-                  "extraContext": false,
-                  "sortOrder": "alphabetical",
-                  "showSearch": false,
-                  "searchQuery": "",
-                  "backlinkCollapsed": false,
-                  "unlinkedCollapsed": true
-                }
-              },
-              "icon": "lucide-file",
-              "title": "Selection of Components"
+              "title": "02 -"
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -112,7 +88,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "tag:#Assignment1",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -172,12 +148,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "LT Spice/Op-Amp/Selection of Components.md",
+                "file": "Journal/2026/June/02 -.md",
                 "linksCollapsed": true,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Selection of Components"
+              "title": "Outgoing links from 02 -"
             }
           },
           {
@@ -256,38 +232,39 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "85dcc46e604bfb00",
+  "active": "7878223b5f867d91",
   "lastOpenFiles": [
-    "Excalidraw/Selection of Components 2026-06-02 10.10.49.excalidraw.md",
-    "LT Spice/Op-Amp/Selection of Components.md",
     "Reports.md",
-    "Excalidraw",
-    "Untitled.canvas",
-    "LT Spice/Op-Amp",
-    "LT Spice",
+    "Experiments/classwork/s.wav",
     "Journal/2026/June/02 -.md",
+    "LT Spice/Op-Amp/Selection of Components.md",
+    "Experiments/classwork/C Style Array Converter.s.h",
+    "Experiments/classwork/Sound Effects June 2026.wav",
+    "Experiments/Arduino.md",
+    "img/Pasted image 20260602111519.png",
+    "img",
+    "Experiments/classwork/uno_2/build/arduino.avr.uno/sketch_jun2b.ino.with_bootloader.hex",
+    "Experiments/classwork/uno_2/build/arduino.avr.uno/sketch_jun2b.ino.with_bootloader.bin",
+    "Experiments/classwork/uno_2/build/arduino.avr.uno/sketch_jun2b.ino.hex",
+    "Experiments/classwork/uno_2/build/arduino.avr.uno/sketch_jun2b.ino.elf",
+    "Experiments/classwork/uno_2/build/arduino.avr.uno/sketch_jun2b.ino.eep",
+    "Experiments/classwork/uno_2/build/arduino.avr.uno",
+    "Excalidraw/Selection of Components 2026-06-02 10.10.49.excalidraw.md",
+    "Untitled.canvas",
     "Journal/2026/June/01 -.md",
     "Journal/2026/Check-Ins/June -.md",
-    "Journal/2026/Check-Ins",
-    "Journal/2026/June",
-    "Journal/2026",
-    "Journal",
-    "Reports.pdf",
     "Experiments/exp4/Real Time Clock.png",
     "Experiments/exp4/Code Progression.md",
     "Experiments/exp1/weather_forecast/cold.png",
     "Experiments/exp1/tmp_control/Heating.png",
     "Experiments/exp3_2/Untitled.md",
-    "Experiments/exp3_2/backup.sim1",
     "Experiments/exp3_2/wave_gen2.png",
-    "Experiments/exp3_2/wave_gen2/build/arduino.avr.uno/wave_gen2.ino.with_bootloader.hex",
     "Experiments/exp4/Screenshot_simulide_22.05.2026_000018.png",
     "Experiments/exp3/wave_generator/Triangle.png",
     "Experiments/exp3_1/wave_generator/Triangle.png",
     "Experiments/exp3_1/wave_generator/PWM.png",
     "Experiments/exp3_1/wave_generator/Sine.png",
     "Experiments/exp3_1/wave_generator/Math Logic Wave Generation.md",
-    "Experiments/exp3/wave_generator/Sine.png",
     "Experiments/exp3/wave_generator/Math Logic Wave Generation.md",
     "Experiments/exp4/Code.md",
     "().md",
