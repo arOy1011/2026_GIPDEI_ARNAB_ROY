@@ -14,21 +14,19 @@
 
 <item itemtype="Ground" CircId="Ground-65" mainComp="false" Show_id="false" Show_Val="false" Pos="-116,160" rotation="90" hflip="1" vflip="1" label="Ground-65" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
 
-<item itemtype="RelaySPST" CircId="RelaySPST-66" mainComp="false" Show_id="false" Show_Val="false" Pos="-72,152" rotation="0" hflip="1" vflip="-1" label="RelaySPST-66" idLabPos="-16,8" labelrot="0" valLabPos="-16,6" valLabRot="0" Norm_Close="false" DT="false" Poles="1" IOn="20 mA" IOff="10 mA" Inductance="100 mH" Rcoil="100 Ω" ReaStep="0 ns" />
-
 <item itemtype="RelaySPST" CircId="RelaySPST-67" mainComp="false" Show_id="false" Show_Val="false" Pos="40,148" rotation="0" hflip="1" vflip="-1" label="RelaySPST-67" idLabPos="-16,8" labelrot="0" valLabPos="-16,6" valLabRot="0" Norm_Close="false" DT="false" Poles="1" IOn="20 mA" IOff="10 mA" Inductance="100 mH" Rcoil="100 Ω" ReaStep="0 ns" />
-
-<item itemtype="DcMotor" CircId="DcMotor-68" mainComp="false" Show_id="true" Show_Val="false" Pos="-44,212" rotation="-90" hflip="1" vflip="1" label="Fan" idLabPos="-31.2229,-43.0338" labelrot="0" valLabPos="-14,36" valLabRot="0" RPM_Nominal="60 _RPM" Volt_Nominal="12 V" Resistance="1 Ω" />
 
 <item itemtype="Voltage Source" CircId="Voltage Source-69" mainComp="false" ShowProp="MaxValue" Show_id="false" Show_Val="true" Pos="72,256" rotation="0" hflip="-1" vflip="-1" label="Voltage Source-69" idLabPos="-32,-48" labelrot="0" valLabPos="-8,30" valLabRot="0" Running="true" Value_Volt="11.4 V" MaxValue="12 V" MinValue="0 V" />
 
 <item itemtype="Ground" CircId="Ground-70" mainComp="false" Show_id="false" Show_Val="false" Pos="72,148" rotation="-90" hflip="1" vflip="1" label="Ground-70" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
 
-<item itemtype="Node" CircId="Node-72" mainComp="false" Pos="-88,160" />
+<item itemtype="RelaySPST" CircId="RelaySPST-66" mainComp="false" Show_id="false" Show_Val="false" Pos="-72,152" rotation="0" hflip="1" vflip="-1" label="RelaySPST-66" idLabPos="-16,8" labelrot="0" valLabPos="-16,6" valLabRot="0" Norm_Close="false" DT="false" Poles="1" IOn="20 mA" IOff="10 mA" Inductance="100 mH" Rcoil="100 Ω" ReaStep="0 ns" />
 
-<item itemtype="Node" CircId="Node-73" mainComp="false" Pos="36,240" />
+<item itemtype="Subcircuit" CircId="L293-78" mainComp="false" Show_id="true" Show_Val="false" Pos="-128,196" rotation="0" hflip="1" vflip="1" label="L293-78" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" Input_High_V="2.5 V" Input_Low_V="2.5 V" Input_Imped="1e+09 Ω" Out_High_V="5 V" Out_Low_V="0 V" Out_Imped="40 Ω" Tpd_ps="10 ns" Tr_ps="3 ns" Tf_ps="4 ns" Logic_Symbol="true" />
 
 <item itemtype="Node" CircId="Node-75" mainComp="false" Pos="-88,152" />
+
+<item itemtype="Node" CircId="Node-72" mainComp="false" Pos="-88,160" />
 
 <item itemtype="Connector" uid="Connector-159" startpinid="Dht22-59-inPin" endpinid="Uno-58-2" pointList="20,112,-8,112,-8,108" />
 
@@ -36,32 +34,26 @@
 
 <item itemtype="Connector" uid="Connector-169" startpinid="Led-62-rPin" endpinid="Uno-58-GND1" pointList="112,164,136,164" />
 
-<item itemtype="Connector" uid="Connector-170" startpinid="RelaySPST-66-inductor-rPin" endpinid="Uno-58-8" pointList="-56,152,-8,152,-8,164" />
-
-<item itemtype="Connector" uid="Connector-171" startpinid="Node-72-1" endpinid="RelaySPST-66-pinP2" pointList="-88,160,-88,168" />
-
-<item itemtype="Connector" uid="Connector-173" startpinid="Node-72-2" endpinid="Ground-65-Gnd" pointList="-88,160,-100,160" />
-
-<item itemtype="Connector" uid="Connector-174" startpinid="RelaySPST-66-switch0pinN" endpinid="DcMotor-68-rPin" pointList="-56,168,-44,168,-44,172" />
-
 <item itemtype="Connector" uid="Connector-175" startpinid="RelaySPST-67-switch0pinN" endpinid="Led-62-lPin" pointList="56,164,80,164" />
 
 <item itemtype="Connector" uid="Connector-176" startpinid="RelaySPST-67-inductor-lPin" endpinid="Uno-58-5" pointList="24,148,-8,148,-8,132" />
-
-<item itemtype="Connector" uid="Connector-177" startpinid="RelaySPST-67-pinP2" endpinid="Node-73-1" pointList="24,164,24,240,36,240" />
-
-<item itemtype="Connector" uid="Connector-178" startpinid="DcMotor-68-lPin" endpinid="Node-73-0" pointList="-44,252,36,252,36,240" />
-
-<item itemtype="Connector" uid="Connector-179" startpinid="Node-73-2" endpinid="Voltage Source-69-outPin" pointList="36,240,44,240" />
 
 <item itemtype="Connector" uid="Connector-180" startpinid="RelaySPST-67-inductor-rPin" endpinid="Ground-70-Gnd" pointList="56,148,56,148" />
 
 <item itemtype="Connector" uid="Connector-184" startpinid="Resistor-61-lPin" endpinid="Uno-58-3" pointList="-20,116,-8,116" />
 
-<item itemtype="Connector" uid="Connector-187" startpinid="Led-60-rPin" endpinid="Node-75-1" pointList="-88,116,-88,152" />
+<item itemtype="Connector" uid="Connector-189" startpinid="Node-75-2" endpinid="Node-72-0" pointList="-88,152,-88,160" />
 
 <item itemtype="Connector" uid="Connector-188" startpinid="RelaySPST-66-inductor-lPin" endpinid="Node-75-0" pointList="-88,152,-88,152" />
 
-<item itemtype="Connector" uid="Connector-189" startpinid="Node-75-2" endpinid="Node-72-0" pointList="-88,152,-88,160" />
+<item itemtype="Connector" uid="Connector-187" startpinid="Led-60-rPin" endpinid="Node-75-1" pointList="-88,116,-88,152" />
+
+<item itemtype="Connector" uid="Connector-173" startpinid="Node-72-2" endpinid="Ground-65-Gnd" pointList="-88,160,-100,160" />
+
+<item itemtype="Connector" uid="Connector-171" startpinid="Node-72-1" endpinid="RelaySPST-66-pinP2" pointList="-88,160,-88,168" />
+
+<item itemtype="Connector" uid="Connector-170" startpinid="RelaySPST-66-inductor-rPin" endpinid="Uno-58-8" pointList="-56,152,-8,152,-8,164" />
+
+<item itemtype="Connector" uid="Connector-192" startpinid="RelaySPST-67-pinP2" endpinid="Voltage Source-69-outPin" pointList="24,164,24,240,44,240" />
 
 </circuit>

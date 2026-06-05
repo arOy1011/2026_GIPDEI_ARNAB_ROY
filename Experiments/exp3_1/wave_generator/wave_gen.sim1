@@ -1,14 +1,14 @@
 <circuit version="1.1.0-SR2" rev="260312" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="0" >
 
 <item itemtype="Subcircuit" CircId="Uno-1" mainComp="false" Show_id="true" Show_Val="false" Pos="-108,-108" rotation="0" hflip="1" vflip="1" label="Uno-1" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" Logic_Symbol="false">
-<mainCompProps MainCompId="mega328-109" Frequency="16 MHz" Program="../../../Desktop/sketch_may20a/build/arduino.avr.uno/sketch_may20a.ino.hex" Auto_Load="false" saveEepr="true" MainMcu="true" SerialMon="-1" />
+<mainCompProps MainCompId="mega328-109" Frequency="16 MHz" Program="build/arduino.avr.uno/sketch_may20a.ino.hex" Auto_Load="false" saveEepr="true" MainMcu="true" SerialMon="-1" />
 </item>
 
 <item itemtype="Pcd8544" CircId="Pcd8544-3" mainComp="false" Show_id="true" Show_Val="false" Pos="-24,-124" rotation="0" hflip="1" vflip="1" label="Pcd8544-3" idLabPos="-32,-66" labelrot="0" valLabPos="-16,20" valLabRot="0" />
 
-<item itemtype="Potentiometer" CircId="Potentiometer-6" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="64,-8" rotation="0" hflip="1" vflip="-1" label="Potentiometer-6" idLabPos="-16,-40" labelrot="0" valLabPos="15,-20" valLabRot="0" Resistance="10 kΩ" Value_Ohm="4390 Ω" Slider="false" Scale="1" />
+<item itemtype="Potentiometer" CircId="Potentiometer-6" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="64,-8" rotation="0" hflip="1" vflip="-1" label="Potentiometer-6" idLabPos="-16,-40" labelrot="0" valLabPos="15,-20" valLabRot="0" Resistance="10 kΩ" Value_Ohm="3250 Ω" Slider="false" Scale="1" />
 
-<item itemtype="Oscope" CircId="Oscope-10" mainComp="false" Show_id="false" Show_Val="false" Pos="-56,124" rotation="0" hflip="1" vflip="1" label="Oscope-10" idLabPos="-90,-100" labelrot="0" valLabPos="-16,20" valLabRot="0" Basic_X="135 _px" Basic_Y="135 _px" BufferSize="600000" connectGnd="true" InputImped="10 MΩ" TimDiv="11512947518" TimPos="535752856,535752856,535752856,535752856," VolDiv="0.583278,0.583278,0.583278,0.583278," Tunnels=",,,," Trigger="4" Filter="0.1 V" AutoSC="4" Tracks="1" HideCh="false,false,false,false," VolPos="-1.54955,-1.54955,-1.54955,-1.54955," />
+<item itemtype="Oscope" CircId="Oscope-10" mainComp="false" Show_id="false" Show_Val="false" Pos="-56,124" rotation="0" hflip="1" vflip="1" label="Oscope-10" idLabPos="-90,-100" labelrot="0" valLabPos="-16,20" valLabRot="0" Basic_X="135 _px" Basic_Y="135 _px" BufferSize="600000" connectGnd="true" InputImped="10 MΩ" TimDiv="3437400000" TimPos="0,0,-34368000,-34368000," VolDiv="4.1165,4.1165,4.1165,4.1165," Tunnels=",,,," Trigger="4" Filter="0.1 V" AutoSC="1" Tracks="1" HideCh="false,false,false,false," VolPos="-2.4796,-1.54955,-1.54955,-1.54955," />
 
 <item itemtype="KeyPad" CircId="KeyPad-23" mainComp="false" Show_id="false" Show_Val="false" Pos="-132,-108" rotation="0" hflip="1" vflip="1" label="KeyPad-23" idLabPos="-8,-16" labelrot="0" valLabPos="-16,20" valLabRot="0" Rows="3" Cols="1" Key_Labels="STP" />
 
