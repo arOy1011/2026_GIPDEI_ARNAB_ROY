@@ -11,9 +11,11 @@ void setup(){
 
   dht.begin();
 
-  pinMode(3, OUTPUT);
-  pinMode(5, OUTPUT);
-  pinMode(8, OUTPUT);
+  pinMode(3, OUTPUT); //Cooling Led
+  pinMode(5, OUTPUT); //Heater led
+  pinMode(8, OUTPUT); //2A
+  pinMode(7, OUTPUT); //1A
+  pinMode(9, OUTPUT); //EN
 }
 
 void loop() {
@@ -26,25 +28,26 @@ void loop() {
 
     digitalWrite(3, LOW);
     digitalWrite(5, LOW);
-    digitalWrite(8, LOW);
+    digitalWrite(9, LOW);
 
     return;
   }
 
   // HOT
-  if(temp > 35) {
-
-    digitalWrite(3, HIGH);
-    digitalWrite(8, HIGH);
-    digitalWrite(5, LOW);
+  if(temp > 35)
+  {
+      digitalWrite(3, HIGH);   // cooling LED
+      digitalWrite(5, LOW);
+      digitalWrite(9, HIGH);   // motor ON
+      digitalWrite(7, HIGH);
+      digitalWrite(8, LOW);
   }
-
   // COLD
   else if(temp < 25) {
 
     digitalWrite(5, HIGH);
     digitalWrite(3, LOW);
-    digitalWrite(8, LOW);
+    digitalWrite(9, LOW);
   }
 
   // NORMAL
@@ -52,7 +55,7 @@ void loop() {
 
     digitalWrite(3, LOW);
     digitalWrite(5, LOW);
-    digitalWrite(8, LOW);
+    digitalWrite(9, LOW);
   }
 
   delay(1000);

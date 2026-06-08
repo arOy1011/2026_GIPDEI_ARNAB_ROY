@@ -8,18 +8,38 @@ LiquidCrystal lcd(A0, A1, A2, A3, A4, A5);
 
 DHT t(DHTPIN, DHTTYPE);
 
+// ---------------------
+// Motor Control Functions
+// ---------------------
+void motorON() {
+  digitalWrite(12, HIGH); // Enable
+  digitalWrite(10, HIGH); // 1A
+  digitalWrite(11, LOW);  // 2A
+}
+
+void motorOFF() {
+  digitalWrite(12, LOW);
+  digitalWrite(10, LOW);
+  digitalWrite(11, LOW);
+}
+
 void setup() {
 
   Serial.begin(9600);
 
   t.begin();
 
-  lcd.begin(16,2);
+  lcd.begin(16, 2);
 
-  pinMode(3, OUTPUT);
-  pinMode(5, OUTPUT);
-  pinMode(8, OUTPUT);
-  pinMode(9, OUTPUT);
+  pinMode(3, OUTPUT);   // Warning LED
+  pinMode(5, OUTPUT);   // Heater LED
+  pinMode(9, OUTPUT);   // Buzzer
+
+  pinMode(10, OUTPUT);  // L293 1A
+  pinMode(11, OUTPUT);  // L293 2A
+  pinMode(12, OUTPUT);  // L293 EN
+
+  motorOFF();
 }
 
 void loop() {
@@ -33,123 +53,128 @@ void loop() {
   Serial.print("Humidity: ");
   Serial.println(humid);
 
-  if(isnan(temp) || isnan(humid)) {
+  if (isnan(temp) || isnan(humid)) {
 
     digitalWrite(3, LOW);
     digitalWrite(5, LOW);
-    digitalWrite(8, LOW);
+
+    motorOFF();
 
     noTone(9);
 
     lcd.clear();
-
-    lcd.setCursor(0,0);
+    lcd.setCursor(0, 0);
     lcd.print("SENSOR ERROR");
 
     delay(1000);
-
     return;
   }
 
-  if(temp > 45) {
+  // EXTREME TEMPERATURE
+  if (temp > 45) {
 
-    tone(9,1000);
+    tone(9, 1000);
 
     digitalWrite(3, HIGH);
-    digitalWrite(8, HIGH);
     digitalWrite(5, LOW);
 
-    lcd.clear();
+    motorON();
 
-    lcd.setCursor(0,0);
+    lcd.clear();
+    lcd.setCursor(0, 0);
     lcd.print("EXTREME TEMP");
 
-    lcd.setCursor(0,1);
+    lcd.setCursor(0, 1);
     lcd.print("ALERT");
   }
 
-  else if(temp > 40 && humid < 30) {
+  // HEAT WAVE
+  else if (temp > 40 && humid < 30) {
 
     noTone(9);
 
     digitalWrite(3, HIGH);
-    digitalWrite(8, HIGH);
     digitalWrite(5, LOW);
 
-    lcd.clear();
+    motorON();
 
-    lcd.setCursor(0,0);
+    lcd.clear();
+    lcd.setCursor(0, 0);
     lcd.print("HEAT WAVE");
 
-    lcd.setCursor(0,1);
+    lcd.setCursor(0, 1);
     lcd.print("DRY WEATHER");
   }
 
-  else if(temp > 35) {
+  // HOT WEATHER
+  else if (temp > 35) {
 
     noTone(9);
 
     digitalWrite(3, HIGH);
-    digitalWrite(8, HIGH);
     digitalWrite(5, LOW);
 
-    lcd.clear();
+    motorON();
 
-    lcd.setCursor(0,0);
+    lcd.clear();
+    lcd.setCursor(0, 0);
     lcd.print("HOT WEATHER");
 
-    lcd.setCursor(0,1);
+    lcd.setCursor(0, 1);
     lcd.print("TEMP HIGH");
   }
 
-  else if(temp < 15) {
+  // COLD WEATHER
+  else if (temp < 15) {
 
     noTone(9);
 
     digitalWrite(3, LOW);
-    digitalWrite(8, LOW);
     digitalWrite(5, HIGH);
 
-    lcd.clear();
+    motorOFF();
 
-    lcd.setCursor(0,0);
+    lcd.clear();
+    lcd.setCursor(0, 0);
     lcd.print("COLD WEATHER");
 
-    lcd.setCursor(0,1);
+    lcd.setCursor(0, 1);
     lcd.print("TEMP LOW");
   }
 
-  else if(humid > 80) {
+  // HIGH HUMIDITY
+  else if (humid > 80) {
 
     noTone(9);
 
     digitalWrite(3, LOW);
     digitalWrite(5, LOW);
-    digitalWrite(8, LOW);
+
+    motorOFF();
 
     lcd.clear();
-
-    lcd.setCursor(0,0);
+    lcd.setCursor(0, 0);
     lcd.print("RAIN");
 
-    lcd.setCursor(0,1);
+    lcd.setCursor(0, 1);
     lcd.print("POSSIBILITY");
   }
 
+  // NORMAL WEATHER
   else {
 
     noTone(9);
 
     digitalWrite(3, LOW);
     digitalWrite(5, LOW);
-    digitalWrite(8, LOW);
+
+    motorOFF();
 
     lcd.clear();
-
-    lcd.setCursor(0,0);
+    lcd.setCursor(0, 0);
     lcd.print("NORMAL");
 
-    lcd.setCursor(0,1);
+    lcd.setCursor(0, 1);
     lcd.print("WEATHER");
   }
 

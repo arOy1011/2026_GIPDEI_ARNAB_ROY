@@ -18,7 +18,10 @@
 - [[#Exp 3]]
   - [[#Waveform Generator]]
     
-- [[#**Exp 4 — RTC Based Smart Monitoring and Automation System using I2C Bus**]]
+- [[#Exp 4 — RTC Based Smart Monitoring and Automation System using I2C Bus]]
+
+- [[#Exp 5]]
+  - [[#Audio Playback with Modulation]]
 
 ---
 ## List of Figures
@@ -27,23 +30,22 @@
 2. Figure 0.2 — [[7-segment-display.png]]  
 3. Figure 0.3 — [[led_matrix_T.png]]  
 
-4. Figure 1.1.1 — [[Cooling.png]]
-5. Figure 1.1.2 — [[Heating.png]]
-6. Figure 1.2.1 — [[hot.png]]
-7. Figure 1.2.1 — [[cold.png]]
-8. Figure 1.2.1 — [[extreme.png]]
-9. Figure 1.2.1 — [[cold.png]]
+4. Figure 1.1.1 — [[Heating.gif]]]
+5. Figure 1.1.2 — [[Cooling.gif]]
+6. Figure 1.2 — [[weather.gif]]
 
-10. Figure 2.1.1 — [[cal.png]]
-11. Figure 2.1.1 — [[history.png]]
-12. Figure 2.1.1 — [[lock.png]]
-13. Figure 2.1.1 — [[prefix_expression.png]]
+7. Figure 2.1.1 — [[cal.png]]
+8. Figure 2.1.1 — [[history.png]]
+9. Figure 2.1.1 — [[lock.png]]
+10. Figure 2.1.1 — [[prefix_expression.png]]
 
-14. Figure 3.1.1 — [[PWM.png]] 
-15. Figure 3.1.2 — [[Sine.png]]  
-16. Figure 3.1.3 —[[Triangle.png]]
+11. Figure 3.1.1 — [[PWM.png]] 
+12. Figure 3.1.2 — [[Sine.png]]  
+13. Figure 3.1.3 —[[Triangle.png]]
 
-17. Figure 4.1 — [[Real Time Clock.png]]
+14. Figure 4 — [[Real Time Clock.png]]
+
+15. Figure 5 - [[sound.gif]]
 ---
 
 # Exp 0
@@ -294,6 +296,7 @@ To interface a temperature sensor with an Arduino board and implement an automat
 - LEDs
 - 220Ω Resistors
 - DC Motor
+- L293 Motor Driver
 - Connecting Wires
 ---
 ### Theory
@@ -326,13 +329,15 @@ The experiment demonstrates:
 | DHT22 Output    | D2          |
 | Warning LED     | D3          |
 | Heater LED      | D5          |
-| Relay           | D8          |
+| L293(1A)        | D7          |
+| L293(2A)        | D8          |
+| L293(12EN)      | D9          |
 | GND Connections | GND         |
 
-| Component | Connection   |
-| --------- | ------------ |
-| Relay     | Power Supply |
-| Fan       | Relay        |
+| Component | Connection |
+| --------- | ---------- |
+| L293(1Y)  | Motor (+)  |
+| L293(2Y)  | Motor (-)  |
 
 ---
 ### Arduino Code
@@ -345,15 +350,17 @@ The experiment demonstrates:
 
 DHT dht(DHTPIN, DHTTYPE);
 
-void setup() {
+void setup(){
 
   Serial.begin(9600);
 
   dht.begin();
 
-  pinMode(3, OUTPUT);
-  pinMode(5, OUTPUT);
-  pinMode(8, OUTPUT);
+  pinMode(3, OUTPUT); //Cooling Led
+  pinMode(5, OUTPUT); //Heater led
+  pinMode(8, OUTPUT); //2A
+  pinMode(7, OUTPUT); //1A
+  pinMode(9, OUTPUT); //EN
 }
 
 void loop() {
@@ -366,33 +373,34 @@ void loop() {
 
     digitalWrite(3, LOW);
     digitalWrite(5, LOW);
-    digitalWrite(8, LOW);
+    digitalWrite(9, LOW);
 
     return;
   }
 
-  // HOT CONDITION
-  if(temp > 35) {
-
-    digitalWrite(3, HIGH);
-    digitalWrite(8, HIGH);
-    digitalWrite(5, LOW);
+  // HOT
+  if(temp > 35)
+  {
+      digitalWrite(3, HIGH);   // cooling LED
+      digitalWrite(5, LOW);
+      digitalWrite(9, HIGH);   // motor ON
+      digitalWrite(7, HIGH);
+      digitalWrite(8, LOW);
   }
-
-  // COLD CONDITION
+  // COLD
   else if(temp < 25) {
 
     digitalWrite(5, HIGH);
     digitalWrite(3, LOW);
-    digitalWrite(8, LOW);
+    digitalWrite(9, LOW);
   }
 
-  // NORMAL CONDITION
+  // NORMAL
   else {
 
     digitalWrite(3, LOW);
     digitalWrite(5, LOW);
-    digitalWrite(8, LOW);
+    digitalWrite(9, LOW);
   }
 
   delay(1000);
@@ -405,13 +413,13 @@ void loop() {
 #### **Heating Condition**
 
 When temperature falls below `25°C`, the heater indicator LED turns ON.
-![Heating Simulation](Experiments/exp1/tmp_control/Cooling.png)
+![Heating Simulation](Experiments/exp1/tmp_control/Heating.gif)
 
 #### **Cooling Condition**
 
 When temperature rises above `35°C`, the warning LED and cooling fan turn ON.
 
-![Cooling Simulation](Experiments/exp1/tmp_control/Heating.png)
+![Cooling Simulation](Experiments/exp1/tmp_control/Cooling.gif)
 
 ---
 ### **Observations**
@@ -490,24 +498,26 @@ The system works according to the following conditions:
 ---
 ### Circuit Connections
 
-| Component             | Arduino Pin  |
-| --------------------- | ------------ |
-| DHT22 Output          | D2           |
-| Warning LED           | D3           |
-| Heater LED            | D5           |
-| Relay                 | D8           |
-| Buzzer / Audio Output | D9           |
-| LCD RS                | A0           |
-| LCD EN                | A1           |
-| LCD D4                | A2           |
-| LCD D5                | A3           |
-| LCD D6                | A4           |
-| LCD D7                | A5           |
+| Component             | Arduino Pin |
+| --------------------- | ----------- |
+| DHT22 Output          | D2          |
+| Warning LED           | D3          |
+| Heater LED            | D5          |
+| Buzzer / Audio Output | D9          |
+| LCD RS                | A0          |
+| LCD EN                | A1          |
+| LCD D4                | A2          |
+| LCD D5                | A3          |
+| LCD D6                | A4          |
+| LCD D7                | A5          |
+| L293(1A)              | D10         |
+| L293(2A)              | D11         |
+| L293(12EN)            | D12         |
 
-| Component | Connection   |
-| --------- | ------------ |
-| Relay     | Power Supply |
-| Fan       | Relay        |
+| Component | Connection |
+| --------- | ---------- |
+| Motor(+)  | L293(1Y)   |
+| Motor(-)  | L293(2Y)   |
 
 
 ---
@@ -524,18 +534,38 @@ LiquidCrystal lcd(A0, A1, A2, A3, A4, A5);
 
 DHT t(DHTPIN, DHTTYPE);
 
+// ---------------------
+// Motor Control Functions
+// ---------------------
+void motorON() {
+  digitalWrite(12, HIGH); // Enable
+  digitalWrite(10, HIGH); // 1A
+  digitalWrite(11, LOW);  // 2A
+}
+
+void motorOFF() {
+  digitalWrite(12, LOW);
+  digitalWrite(10, LOW);
+  digitalWrite(11, LOW);
+}
+
 void setup() {
 
   Serial.begin(9600);
 
   t.begin();
 
-  lcd.begin(16,2);
+  lcd.begin(16, 2);
 
-  pinMode(3, OUTPUT);
-  pinMode(5, OUTPUT);
-  pinMode(8, OUTPUT);
-  pinMode(9, OUTPUT);
+  pinMode(3, OUTPUT);   // Warning LED
+  pinMode(5, OUTPUT);   // Heater LED
+  pinMode(9, OUTPUT);   // Buzzer
+
+  pinMode(10, OUTPUT);  // L293 1A
+  pinMode(11, OUTPUT);  // L293 2A
+  pinMode(12, OUTPUT);  // L293 EN
+
+  motorOFF();
 }
 
 void loop() {
@@ -549,123 +579,128 @@ void loop() {
   Serial.print("Humidity: ");
   Serial.println(humid);
 
-  if(isnan(temp) || isnan(humid)) {
+  if (isnan(temp) || isnan(humid)) {
 
     digitalWrite(3, LOW);
     digitalWrite(5, LOW);
-    digitalWrite(8, LOW);
+
+    motorOFF();
 
     noTone(9);
 
     lcd.clear();
-
-    lcd.setCursor(0,0);
+    lcd.setCursor(0, 0);
     lcd.print("SENSOR ERROR");
 
     delay(1000);
-
     return;
   }
 
-  if(temp > 45) {
+  // EXTREME TEMPERATURE
+  if (temp > 45) {
 
-    tone(9,1000);
+    tone(9, 1000);
 
     digitalWrite(3, HIGH);
-    digitalWrite(8, HIGH);
     digitalWrite(5, LOW);
 
-    lcd.clear();
+    motorON();
 
-    lcd.setCursor(0,0);
+    lcd.clear();
+    lcd.setCursor(0, 0);
     lcd.print("EXTREME TEMP");
 
-    lcd.setCursor(0,1);
+    lcd.setCursor(0, 1);
     lcd.print("ALERT");
   }
 
-  else if(temp > 40 && humid < 30) {
+  // HEAT WAVE
+  else if (temp > 40 && humid < 30) {
 
     noTone(9);
 
     digitalWrite(3, HIGH);
-    digitalWrite(8, HIGH);
     digitalWrite(5, LOW);
 
-    lcd.clear();
+    motorON();
 
-    lcd.setCursor(0,0);
+    lcd.clear();
+    lcd.setCursor(0, 0);
     lcd.print("HEAT WAVE");
 
-    lcd.setCursor(0,1);
+    lcd.setCursor(0, 1);
     lcd.print("DRY WEATHER");
   }
 
-  else if(temp > 35) {
+  // HOT WEATHER
+  else if (temp > 35) {
 
     noTone(9);
 
     digitalWrite(3, HIGH);
-    digitalWrite(8, HIGH);
     digitalWrite(5, LOW);
 
-    lcd.clear();
+    motorON();
 
-    lcd.setCursor(0,0);
+    lcd.clear();
+    lcd.setCursor(0, 0);
     lcd.print("HOT WEATHER");
 
-    lcd.setCursor(0,1);
+    lcd.setCursor(0, 1);
     lcd.print("TEMP HIGH");
   }
 
-  else if(temp < 15) {
+  // COLD WEATHER
+  else if (temp < 15) {
 
     noTone(9);
 
     digitalWrite(3, LOW);
-    digitalWrite(8, LOW);
     digitalWrite(5, HIGH);
 
-    lcd.clear();
+    motorOFF();
 
-    lcd.setCursor(0,0);
+    lcd.clear();
+    lcd.setCursor(0, 0);
     lcd.print("COLD WEATHER");
 
-    lcd.setCursor(0,1);
+    lcd.setCursor(0, 1);
     lcd.print("TEMP LOW");
   }
 
-  else if(humid > 80) {
+  // HIGH HUMIDITY
+  else if (humid > 80) {
 
     noTone(9);
 
     digitalWrite(3, LOW);
     digitalWrite(5, LOW);
-    digitalWrite(8, LOW);
+
+    motorOFF();
 
     lcd.clear();
-
-    lcd.setCursor(0,0);
+    lcd.setCursor(0, 0);
     lcd.print("RAIN");
 
-    lcd.setCursor(0,1);
+    lcd.setCursor(0, 1);
     lcd.print("POSSIBILITY");
   }
 
+  // NORMAL WEATHER
   else {
 
     noTone(9);
 
     digitalWrite(3, LOW);
     digitalWrite(5, LOW);
-    digitalWrite(8, LOW);
+
+    motorOFF();
 
     lcd.clear();
-
-    lcd.setCursor(0,0);
+    lcd.setCursor(0, 0);
     lcd.print("NORMAL");
 
-    lcd.setCursor(0,1);
+    lcd.setCursor(0, 1);
     lcd.print("WEATHER");
   }
 
@@ -675,35 +710,7 @@ void loop() {
 ---
 ### **Screenshots**
 
-#### **Hot Weather Condition**
-
-![[Experiments/exp1/weather_forecast/hot.png]]
-
-When the temperature exceeds `35°C`, the warning LED and cooling fan turn ON, and the LCD displays **“HOT WEATHER”**.
-
----
-
-#### **Cold Weather Condition**
-
-![[Experiments/exp1/weather_forecast/cold.png]]
-
-When the temperature falls below `15°C`, the heater indicator LED turns ON and the LCD displays **“COLD WEATHER”**.
-
----
-
-#### **Extreme Temperature Alert**
-
-![[Experiments/exp1/weather_forecast/extreme.png]]
-
-When the temperature exceeds `45°C`, the buzzer activates along with the warning LED and cooling fan, and the LCD displays **“EXTREME TEMP ALERT”**.
-
----
-
-#### **Normal Weather Condition**
-
-![[Experiments/exp1/weather_forecast/normal.png]]
-
-When the temperature and humidity remain within the normal range, all indicators remain OFF and the LCD displays **“NORMAL WEATHER”**.
+![Weather Simulation](Experiments/exp1/weather_forecast/weather.gif)
 
 *Extreme temperatures and rain possibility is not shown.*
 
@@ -1817,7 +1824,7 @@ void loop() {
 
 The experiment successfully demonstrated a multi-waveform generator using Arduino and an 8-bit R-2R DAC. All three waveforms — sine, triangle, and PWM — operated correctly and were clearly visible on the oscilloscope. The non-blocking `micros()` timing approach preserved the original wave mathematics from each standalone sketch while allowing all three to coexist in a single unified program. The potentiometer provided real-time frequency control for sine and triangle waves, and the Nokia PCD8544 display correctly reported waveform characteristics for each selected mode.
 
-# **Exp 4 — RTC Based Smart Monitoring and Automation System using I2C Bus**
+# Exp 4 — RTC Based Smart Monitoring and Automation System using I2C Bus
 
 ## **Objective**
 
@@ -2440,3 +2447,162 @@ The experiment verified practical implementation of:
 - and sensor-based monitoring systems.
 
 The final system demonstrated modular embedded system design and real-world integration of multiple peripherals into a unified intelligent monitoring platform.
+
+# Exp 5
+
+## Audio Playback with Modulation
+
+### Objective
+
+To reproduce an audio waveform using an 8-bit DAC and implement amplitude and frequency modulation using potentiometer inputs. The experiment demonstrates digital-to-analog conversion, waveform synthesis, signal conditioning, and real-time audio manipulation using Arduino. The objective follows the ELP305 experiment requirement of generating audio with amplitude and frequency modulation using an 8-bit parallel DAC. 
+
+---
+
+## Components Required
+
+- Arduino Uno
+- 8-bit R-2R DAC
+- Two Potentiometers
+- RC Low Pass Filter
+- Op-Amp(gain 4)
+- Speaker
+- Connecting Wires
+
+---
+
+## Theory
+
+Audio signals can be represented digitally as discrete numerical samples. To reproduce the original analog signal, these samples must be converted back into analog voltages using a Digital-to-Analog Converter (DAC).
+
+In this experiment, a sine waveform is generated using a lookup table consisting of 32 samples. These samples are continuously sent to an 8-bit DAC constructed using Arduino digital output pins.
+
+Two potentiometers are used to control the waveform characteristics:
+
+### Amplitude Modulation
+
+The amplitude potentiometer scales the output waveform.
+
+A larger potentiometer value produces a higher amplitude output signal, while a smaller value reduces the signal amplitude.
+
+### Frequency Modulation
+
+The frequency potentiometer controls the DAC update rate.
+
+Reducing the delay between successive samples increases waveform frequency, whereas increasing the delay decreases waveform frequency.
+
+The DAC output is passed through an RC filter to smooth the stepped waveform and then amplified using an Op-amp(gain 4) before driving a speaker.
+
+---
+
+## Circuit Connections
+
+### DAC Connections
+
+| DAC Bit | Arduino Pin |
+| ------- | ----------- |
+| D0      | D2          |
+| D1      | D3          |
+| D2      | D4          |
+| D3      | D5          |
+| D4      | D6          |
+| D5      | D7          |
+| D6      | D8          |
+| D7      | D9          |
+
+### Potentiometer Connections
+
+| Component | Arduino Pin |
+|------------|-------------|
+| Frequency Potentiometer | A0 |
+| Amplitude Potentiometer | A5 |
+
+### Audio Output
+
+| Component        | Connection     |
+| ---------------- | -------------- |
+| DAC Output       | RC Filter      |
+| RC Filter Output | Op-Amp(gain 4) |
+| LM386 Output     | Speaker        |
+
+---
+
+## Arduino Code
+
+```cpp
+const byte dacPins[8] = {2,3,4,5,6,7,8,9};
+
+const uint8_t sineTable[32] = {
+  128,153,177,199,218,234,245,252,
+  255,252,245,234,218,199,177,153,
+  128,103,79,57,38,22,11,4,
+  0,4,11,22,38,57,79,103
+};
+
+void writeDAC(uint8_t value)
+{
+  for(int i=0;i<8;i++)
+    digitalWrite(dacPins[i], (value >> i) & 1);
+}
+
+void setup()
+{
+  for(int i=0;i<8;i++)
+    pinMode(dacPins[i], OUTPUT);
+
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  int freqPot = analogRead(A0);
+  int ampPot  = analogRead(A5);
+
+  int freq = map(freqPot, 0, 1023, 100, 5000);
+
+  int amp = map(ampPot, 0, 1023, 0, 127);
+
+  unsigned long delayUs =
+      1000000UL / (freq * 32UL);
+
+  for(int i=0;i<32;i++)
+  {
+    int sample = 128 +
+                ((sineTable[i]-128) * amp) / 127;
+
+    writeDAC(sample);
+
+    delayMicroseconds(delayUs);
+  }
+
+  static unsigned long lastPrint = 0;
+
+  if(millis() - lastPrint > 500)
+  {
+    Serial.print("Frequency: ");
+    Serial.print(freq);
+    Serial.print(" Hz    Amplitude: ");
+    Serial.println(amp);
+
+    lastPrint = millis();
+  }
+}
+```
+
+---
+## Screenshots
+![[sound.gif]]
+
+---
+
+## Observations
+
+| Parameter | Observation |
+|------------|-------------|
+| Frequency Potentiometer Increased | Output frequency increased |
+| Frequency Potentiometer Decreased | Output frequency decreased |
+| Amplitude Potentiometer Increased | Signal amplitude increased |
+| Amplitude Potentiometer Decreased | Signal amplitude decreased |
+| DAC Output | Generated analog sine waveform |
+| Speaker Output | Audible tone produced |
+
+---
