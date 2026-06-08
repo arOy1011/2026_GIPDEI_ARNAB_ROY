@@ -37,7 +37,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Journal/2026/June/08 -.md",
+                "file": "Experiments/Arduino.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -52,7 +52,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "08 -"
+              "title": "Arduino"
             }
           }
         ],
@@ -234,8 +234,8 @@
   },
   "active": "7878223b5f867d91",
   "lastOpenFiles": [
-    "Reports.md",
     "Journal/2026/June/08 -.md",
+    "Reports.md",
     "Experiments/exp5/sound.gif",
     "Experiments/exp5/Screenshot_simulide_05.06.2026_000128.gif",
     "Experiments/exp5/sound.sim1",
