@@ -37,7 +37,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Experiments/Arduino.md",
+                "file": "Experiments/Task/Data Logger.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -52,7 +52,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "Arduino"
+              "title": "Data Logger"
             }
           }
         ],
@@ -113,7 +113,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 235.50247192382812
+    "width": 200
   },
   "right": {
     "id": "3ae26cd8c8aba1b6",
@@ -234,6 +234,11 @@
   },
   "active": "7878223b5f867d91",
   "lastOpenFiles": [
+    "Journal/2026/June/09 -.md",
+    "Experiments/Task/Data Logger.md",
+    "Experiments/Task",
+    "Journal/2026/June/11 -.md",
+    "Experiments/Arduino.md",
     "Journal/2026/June/08 -.md",
     "Reports.md",
     "Experiments/exp5/sound.gif",
@@ -247,7 +252,6 @@
     "Experiments/exp5/sound/build/arduino.avr.uno",
     "Experiments/exp5/sound/sound.ino",
     "Experiments/exp5/sound/build",
-    "Experiments/exp5/sound",
     "Experiments/exp1/weather_forecast/weather.gif",
     "Experiments/exp1/weather_forecast/Screenshot_simulide_05.06.2026_000127.gif",
     "Experiments/Screenshot_simulide_05.06.2026_000127.gif",
@@ -260,7 +264,6 @@
     "Journal/2026/June/02 -.md",
     "Journal/2026/June/03 -.md",
     "LT Spice/Op-Amp/Selection of Components.md",
-    "Experiments/Arduino.md",
     "Excalidraw/Selection of Components 2026-06-02 10.10.49.excalidraw.md",
     "Untitled.canvas",
     "Journal/2026/June/01 -.md",

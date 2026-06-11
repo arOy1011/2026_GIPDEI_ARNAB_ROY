@@ -1,12 +1,12 @@
 #include <DHT.h>
 #include <LiquidCrystal.h>
 
-LiquidCrystal lcd(A0, A1, A2, A3, A4, A5);
+LiquidCrystal lcd(32, 33, 26, 27, 14, 13);
 
-#define DHTPIN 2
-#define DHTTYPE DHT22
+// #define DHTPIN 2
+// #define DHTTYPE DHT22
 
-DHT t(DHTPIN, DHTTYPE);
+// DHT t(DHTPIN, DHTTYPE);
 
 // ---------------------
 // Motor Control Functions
