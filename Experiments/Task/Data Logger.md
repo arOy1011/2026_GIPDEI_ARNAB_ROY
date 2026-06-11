@@ -36,7 +36,7 @@ Smartphone
 
 ## Pin Connections
 
-## RTC Module
+### RTC Module
 
 | RTC Pin | XIAO Pin |
 |----------|----------|
@@ -44,14 +44,14 @@ Smartphone
 | CLK | D2 |
 | RST | D0 |
 
-## Push Button
+### Push Button
 
 | Button Pin | XIAO Pin |
-|------------|----------|
-| One Side | D3 |
-| Other Side | GND |
+| ---------- | -------- |
+| One Side   | D3       |
+| Other Side | GND      |
 
-## SD Card Module
+### SD Card Module
 
 | SD Pin | XIAO Pin |
 |---------|---------|
@@ -64,7 +64,7 @@ Smartphone
 
 ## Working
 
-## Starting a Session
+### Starting a Session
 
 When the push button is pressed:
 
@@ -72,7 +72,7 @@ When the push button is pressed:
 - Data logging starts.
 - IMU readings are recorded at 10 Hz.
 
-## During Logging
+### During Logging
 
 The system reads:
 
@@ -83,7 +83,7 @@ The RTC provides the current date and time.
 
 All values are stored in a CSV file on the SD card.
 
-## Stopping a Session
+### Stopping a Session
 
 When the button is pressed again:
 
