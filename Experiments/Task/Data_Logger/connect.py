@@ -1,0 +1,137 @@
+import asyncio
+from bleak import BleakClient, BleakScanner
+
+SERVICE_UUID = "12345678-1234-1234-1234-1234567890ab"
+CMD_UUID = "12345678-1234-1234-1234-1234567890ae"
+FILE_UUID = "12345678-1234-1234-1234-1234567890ad"
+
+current_file = None
+transfer_event = asyncio.Event()
+waiting_for_transfer = False
+
+
+def notification_handler(sender, data):
+    global current_file
+    global waiting_for_transfer
+
+    line = data.decode(errors="ignore").strip()
+
+    print(f"RX: {line}")
+
+    if current_file is not None:
+        if line == "EOF":
+            current_file.close()
+            current_file = None
+            waiting_for_transfer = False
+            transfer_event.set()
+            print("DOWNLOAD COMPLETE")
+        else:
+            current_file.write(line + "\n")
+
+    elif waiting_for_transfer and line == "EOF":
+        waiting_for_transfer = False
+        transfer_event.set()
+
+
+async def find_device():
+    print("Scanning for MotionLogger...")
+
+    devices = await BleakScanner.discover(return_adv=True)
+
+    for _, (device, adv) in devices.items():
+        if SERVICE_UUID.lower() in [s.lower() for s in adv.service_uuids]:
+            return device
+
+    return None
+
+
+async def main():
+    global current_file
+    global waiting_for_transfer
+
+    device = await find_device()
+
+    if device is None:
+        print("MotionLogger not found")
+        return
+
+    print(f"Found: {device.name}")
+    print(f"Address: {device.address}")
+
+    async with BleakClient(device) as client:
+
+        print("Connected")
+
+        await client.start_notify(FILE_UUID, notification_handler)
+
+        print("Notifications enabled")
+
+        while True:
+            print("\nCommands:")
+            print("STATUS")
+            print("START")
+            print("STOP")
+            print("LIST")
+            print("GET:<filename>")
+            print("EXIT")
+
+            cmd = (await asyncio.to_thread(input, "\nCommand> ")).strip()
+
+            if not cmd:
+                continue
+
+            if cmd.upper() == "EXIT":
+                break
+
+            transfer_event.clear()
+
+            if cmd == "LIST":
+                waiting_for_transfer = True
+
+                await client.write_gatt_char(
+                    CMD_UUID,
+                    cmd.encode(),
+                    response=True
+                )
+
+                await transfer_event.wait()
+                continue
+
+            if cmd.startswith("GET:"):
+                filename = cmd[4:]
+
+                current_file = open(
+                    "downloaded_" + filename,
+                    "w"
+                )
+
+                waiting_for_transfer = True
+
+                print(
+                    f"Downloading to downloaded_{filename}"
+                )
+
+                await client.write_gatt_char(
+                    CMD_UUID,
+                    cmd.encode(),
+                    response=True
+                )
+
+                await transfer_event.wait()
+                continue
+
+            await client.write_gatt_char(
+                CMD_UUID,
+                cmd.encode(),
+                response=True
+            )
+
+            await asyncio.sleep(0.5)
+
+        await client.stop_notify(FILE_UUID)
+
+    print("Disconnected")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

@@ -37,7 +37,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Journal/2026/June/11 -.md",
+                "file": "Experiments/Task/Data Logger.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -52,11 +52,35 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "11 -"
+              "title": "Data Logger"
+            }
+          },
+          {
+            "id": "9d0ecf3bb5d02a45",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Experiments/Task/Data Logger.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "Data Logger"
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -113,7 +137,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "right": {
     "id": "3ae26cd8c8aba1b6",
@@ -232,11 +257,22 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "7878223b5f867d91",
+  "active": "9d0ecf3bb5d02a45",
   "lastOpenFiles": [
-    "Journal/2026/June/09 -.md",
-    "Journal/2026/June/11 -.md",
+    "Excalidraw/BLE Motion Logger.excalidraw.md",
     "Experiments/Task/Data Logger.md",
+    "Excalidraw/Untitled.md",
+    "LT Spice/Op-Amp/Selection of Components.md",
+    "Experiments/Task/Data_Logger/Data_Logger.ino",
+    "Experiments/Task/Data_Logger/downloaded_LOG007.CSV",
+    "Experiments/Task/Data_Logger/downloaded_LOG006.CSV",
+    "Experiments/Task/Data_Logger/downloaded_LOG005.CSV",
+    "Experiments/Task/Data_Logger/connect.py",
+    "Experiments/Task/Data_Logger",
+    "Journal/2026/June/14 -.md",
+    "Excalidraw/Selection of Components 2026-06-02 10.10.49.excalidraw.md",
+    "Journal/2026/June/11 -.md",
+    "Journal/2026/June/09 -.md",
     "Experiments/Task/Data-Logger/Data-Logger.ino",
     "Experiments/Task/Data-Logger",
     "Experiments/Task",
@@ -246,12 +282,6 @@
     "Experiments/exp5/sound.gif",
     "Experiments/exp5/Screenshot_simulide_05.06.2026_000128.gif",
     "Experiments/exp5/sound.sim1",
-    "Experiments/exp5/sound/build/arduino.avr.uno/sketch_jun3a.ino.with_bootloader.hex",
-    "Experiments/exp5/sound/build/arduino.avr.uno/sketch_jun3a.ino.with_bootloader.bin",
-    "Experiments/exp5/sound/build/arduino.avr.uno/sketch_jun3a.ino.hex",
-    "Experiments/exp5/sound/build/arduino.avr.uno/sketch_jun3a.ino.elf",
-    "Experiments/exp5/sound/build/arduino.avr.uno/sketch_jun3a.ino.eep",
-    "Experiments/exp5/sound/build/arduino.avr.uno",
     "Experiments/exp1/weather_forecast/weather.gif",
     "Experiments/exp1/weather_forecast/Screenshot_simulide_05.06.2026_000127.gif",
     "Experiments/Screenshot_simulide_05.06.2026_000127.gif",
@@ -263,8 +293,6 @@
     "Experiments/PWM.png",
     "Journal/2026/June/02 -.md",
     "Journal/2026/June/03 -.md",
-    "LT Spice/Op-Amp/Selection of Components.md",
-    "Excalidraw/Selection of Components 2026-06-02 10.10.49.excalidraw.md",
     "Untitled.canvas",
     "Journal/2026/June/01 -.md",
     "Journal/2026/Check-Ins/June -.md",
