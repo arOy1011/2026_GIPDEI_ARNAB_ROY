@@ -61,7 +61,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Experiments/Task/Data Logger.md",
+                "file": "Journal/2026/June/25 -.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -76,7 +76,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "Data Logger"
+              "title": "25 -"
             }
           }
         ],
@@ -137,8 +137,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "right": {
     "id": "3ae26cd8c8aba1b6",
@@ -259,29 +258,35 @@
   },
   "active": "9d0ecf3bb5d02a45",
   "lastOpenFiles": [
-    "Excalidraw/BLE Motion Logger.excalidraw.md",
+    "PHOTO-2026-06-25-17-35-07.jpg",
+    "Journal/2026/June/03 -.md",
+    "Motion_datalogger2/gerber/Motion-datalogger-Edge_Cuts.gm1",
+    "Motion_datalogger2/gerber/Motion-datalogger-job.gbrjob",
+    "Motion_datalogger2/gerber/Motion-datalogger-PTH.drl",
+    "Motion_datalogger2/gerber/Motion-datalogger-PTH-drl_map.gbr",
+    "Motion_datalogger2/gerber/Motion-datalogger-NPTH.drl",
+    "Motion_datalogger2/gerber/Motion-datalogger-NPTH-drl_map.gbr",
+    "Motion_datalogger2/gerber/Motion-datalogger-F_Silkscreen.gto",
+    "Motion_datalogger2/gerber/Motion-datalogger-F_Paste.gtp",
+    "Motion_datalogger2/gerber/Motion-datalogger-F_Mask.gts",
+    "Motion_datalogger2/gerber/Motion-datalogger-F_Cu.gtl",
+    "Journal/2026/June/25 -.md",
+    "Journal/2026/June/17 -.md",
+    "Journal/2026/June/20 -.md",
+    "Journal/2026/June/19 -.md",
     "Experiments/Task/Data Logger.md",
+    "Excalidraw/BLE Motion Logger.excalidraw.md",
     "Excalidraw/Untitled.md",
     "LT Spice/Op-Amp/Selection of Components.md",
-    "Experiments/Task/Data_Logger/Data_Logger.ino",
-    "Experiments/Task/Data_Logger/downloaded_LOG007.CSV",
-    "Experiments/Task/Data_Logger/downloaded_LOG006.CSV",
-    "Experiments/Task/Data_Logger/downloaded_LOG005.CSV",
-    "Experiments/Task/Data_Logger/connect.py",
-    "Experiments/Task/Data_Logger",
     "Journal/2026/June/14 -.md",
     "Excalidraw/Selection of Components 2026-06-02 10.10.49.excalidraw.md",
     "Journal/2026/June/11 -.md",
     "Journal/2026/June/09 -.md",
-    "Experiments/Task/Data-Logger/Data-Logger.ino",
-    "Experiments/Task/Data-Logger",
-    "Experiments/Task",
     "Experiments/Arduino.md",
     "Journal/2026/June/08 -.md",
     "Reports.md",
     "Experiments/exp5/sound.gif",
     "Experiments/exp5/Screenshot_simulide_05.06.2026_000128.gif",
-    "Experiments/exp5/sound.sim1",
     "Experiments/exp1/weather_forecast/weather.gif",
     "Experiments/exp1/weather_forecast/Screenshot_simulide_05.06.2026_000127.gif",
     "Experiments/Screenshot_simulide_05.06.2026_000127.gif",
@@ -292,7 +297,6 @@
     "Experiments/Sine.png",
     "Experiments/PWM.png",
     "Journal/2026/June/02 -.md",
-    "Journal/2026/June/03 -.md",
     "Untitled.canvas",
     "Journal/2026/June/01 -.md",
     "Journal/2026/Check-Ins/June -.md",
@@ -301,9 +305,6 @@
     "Experiments/exp3_1/wave_generator/Math Logic Wave Generation.md",
     "Experiments/exp3/wave_generator/Math Logic Wave Generation.md",
     "Experiments/exp4/Code.md",
-    "().md",
-    "Untitled 1.md",
-    "noted.canvas",
-    "Experiments/this is just for testing.md"
+    "noted.canvas"
   ]
 }
