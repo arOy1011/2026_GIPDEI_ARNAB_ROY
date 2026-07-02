@@ -9,7 +9,7 @@
         android:name="android.hardware.bluetooth_le"
         android:required="false" />
     <application
-        android:label="motion_logger"
+        android:label="NAPPNU"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
