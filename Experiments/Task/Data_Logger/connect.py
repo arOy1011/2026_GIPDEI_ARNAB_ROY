@@ -18,6 +18,18 @@ def notification_handler(sender, data):
 
     print(f"RX: {line}")
 
+    if line == "DELETE_OK":
+        print("DELETE SUCCESS")
+        waiting_for_transfer = False
+        transfer_event.set()
+        return
+
+    if line == "DELETE_FAILED":
+        print("DELETE FAILED")
+        waiting_for_transfer = False
+        transfer_event.set()
+        return
+
     if current_file is not None:
         if line == "EOF":
             current_file.close()
@@ -73,6 +85,7 @@ async def main():
             print("STOP")
             print("LIST")
             print("GET:<filename>")
+            print("DELETE:<filename>")
             print("EXIT")
 
             cmd = (await asyncio.to_thread(input, "\nCommand> ")).strip()
@@ -110,6 +123,18 @@ async def main():
                 print(
                     f"Downloading to downloaded_{filename}"
                 )
+
+                await client.write_gatt_char(
+                    CMD_UUID,
+                    cmd.encode(),
+                    response=True
+                )
+
+                await transfer_event.wait()
+                continue
+
+            if cmd.startswith("DELETE:"):
+                waiting_for_transfer = True
 
                 await client.write_gatt_char(
                     CMD_UUID,

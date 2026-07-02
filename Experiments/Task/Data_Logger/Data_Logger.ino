@@ -182,6 +182,38 @@ void commandCallback(uint16_t conn_hdl,
     fileChar.notify("EOF");
     dir.close();
   }
+  else if (strncmp(cmd, "DELETE:", 7) == 0) // DELETE
+{
+    char* filename = cmd + 7;
+
+    Serial.print("DELETE REQUEST: ");
+    Serial.println(filename);
+
+    // Prevent deleting while logging
+    if (logging)
+    {
+        fileChar.write("DELETE_DENIED_LOGGING");
+        fileChar.notify("DELETE_DENIED_LOGGING");
+
+        Serial.println("DELETE DENIED: LOGGING ACTIVE");
+        return;
+    }
+
+    if (sd.remove(filename))
+    {
+        fileChar.write("DELETE_OK");
+        fileChar.notify("DELETE_OK");
+
+        Serial.println("DELETE SUCCESS");
+    }
+    else
+    {
+        fileChar.write("DELETE_FAILED");
+        fileChar.notify("DELETE_FAILED");
+
+        Serial.println("DELETE FAILED");
+    }
+}
   else if (strncmp(cmd, "GET:", 4) == 0) // GET
   {
     cancelTransfer = false;
