@@ -49,6 +49,9 @@ uint16_t currentYear = 0;
 volatile bool cancelTransfer = false;
 bool bleEnabled = false;
 
+char listedFiles[100][64];
+uint8_t listedFileCount = 0;
+
 unsigned long lastPressTime = 0;
 uint8_t pressCount = 0;
 unsigned long advertiseStartTime = 0;
@@ -146,118 +149,141 @@ void commandCallback(uint16_t conn_hdl,
     if (logging)
     {
       Serial.println("STATUS = LOGGING");
-      fileChar.write("LOGGING");
       fileChar.notify("LOGGING");
     }
     else
     {
       Serial.println("STATUS = STOPPED");
-      fileChar.write("STOPPED");
       fileChar.notify("STOPPED");
     }
   }
   else if (strcmp(cmd, "LIST") == 0) // LIST
-  {
+{
     Serial.println("LIST REQUEST");
+
     File32 dir;
     dir.open("/");
+    listedFileCount = 0;
+
     File32 entry;
+
     while (entry.openNext(&dir, O_RDONLY))
     {
-      char filename[64];
-      entry.getName(filename, sizeof(filename));
-    if (strstr(filename, ".CSV") != NULL)
-    {
-        Serial.println(filename);
+        char filename[64];
+        entry.getName(filename, sizeof(filename));
 
-        fileChar.write(filename);
-        fileChar.notify(filename);
-
-        delay(100);
+        if (strstr(filename, ".CSV") != NULL)
+        {
+            if (listedFileCount < 100)
+            {
+                strcpy(listedFiles[listedFileCount], filename);
+                listedFileCount++;
+            }
+            Serial.println(filename);
+            fileChar.notify(filename);
+            delay(2);
+        }
+        entry.close();
     }
-      delay(100);
-      entry.close();
-    }
-    fileChar.write("EOF");
     fileChar.notify("EOF");
     dir.close();
-  }
-  else if (strncmp(cmd, "DELETE:", 7) == 0) // DELETE
+}
+  else if (strncmp(cmd, "D:", 2) == 0) // DELETE
 {
-    char* filename = cmd + 7;
+    int index = atoi(cmd + 2);
 
-    Serial.print("DELETE REQUEST: ");
-    Serial.println(filename);
+    Serial.print("DELETE INDEX: ");
+    Serial.println(index);
 
-    // Prevent deleting while logging
-    if (logging)
+    if (logging) //Prevent while logging
     {
-        fileChar.write("DELETE_DENIED_LOGGING");
         fileChar.notify("DELETE_DENIED_LOGGING");
-
-        Serial.println("DELETE DENIED: LOGGING ACTIVE");
         return;
     }
 
-    if (sd.remove(filename))
+    if (index < 0 || index >= listedFileCount)
     {
-        fileChar.write("DELETE_OK");
-        fileChar.notify("DELETE_OK");
+        fileChar.notify("DELETE_FAILED");
+        return;
+    }
 
+    if (sd.remove(listedFiles[index]))
+    {
+        fileChar.notify("DELETE_OK");
         Serial.println("DELETE SUCCESS");
     }
     else
     {
-        fileChar.write("DELETE_FAILED");
         fileChar.notify("DELETE_FAILED");
-
         Serial.println("DELETE FAILED");
     }
 }
-  else if (strncmp(cmd, "GET:", 4) == 0) // GET
-  {
+  else if (strncmp(cmd, "G:", 2) == 0) // GET
+{
     cancelTransfer = false;
-    char* filename = cmd + 4;
-    Serial.print("GET REQUEST: ");
-    Serial.println(filename);
-    File32 file = sd.open(filename, O_RDONLY);
+
+    int index = atoi(cmd + 2);
+
+    Serial.print("GET INDEX: ");
+    Serial.println(index);
+
+    if (index < 0 || index >= listedFileCount)
+    {
+        fileChar.notify("ERROR:FILE_NOT_FOUND");
+        return;
+    }
+
+    File32 file = sd.open(listedFiles[index], O_RDONLY);
+
     if (!file)
     {
-      fileChar.write("ERROR:FILE_NOT_FOUND");
-      fileChar.notify("ERROR:FILE_NOT_FOUND");
-      Serial.println("FILE NOT FOUND");
-      return;
+        fileChar.notify("ERROR:FILE_NOT_FOUND");
+
+        Serial.println("FILE NOT FOUND");
+        return;
     }
-    char line[180];
-    uint32_t linesSent = 0;
-    while (file.available())
-  {
+    uint32_t fileSize = file.fileSize();
+
+char beginMsg[32];
+sprintf(beginMsg, "BEGIN:%lu", fileSize);
+
+fileChar.notify(beginMsg);
+delay(10);
+
+uint8_t buffer[244];
+uint32_t bytesSent = 0;
+
+while (file.available())
+{
     if (cancelTransfer)
     {
         Serial.println("TRANSFER TERMINATED");
+
         file.close();
-        fileChar.write("TRANSFER_TERMINATED");
-        fileChar.notify("TRANSFER_TERMINATED");
+
+        fileChar.notify("END");
         return;
     }
-    int n = file.fgets(line, sizeof(line));
+
+    int n = file.read(buffer, sizeof(buffer));
+
     if (n > 0)
     {
-        line[strcspn(line, "\r\n")] = '\0';
-        Serial.println(line);
-        fileChar.write(line);
-        fileChar.notify(line);
-        linesSent++;
-        delay(100);
+        fileChar.notify(buffer, n);
+        bytesSent += n;
+        yield();
     }
-  }
-    file.close();
-    Serial.print("LINES SENT = ");
-    Serial.println(linesSent);  
-    fileChar.write("EOF");
-    fileChar.notify("EOF");
-    Serial.println("FILE SENT");
-  }
+}
+
+file.close();
+delay(10);
+fileChar.notify("END");
+
+Serial.print("BYTES SENT = ");
+Serial.println(bytesSent);
+
+Serial.println("FILE SENT");
+}
 }
 // BLE setup
 void startBLE()
@@ -289,12 +315,7 @@ void setup()
     pinMode(BUTTON_PIN, INPUT_PULLUP);
 
     // RTC
-    rtc.Begin();
-
-    if (!rtc.GetIsRunning())
-    {
-      rtc.SetIsRunning(true);
-    }
+    
 
     // IMU
     if (imu.begin() != 0)
@@ -311,7 +332,9 @@ void setup()
     }
 
     // BLE STACK ONLY
+    Bluefruit.configPrphBandwidth(BANDWIDTH_MAX);
     Bluefruit.begin();
+    Bluefruit.Periph.setConnInterval(6, 6);
     Bluefruit.setTxPower(4);
     Bluefruit.setName("MotionLogger");
     motionService.begin();
@@ -355,7 +378,7 @@ void setup()
       SECMODE_NO_ACCESS
     );
 
-    fileChar.setMaxLen(200);
+    fileChar.setMaxLen(244);
 
     fileChar.begin();
 

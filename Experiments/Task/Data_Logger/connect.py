@@ -84,8 +84,8 @@ async def main():
             print("START")
             print("STOP")
             print("LIST")
-            print("GET:<filename>")
-            print("DELETE:<filename>")
+            print("G:<index>")
+            print("D:<index>")
             print("EXIT")
 
             cmd = (await asyncio.to_thread(input, "\nCommand> ")).strip()
@@ -110,18 +110,18 @@ async def main():
                 await transfer_event.wait()
                 continue
 
-            if cmd.startswith("GET:"):
-                filename = cmd[4:]
+            if cmd.startswith("G:"):
+                index = cmd[2:]
 
                 current_file = open(
-                    "downloaded_" + filename,
+                    f"downloaded_{index}.csv",
                     "w"
                 )
 
                 waiting_for_transfer = True
 
                 print(
-                    f"Downloading to downloaded_{filename}"
+                    f"Downloading file index {index}"
                 )
 
                 await client.write_gatt_char(
@@ -133,7 +133,7 @@ async def main():
                 await transfer_event.wait()
                 continue
 
-            if cmd.startswith("DELETE:"):
+            if cmd.startswith("D:"):
                 waiting_for_transfer = True
 
                 await client.write_gatt_char(
