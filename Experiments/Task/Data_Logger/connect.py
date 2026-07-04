@@ -31,16 +31,18 @@ def notification_handler(sender, data):
         return
 
     if current_file is not None:
-        if line == "EOF":
+        if line in ("EOF", "END"):
             current_file.close()
             current_file = None
             waiting_for_transfer = False
             transfer_event.set()
             print("DOWNLOAD COMPLETE")
+        elif line.startswith("BEGIN:"):
+            print(f"TRANSFER HEADER: {line}")
         else:
             current_file.write(line + "\n")
 
-    elif waiting_for_transfer and line == "EOF":
+    elif waiting_for_transfer and line in ("EOF", "END"):
         waiting_for_transfer = False
         transfer_event.set()
 

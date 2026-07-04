@@ -233,6 +233,9 @@ void commandCallback(uint16_t conn_hdl,
         return;
     }
 
+    Serial.print("REQUESTED FILE: ");
+    Serial.println(listedFiles[index]);
+
     File32 file = sd.open(listedFiles[index], O_RDONLY);
 
     if (!file)
@@ -244,45 +247,68 @@ void commandCallback(uint16_t conn_hdl,
     }
     uint32_t fileSize = file.fileSize();
 
-char beginMsg[32];
-sprintf(beginMsg, "BEGIN:%lu", fileSize);
+    char beginMsg[32];
+    sprintf(beginMsg, "BEGIN:%lu", fileSize);
 
-fileChar.notify(beginMsg);
-delay(10);
-
-uint8_t buffer[244];
-uint32_t bytesSent = 0;
-
-while (file.available())
-{
-    if (cancelTransfer)
+    while (Bluefruit.connected() && !fileChar.notify(beginMsg))
     {
-        Serial.println("TRANSFER TERMINATED");
-
-        file.close();
-
-        fileChar.notify("END");
-        return;
-    }
-
-    int n = file.read(buffer, sizeof(buffer));
-
-    if (n > 0)
-    {
-        fileChar.notify(buffer, n);
-        bytesSent += n;
+        delay(2);
         yield();
     }
-}
 
-file.close();
-delay(10);
-fileChar.notify("END");
+    delay(5);
 
-Serial.print("BYTES SENT = ");
-Serial.println(bytesSent);
+    uint8_t buffer[244];
+    uint32_t bytesSent = 0;
 
-Serial.println("FILE SENT");
+    while (file.available())
+    {
+        if (cancelTransfer)
+        {
+            Serial.println("TRANSFER TERMINATED");
+
+            file.close();
+
+            fileChar.notify("END");
+            return;
+        }
+
+        int n = file.read(buffer, sizeof(buffer));
+
+        if (n > 0)
+        {
+            while (Bluefruit.connected() && !fileChar.notify(buffer, n))
+            {
+                delay(2);
+                yield();
+            }
+
+            bytesSent += n;
+
+            if (bytesSent % 4096 < (uint32_t)n)
+            {
+                Serial.print("SENT BYTES: ");
+                Serial.println(bytesSent);
+            }
+
+            delay(1);
+            yield();
+        }
+    }
+
+    file.close();
+    delay(20);
+
+    while (Bluefruit.connected() && !fileChar.notify("END"))
+    {
+        delay(2);
+        yield();
+    }
+
+    Serial.print("BYTES SENT = ");
+    Serial.println(bytesSent);
+
+    Serial.println("FILE SENT");
 }
 }
 // BLE setup
@@ -315,7 +341,42 @@ void setup()
     pinMode(BUTTON_PIN, INPUT_PULLUP);
 
     // RTC
-    
+    rtc.Begin();
+
+    if (!rtc.IsDateTimeValid())
+    {
+      Serial.println("RTC INVALID - SETTING BUILD TIME");
+      rtc.SetDateTime(RtcDateTime(__DATE__, __TIME__));
+    }
+
+    if (!rtc.GetIsRunning())
+    {
+      Serial.println("RTC STOPPED - STARTING RTC");
+      rtc.SetIsRunning(true);
+    }
+
+    RtcDateTime compiled(__DATE__, __TIME__);
+    RtcDateTime now = rtc.GetDateTime();
+
+    if (now < compiled)
+    {
+      Serial.println("RTC OLDER THAN BUILD TIME - UPDATING");
+      rtc.SetDateTime(compiled);
+    }
+
+    now = rtc.GetDateTime();
+    Serial.print("RTC TIME: ");
+    Serial.print(now.Year());
+    Serial.print("-");
+    Serial.print(now.Month());
+    Serial.print("-");
+    Serial.print(now.Day());
+    Serial.print(" ");
+    Serial.print(now.Hour());
+    Serial.print(":");
+    Serial.print(now.Minute());
+    Serial.print(":");
+    Serial.println(now.Second());
 
     // IMU
     if (imu.begin() != 0)

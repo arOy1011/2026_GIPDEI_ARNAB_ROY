@@ -142,6 +142,7 @@ class _HomePageState extends State<HomePage> {
   bool _autoConnecting = false;
   DateTime? _lastAutoConnect;
   StreamSubscription<BluetoothConnectionState>? _connectionSub;
+  StreamSubscription<List<int>>? _downloadSub;
   StreamSubscription<BluetoothAdapterState>? _adapterStateSub;
   Timer? _autoScanTimer;
   final Set<String> _loggedDevices = {};
@@ -215,6 +216,67 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Future<void> showRequirementDialog(
+    String title,
+    String message, {
+    bool locationSettings = false,
+  }) async {
+    if (!mounted) return;
+
+    await showDialog<void>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Later'),
+          ),
+          if (locationSettings)
+            FilledButton(
+              onPressed: () async {
+                Navigator.pop(context);
+
+                try {
+                  await const MethodChannel(
+                    'app.channel.shared/settings',
+                  ).invokeMethod('openLocationSettings');
+
+                  Future.delayed(const Duration(seconds: 1), () async {
+                    if (!mounted) return;
+
+                    final enabled =
+                        await Permission.location.serviceStatus.isEnabled;
+
+                    if (enabled && !_isScanning && !connected) {
+                      showMsg('Location enabled. Scanning for devices...');
+                      unawaited(scanDevices());
+                    }
+                  });
+                } catch (e) {
+                  debugPrint('openLocationSettings failed: $e');
+
+                  if (mounted) {
+                    showMsg('Could not open system Location settings');
+                  }
+                }
+              },
+              child: const Text('Turn On Location'),
+            )
+          else
+            FilledButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                await openAppSettings();
+              },
+              child: const Text('Open Settings'),
+            ),
+        ],
+      ),
+    );
+  }
+
   Future<bool> _prepareBluetoothAndPermissions() async {
     await Permission.bluetoothScan.request();
     await Permission.bluetoothConnect.request();
@@ -227,6 +289,29 @@ class _HomePageState extends State<HomePage> {
       return false;
     }
 
+    final locationPermissionGranted =
+        await Permission.location.isGranted;
+
+    if (!locationPermissionGranted) {
+      await showRequirementDialog(
+        'Location Permission Required',
+        'Android requires location permission for Bluetooth Low Energy scanning.',
+      );
+      return false;
+    }
+
+    final locationServiceEnabled =
+        await Permission.location.serviceStatus.isEnabled;
+
+    if (!locationServiceEnabled) {
+      await showRequirementDialog(
+        'Location Services Disabled',
+        'Android requires Location Services to be enabled for Bluetooth Low Energy scanning.',
+        locationSettings: true,
+      );
+      return false;
+    }
+
     final adapterState = await FlutterBluePlus.adapterState.first;
 
     if (adapterState != BluetoothAdapterState.on) {
@@ -235,7 +320,10 @@ class _HomePageState extends State<HomePage> {
       try {
         await FlutterBluePlus.turnOn();
       } catch (_) {
-        showMsg('Please enable Bluetooth from the system dialog and try again');
+        await showRequirementDialog(
+          'Bluetooth Required',
+          'Please enable Bluetooth to use NAPPNU.',
+        );
         return false;
       }
 
@@ -250,7 +338,10 @@ class _HomePageState extends State<HomePage> {
           );
 
       if (newState != BluetoothAdapterState.on) {
-        showMsg('Bluetooth was not enabled');
+        await showRequirementDialog(
+          'Bluetooth Required',
+          'Bluetooth must be enabled before scanning for devices.',
+        );
         return false;
       }
     }
@@ -400,6 +491,11 @@ class _HomePageState extends State<HomePage> {
       try {
         await device.requestMtu(247);
       } catch (_) {}
+      try {
+        await device.requestConnectionPriority(
+          connectionPriorityRequest: ConnectionPriority.high,
+        );
+      } catch (_) {}
 
       final services = await device.discoverServices();
 
@@ -471,6 +567,10 @@ class _HomePageState extends State<HomePage> {
       showMsg('Connect to MotionLogger first');
       return;
     }
+    if (busy) {
+      showMsg('Wait for the current download to finish');
+      return;
+    }
 
     files.clear();
 
@@ -518,12 +618,25 @@ class _HomePageState extends State<HomePage> {
       return;
     }
 
-    final baseDirectory = await getApplicationDocumentsDirectory();
+    Directory? downloadsDirectory;
 
-    final directory = Directory('${baseDirectory.path}/MotionLogger');
+    if (Platform.isAndroid) {
+      downloadsDirectory = Directory('/storage/emulated/0/Download');
+    } else {
+      downloadsDirectory = await getDownloadsDirectory();
+    }
+
+    if (downloadsDirectory == null) {
+      throw Exception('Could not access Downloads folder');
+    }
+
+    final directory = Directory(
+      '${downloadsDirectory.path}/MotionLogger/NAPPNU',
+    );
 
     if (!await directory.exists()) {
       await directory.create(recursive: true);
+      debugPrint('Created folder: ${directory.path}');
     }
 
     String targetName = filename;
@@ -542,93 +655,81 @@ class _HomePageState extends State<HomePage> {
       duplicateIndex++;
     }
 
-    debugPrint('Saving file to: ${directory.path}/$targetName');
     final outFile = File('${directory.path}/$targetName');
     final sink = outFile.openWrite();
-    final transferDone = Completer<void>();
-    bool downloadCompleted = false;
-    showMsg('Starting download: $targetName');
-    bool transferStarted = false;
-    int expectedBytes = 0;
-    int receivedBytes = 0;
 
+    showMsg('Starting download: $targetName');
     setState(() => busy = true);
 
+    await _downloadSub?.cancel();
+    _downloadSub = null;
+
     await fileChar!.setNotifyValue(true);
+
+    String pending = '';
 
     late final StreamSubscription<List<int>> sub;
 
     sub = fileChar!.onValueReceived.listen((data) async {
-      final msg = String.fromCharCodes(data).trim();
+      final chunk = String.fromCharCodes(data);
+      pending += chunk;
 
-      if (!transferStarted) {
-        debugPrint('RX: $msg');
+      while (true) {
+        final newlineIndex = pending.indexOf('\n');
 
-        if (msg.startsWith('BEGIN:')) {
-          expectedBytes = int.tryParse(msg.substring(6)) ?? 0;
-          transferStarted = true;
+        if (newlineIndex == -1) {
+          break;
+        }
 
-          debugPrint('Expecting $expectedBytes bytes');
+        final line = pending.substring(0, newlineIndex).trimRight();
+        pending = pending.substring(newlineIndex + 1);
+
+        if (line.isEmpty) {
+          continue;
+        }
+
+        if (line.startsWith('BEGIN:')) {
+          debugPrint('TRANSFER HEADER: $line');
+          continue;
+        }
+
+        if (line == 'END' || line == 'EOF') {
+          if (pending.isNotEmpty) {
+            sink.write(pending);
+            pending = '';
+          }
+
+          await sink.flush();
+          await sink.close();
+
+          await sub.cancel();
+          _downloadSub = null;
+
+          if (mounted) {
+            setState(() => busy = false);
+          }
+
+          debugPrint(
+            'DOWNLOAD COMPLETE: ${await outFile.length()} bytes',
+          );
+
+          showMsg('Downloaded: $targetName');
           return;
         }
-      }
 
-      if (transferStarted && (msg == 'END' || msg == 'EOF')) {
-        if (transferDone.isCompleted) return;
-
-        await sink.flush();
-        await sink.close();
-        await sub.cancel();
-
-        debugPrint('$msg RECEIVED');
-        debugPrint('FINAL: $receivedBytes / $expectedBytes');
-
-        showMsg(
-          'Download finished: $targetName\n'
-          '$receivedBytes / $expectedBytes bytes saved',
-        );
-
-        downloadCompleted = true;
-        transferDone.complete();
-        return;
-      }
-
-      sink.add(data);
-      receivedBytes += data.length;
-
-      if (receivedBytes % 1024 < data.length) {
-        debugPrint('Received $receivedBytes / $expectedBytes bytes');
-      }
-
-      if (expectedBytes > 0 &&
-          receivedBytes >= expectedBytes &&
-          !transferDone.isCompleted) {
-        debugPrint('SIZE TARGET REACHED');
-
-        await sink.flush();
-        await sink.close();
-        await sub.cancel();
-
-        showMsg(
-          'Download finished: $targetName\n'
-          '$receivedBytes bytes received',
-        );
-
-        downloadCompleted = true;
-        transferDone.complete();
+        sink.writeln(line);
       }
     });
+
     selectedDevice?.cancelWhenDisconnected(sub);
+    _downloadSub = sub;
 
     try {
       await cmdChar!.write('G:$index'.codeUnits, withoutResponse: false);
     } catch (e) {
-      await sink.close();
       await sub.cancel();
-
-      if (!transferDone.isCompleted) {
-        transferDone.completeError(e);
-      }
+      _downloadSub = null;
+      await sink.close();
 
       if (mounted) {
         setState(() => busy = false);
@@ -636,31 +737,7 @@ class _HomePageState extends State<HomePage> {
 
       showMsg('Download failed: $e');
     }
-    try {
-      await transferDone.future.timeout(const Duration(seconds: 15));
-    } on TimeoutException {
-      showMsg('Download timed out. Please try again.');
-
-      try {
-        await sub.cancel();
-      } catch (_) {}
-    } catch (e) {
-      showMsg('Download failed: $e');
-    } finally {
-      if (!downloadCompleted && await outFile.exists()) {
-        try {
-          await sink.close();
-        } catch (_) {}
-
-        try {
-          await outFile.delete();
-        } catch (_) {}
-      }
-
-      if (mounted) {
-        setState(() => busy = false);
-      }
-    }
+    // Download will finish when EOF/END is received.
   }
 
   Future<void> deleteFile(int index, String filename) async {
