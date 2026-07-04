@@ -1,13 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:path_provider/path_provider.dart';
-
-import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 
 enum AppThemeMode { light, dark, graphite }
 
@@ -131,6 +131,7 @@ class _HomePageState extends State<HomePage> {
 
   List<BluetoothDevice> devices = [];
   List<String> files = [];
+  final Map<String, int> _fileIndexes = {};
 
   BluetoothCharacteristic? cmdChar;
   BluetoothCharacteristic? fileChar;
@@ -145,6 +146,7 @@ class _HomePageState extends State<HomePage> {
   StreamSubscription<List<int>>? _downloadSub;
   StreamSubscription<BluetoothAdapterState>? _adapterStateSub;
   Timer? _autoScanTimer;
+  Timer? _fileRefreshTimer;
   final Set<String> _loggedDevices = {};
   void _startAutoScanTimer() {
     _autoScanTimer?.cancel();
@@ -156,6 +158,23 @@ class _HomePageState extends State<HomePage> {
 
       scanDevices();
     });
+  }
+
+  void _startFileRefreshTimer() {
+    _fileRefreshTimer?.cancel();
+
+    _fileRefreshTimer = Timer.periodic(const Duration(seconds: 10), (_) {
+      if (!mounted) return;
+      if (!connected || !isLogging || busy) return;
+      if (cmdChar == null || fileChar == null) return;
+
+      unawaited(_loadFileList(clearBeforeLoad: false));
+    });
+  }
+
+  void _stopFileRefreshTimer() {
+    _fileRefreshTimer?.cancel();
+    _fileRefreshTimer = null;
   }
 
   @override
@@ -170,12 +189,14 @@ class _HomePageState extends State<HomePage> {
           connected = false;
           selectedDevice = null;
           files.clear();
+          _fileIndexes.clear();
           cmdChar = null;
           fileChar = null;
           isLogging = false;
           _autoConnecting = false;
           _isScanning = false;
         });
+        _stopFileRefreshTimer();
 
         if (_isScanning) {
           unawaited(FlutterBluePlus.stopScan());
@@ -289,8 +310,7 @@ class _HomePageState extends State<HomePage> {
       return false;
     }
 
-    final locationPermissionGranted =
-        await Permission.location.isGranted;
+    final locationPermissionGranted = await Permission.location.isGranted;
 
     if (!locationPermissionGranted) {
       await showRequirementDialog(
@@ -387,7 +407,7 @@ class _HomePageState extends State<HomePage> {
 
         final isOurDevice =
             lowerNameForLog.startsWith('motionlo') ||
-            lowerNameForLog.startsWith('motion logger') ||
+            lowerNameForLog.startsWith('motion') ||
             lowerNameForLog.startsWith('nappnu');
 
         if (isOurDevice && _loggedDevices.add(r.device.remoteId.str)) {
@@ -420,7 +440,7 @@ class _HomePageState extends State<HomePage> {
 
           Future.microtask(() async {
             try {
-              showMsg('Motion Logger found. Connecting...');
+              showMsg('NAPPNU found. Connecting...');
               await toggleDevice(r.device);
             } finally {
               if (mounted) {
@@ -472,7 +492,9 @@ class _HomePageState extends State<HomePage> {
         connected = false;
         selectedDevice = null;
         files.clear();
+        _fileIndexes.clear();
       });
+      _stopFileRefreshTimer();
 
       showMsg('Disconnected');
       _startAutoScanTimer();
@@ -520,6 +542,7 @@ class _HomePageState extends State<HomePage> {
         connected = true;
         selectedDevice = device;
         files.clear();
+        _fileIndexes.clear();
       });
 
       await _connectionSub?.cancel();
@@ -531,11 +554,13 @@ class _HomePageState extends State<HomePage> {
             connected = false;
             selectedDevice = null;
             files.clear();
+            _fileIndexes.clear();
             cmdChar = null;
             fileChar = null;
             isLogging = false;
             _autoConnecting = false;
           });
+          _stopFileRefreshTimer();
 
           showMsg('Device disconnected');
           _startAutoScanTimer();
@@ -572,177 +597,321 @@ class _HomePageState extends State<HomePage> {
       return;
     }
 
-    files.clear();
-
-    await fileChar!.setNotifyValue(true);
-
-    final sub = fileChar!.onValueReceived.listen((data) {
-      final raw = String.fromCharCodes(data);
-      debugPrint('BLE RAW: $raw');
-
-      for (final line in raw.split(RegExp(r'\r?\n'))) {
-        final name = line.trim();
-
-        if (name.isEmpty || name == 'EOF') {
-          continue;
-        }
-
-        // Ignore streamed CSV contents and keep only actual filenames.
-        if (!name.toUpperCase().endsWith('.CSV')) {
-          continue;
-        }
-
-        if (!files.contains(name)) {
-          setState(() {
-            files.add(name);
-            _sortFiles();
-          });
-        }
-      }
-    });
-
-    await cmdChar!.write('LIST'.codeUnits, withoutResponse: false);
-
-    await Future.delayed(const Duration(seconds: 2));
-
-    await sub.cancel();
+    await _loadFileList();
 
     if (files.isEmpty) {
       showMsg('No files found');
     }
   }
 
-  Future<void> downloadFile(int index, String filename) async {
+  Future<void> _loadFileList({bool clearBeforeLoad = true}) async {
+    final receivedFiles = <String>[];
+    final receivedIndexes = <String, int>{};
+    final completer = Completer<void>();
+    Timer? timeoutTimer;
+
+    void finish() {
+      if (!completer.isCompleted) {
+        completer.complete();
+      }
+    }
+
+    if (clearBeforeLoad && mounted) {
+      setState(() {
+        files.clear();
+        _fileIndexes.clear();
+      });
+    } else if (clearBeforeLoad) {
+      files.clear();
+      _fileIndexes.clear();
+    }
+
+    late final StreamSubscription<List<int>> sub;
+    sub = fileChar!.onValueReceived.listen(
+      (data) {
+        final packet = utf8.decode(data, allowMalformed: true).trim();
+        debugPrint('BLE LIST PACKET: $packet');
+
+        if (packet.isEmpty) {
+          return;
+        }
+
+        if (packet == 'EOF' || packet == 'END') {
+          finish();
+          return;
+        }
+
+        if (packet.startsWith('ERROR:')) {
+          if (!completer.isCompleted) {
+            completer.completeError(StateError(packet));
+          }
+          return;
+        }
+
+        for (final name in _extractCsvNames(packet)) {
+          if (receivedIndexes.containsKey(name)) {
+            continue;
+          }
+
+          receivedIndexes[name] = receivedIndexes.length;
+          receivedFiles.add(name);
+
+          if (mounted) {
+            setState(() {
+              _fileIndexes[name] = receivedIndexes[name]!;
+              files.add(name);
+              _sortFiles();
+            });
+          }
+        }
+      },
+      onError: (Object error, StackTrace stackTrace) {
+        if (!completer.isCompleted) {
+          completer.completeError(error, stackTrace);
+        }
+      },
+      onDone: finish,
+    );
+
+    try {
+      await fileChar!.setNotifyValue(true);
+      await Future.delayed(const Duration(milliseconds: 250));
+      timeoutTimer = Timer(const Duration(seconds: 5), finish);
+      debugPrint('BLE LIST CMD: LIST');
+      await cmdChar!.write('LIST'.codeUnits, withoutResponse: false);
+      await completer.future;
+    } finally {
+      timeoutTimer?.cancel();
+      await sub.cancel();
+    }
+
+    if (!mounted) return;
+
+    if (files.length != receivedFiles.length) {
+      setState(() {
+        files
+          ..clear()
+          ..addAll(receivedFiles);
+        _sortFiles();
+        _fileIndexes
+          ..clear()
+          ..addAll(receivedIndexes);
+      });
+    }
+  }
+
+  Future<void> downloadFile(String filename) async {
     if (!connected || cmdChar == null || fileChar == null) {
       showMsg('Connect to MotionLogger first');
       return;
     }
-
-    Directory? downloadsDirectory;
-
-    if (Platform.isAndroid) {
-      downloadsDirectory = Directory('/storage/emulated/0/Download');
-    } else {
-      downloadsDirectory = await getDownloadsDirectory();
+    if (busy) {
+      showMsg('Wait for the current download to finish');
+      return;
     }
 
-    if (downloadsDirectory == null) {
-      throw Exception('Could not access Downloads folder');
+    final fileIndex = _fileIndexes[filename];
+    if (fileIndex == null) {
+      showMsg('Refresh files and try again');
+      return;
     }
 
-    final directory = Directory(
-      '${downloadsDirectory.path}/MotionLogger/NAPPNU',
-    );
+    if (isLogging) {
+      final confirmed =
+          await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Download while logging?'),
+              content: Text(
+                '$filename may still be changing because logging is active.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('Cancel'),
+                ),
+                FilledButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const Text('Download'),
+                ),
+              ],
+            ),
+          ) ??
+          false;
 
-    if (!await directory.exists()) {
-      await directory.create(recursive: true);
-      debugPrint('Created folder: ${directory.path}');
+      if (!mounted) return;
+      if (!confirmed) return;
     }
 
-    String targetName = filename;
-    String baseName = filename;
-    String extension = '';
-
-    final dotIndex = filename.lastIndexOf('.');
-    if (dotIndex != -1) {
-      baseName = filename.substring(0, dotIndex);
-      extension = filename.substring(dotIndex);
-    }
-
-    int duplicateIndex = 1;
-    while (await File('${directory.path}/$targetName').exists()) {
-      targetName = '$baseName ($duplicateIndex)$extension';
-      duplicateIndex++;
-    }
-
-    final outFile = File('${directory.path}/$targetName');
-    final sink = outFile.openWrite();
-
-    showMsg('Starting download: $targetName');
     setState(() => busy = true);
+    showMsg('Downloading: $filename');
+
+    try {
+      final bytes = await _receiveDownload(fileIndex);
+      final savedPath = await FilePicker.platform.saveFile(
+        dialogTitle: 'Save motion log',
+        fileName: _safeDownloadName(filename),
+        type: FileType.custom,
+        allowedExtensions: const ['csv'],
+        bytes: bytes,
+      );
+
+      if (savedPath == null) {
+        showMsg('Download cancelled');
+        return;
+      }
+
+      debugPrint('DOWNLOAD SAVED: $savedPath (${bytes.length} bytes)');
+      showMsg('Downloaded: ${_safeDownloadName(filename)}');
+    } catch (e) {
+      showMsg('Download failed: $e');
+    } finally {
+      await _downloadSub?.cancel();
+      _downloadSub = null;
+
+      if (mounted) {
+        setState(() => busy = false);
+      }
+    }
+  }
+
+  Future<Uint8List> _receiveDownload(int index) async {
+    final completer = Completer<Uint8List>();
+    final content = BytesBuilder(copy: false);
+    var started = false;
+    Timer? timeoutTimer;
+
+    void resetTimeout() {
+      timeoutTimer?.cancel();
+      timeoutTimer = Timer(const Duration(seconds: 20), () {
+        if (!completer.isCompleted) {
+          completer.completeError(
+            TimeoutException('No data received for 20 seconds'),
+          );
+        }
+      });
+    }
+
+    void completeWithContent() {
+      if (!completer.isCompleted) {
+        completer.complete(content.takeBytes());
+      }
+    }
 
     await _downloadSub?.cancel();
     _downloadSub = null;
 
-    await fileChar!.setNotifyValue(true);
-
-    String pending = '';
-
     late final StreamSubscription<List<int>> sub;
+    sub = fileChar!.onValueReceived.listen(
+      (data) {
+        resetTimeout();
 
-    sub = fileChar!.onValueReceived.listen((data) async {
-      final chunk = String.fromCharCodes(data);
-      pending += chunk;
+        final marker = utf8.decode(data, allowMalformed: true).trim();
+        debugPrint('BLE GET PACKET: $marker');
 
-      while (true) {
-        final newlineIndex = pending.indexOf('\n');
-
-        if (newlineIndex == -1) {
-          break;
-        }
-
-        final line = pending.substring(0, newlineIndex).trimRight();
-        pending = pending.substring(newlineIndex + 1);
-
-        if (line.isEmpty) {
-          continue;
-        }
-
-        if (line.startsWith('BEGIN:')) {
-          debugPrint('TRANSFER HEADER: $line');
-          continue;
-        }
-
-        if (line == 'END' || line == 'EOF') {
-          if (pending.isNotEmpty) {
-            sink.write(pending);
-            pending = '';
-          }
-
-          await sink.flush();
-          await sink.close();
-
-          await sub.cancel();
-          _downloadSub = null;
-
-          if (mounted) {
-            setState(() => busy = false);
-          }
-
-          debugPrint(
-            'DOWNLOAD COMPLETE: ${await outFile.length()} bytes',
-          );
-
-          showMsg('Downloaded: $targetName');
+        if (marker.isEmpty) {
           return;
         }
 
-        sink.writeln(line);
-      }
-    });
+        if (marker.startsWith('BEGIN:')) {
+          started = true;
+          return;
+        }
+
+        if (marker == 'END' || marker == 'EOF') {
+          completeWithContent();
+          return;
+        }
+
+        if (marker.startsWith('ERROR:')) {
+          if (!completer.isCompleted) {
+            completer.completeError(StateError(marker));
+          }
+          return;
+        }
+
+        if (started) {
+          content.add(data);
+        }
+      },
+      onError: (Object error, StackTrace stackTrace) {
+        if (!completer.isCompleted) {
+          completer.completeError(error, stackTrace);
+        }
+      },
+      onDone: () {
+        if (!completer.isCompleted) {
+          completer.completeError(StateError('Download stream closed'));
+        }
+      },
+    );
 
     selectedDevice?.cancelWhenDisconnected(sub);
     _downloadSub = sub;
 
     try {
-      await cmdChar!.write('G:$index'.codeUnits, withoutResponse: false);
-    } catch (e) {
+      await fileChar!.setNotifyValue(true);
+      await Future.delayed(const Duration(milliseconds: 250));
+
+      resetTimeout();
+
+      final command = 'G:$index';
+      debugPrint('BLE DOWNLOAD CMD: $command');
+      await cmdChar!.write(command.codeUnits, withoutResponse: false);
+      return await completer.future;
+    } finally {
+      timeoutTimer?.cancel();
       await sub.cancel();
-      _downloadSub = null;
-      await sink.close();
-
-      if (mounted) {
-        setState(() => busy = false);
+      if (identical(_downloadSub, sub)) {
+        _downloadSub = null;
       }
-
-      showMsg('Download failed: $e');
     }
-    // Download will finish when EOF/END is received.
   }
 
-  Future<void> deleteFile(int index, String filename) async {
+  List<String> _extractCsvNames(String packet) {
+    final names = <String>[];
+    final matches = RegExp(
+      r'[^,\s/\\]+\.CSV',
+      caseSensitive: false,
+    ).allMatches(packet);
+
+    for (final match in matches) {
+      names.add(match.group(0)!.trim());
+    }
+
+    return names;
+  }
+
+  String _safeDownloadName(String filename) {
+    final cleaned = filename
+        .replaceAll(RegExp(r'[\\/:*?"<>|]'), '_')
+        .replaceAll(RegExp(r'\s+'), ' ')
+        .trim();
+
+    if (cleaned.isEmpty) {
+      return 'motion_log.csv';
+    }
+
+    if (cleaned.toLowerCase().endsWith('.csv')) {
+      return cleaned;
+    }
+
+    return '$cleaned.csv';
+  }
+
+  Future<void> deleteFile(String filename) async {
     if (!connected || cmdChar == null) {
       showMsg('Connect to MotionLogger first');
+      return;
+    }
+    if (isLogging) {
+      showMsg('Stop logging before deleting files');
+      return;
+    }
+
+    final fileIndex = _fileIndexes[filename];
+    if (fileIndex == null) {
+      showMsg('Refresh files and try again');
       return;
     }
 
@@ -769,10 +938,11 @@ class _HomePageState extends State<HomePage> {
     if (!confirmed) return;
 
     try {
-      await cmdChar!.write('D:$index'.codeUnits, withoutResponse: false);
+      await cmdChar!.write('D:$fileIndex'.codeUnits, withoutResponse: false);
 
       setState(() {
         files.remove(filename);
+        _fileIndexes.remove(filename);
       });
 
       showMsg('Deleted: $filename');
@@ -803,6 +973,8 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         isLogging = true;
       });
+      _startFileRefreshTimer();
+      unawaited(_loadFileList(clearBeforeLoad: false));
 
       showMsg('Logging started');
     } catch (e) {
@@ -827,6 +999,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         isLogging = false;
       });
+      _stopFileRefreshTimer();
 
       showMsg('Logging stopped');
     } catch (e) {
@@ -851,6 +1024,11 @@ class _HomePageState extends State<HomePage> {
         setState(() {
           isLogging = msg == 'LOGGING';
         });
+        if (isLogging) {
+          _startFileRefreshTimer();
+        } else {
+          _stopFileRefreshTimer();
+        }
 
         showMsg('Status: $msg');
         await sub.cancel();
@@ -866,6 +1044,8 @@ class _HomePageState extends State<HomePage> {
     _scanSubscription?.cancel();
     _adapterStateSub?.cancel();
     _connectionSub?.cancel();
+    _downloadSub?.cancel();
+    _stopFileRefreshTimer();
     super.dispose();
   }
 
@@ -1141,10 +1321,12 @@ class _HomePageState extends State<HomePage> {
                                             connected = false;
                                             selectedDevice = null;
                                             files.clear();
+                                            _fileIndexes.clear();
                                             cmdChar = null;
                                             fileChar = null;
                                             isLogging = false;
                                           });
+                                          _stopFileRefreshTimer();
 
                                           showMsg('Disconnected');
                                           _startAutoScanTimer();
@@ -1257,8 +1439,7 @@ class _HomePageState extends State<HomePage> {
                                 visualDensity: VisualDensity.compact,
                                 onPressed: busy
                                     ? null
-                                    : () async =>
-                                          await downloadFile(index, file),
+                                    : () async => await downloadFile(file),
                               ),
                               IconButton(
                                 tooltip: 'Delete',
@@ -1268,9 +1449,9 @@ class _HomePageState extends State<HomePage> {
                                   color: Colors.red,
                                 ),
                                 visualDensity: VisualDensity.compact,
-                                onPressed: busy
+                                onPressed: busy || isLogging
                                     ? null
-                                    : () async => await deleteFile(index, file),
+                                    : () async => await deleteFile(file),
                               ),
                             ],
                           ),
@@ -1320,7 +1501,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           const Spacer(),
-                          Container(
+                          DecoratedBox(
                             decoration: BoxDecoration(
                               color: Theme.of(context)
                                   .colorScheme
@@ -1347,15 +1528,6 @@ class _HomePageState extends State<HomePage> {
                                       : null,
                                   icon: const Icon(Icons.stop_rounded),
                                   color: Colors.red,
-                                  visualDensity: VisualDensity.compact,
-                                ),
-                                IconButton(
-                                  tooltip: 'Get Status',
-                                  onPressed: connected
-                                      ? () async => await getStatus()
-                                      : null,
-                                  icon: const Icon(Icons.info_outline_rounded),
-                                  color: Colors.orange,
                                   visualDensity: VisualDensity.compact,
                                 ),
                               ],

@@ -1,6 +1,28 @@
 $$
 Motion\ Data\ Logger\ using\ Seeed\ XIAO\ nRF52840\ Sense
 $$
+## Table of Contents
+- [[#Overview|Overview]]
+- [[#Hardware Used|Hardware Used]]
+- [[#System Block Diagram|System Block Diagram]]
+- [[#Pin Connections|Pin Connections]]
+	- [[#Pin Connections#RTC Module|RTC Module]]
+	- [[#Pin Connections#Push Button|Push Button]]
+	- [[#Pin Connections#SD Card Module|SD Card Module]]
+- [[#Working of the System|Working of the System]]
+	- [[#Working of the System#System Initialization|System Initialization]]
+	- [[#Working of the System#Data Logging Operation|Data Logging Operation]]
+	- [[#Working of the System#Bluetooth Communication|Bluetooth Communication]]
+	- [[#Working of the System#Remote Control Functions|Remote Control Functions]]
+	- [[#Working of the System#Real-Time Monitoring|Real-Time Monitoring]]
+	- [[#Working of the System#Automatic File Management|Automatic File Management]]
+- [[#Data Format and File Management|Data Format and File Management]]
+	- [[#Data Format and File Management#Data Format|Data Format]]
+	- [[#Data Format and File Management#CSV Format|CSV Format]]
+	- [[#Data Format and File Management#File Management|File Management]]
+		- [[#File Management#File Naming Format|File Naming Format]]
+		- [[#File Management#Automatic Daily Rollover|Automatic Daily Rollover]]
+- [[#NAPPNU Mobile Application]]
 
 ## Overview
 
@@ -77,10 +99,15 @@ Pressing the button again stops the logging process. The collected data is writt
 
 Bluetooth communication is activated using a double press of the push button.
 
-When enabled, the device starts BLE advertising under the name **MotionLogger**. The device remains discoverable for up to 30 seconds. If no client connects during this period, Bluetooth is automatically disabled to conserve power.
+When enabled, the device starts BLE(BLE 5.0) advertising under the name **MotionLogger**. The device remains discoverable for up to 30 seconds. If no client connects during this period, Bluetooth is automatically disabled to conserve power.
 
-Once connected, a computer or mobile device can communicate with the logger wirelessly. A custom [Python script](connect.py) is used to send commands and receive data.
+Once connected, a computer or mobile device can communicate with the logger wirelessly. A custom [Python script]([[connect.py]])⁠ is used to send commands and receive data. In addition, a dedicated Flutter-based Android application named [**NAPPNU**]([[app-release.apk|app-release]]) has been developed to provide a graphical interface for interacting with the device.
 
+The application automatically scans for nearby **MotionLogger** devices, establishes BLE connections, and enables complete remote control of the logger. Users can start or stop data acquisition, monitor the current logging status, browse files stored on the microSD card, download selected CSV files, and delete unwanted recordings directly from the smartphone without physically removing the storage card.
+
+To ensure reliable transfer of large log files, NAPPNU implements packet buffering, progress monitoring, and automatic reconstruction of received data streams. The application also supports real-time visualization of accelerometer and gyroscope measurements while a BLE connection is active, enabling immediate monitoring of ongoing experiments.
+
+This mobile interface significantly improves usability by combining wireless data access, device management, and live motion monitoring within a single application.
 ### Remote Control Functions
 
 The BLE interface supports several commands:
@@ -89,9 +116,12 @@ The BLE interface supports several commands:
 - **START** – Starts data logging remotely.
 - **STOP** – Stops data logging remotely.
 - **LIST** – Displays all CSV files stored on the microSD card.
-- **GET:\<filename\>** – Downloads a selected log file from the device.
+- **G:\<filename\>** – Downloads a selected log file from the device.
+- **D:\<filename\>** – Delete a selected log file from the device.
+  
+#### Android Controls![[Android Screen.png]]
 
-These commands allow complete access to recorded data without physically removing the microSD card.
+These commands are supported both by the Python client and the NAPPNU Android application, allowing complete wireless access to recorded data without physically removing the microSD card.
 
 ### Real-Time Monitoring
 
@@ -150,3 +180,12 @@ LOG_2026_06_12.CSV
 LOG_2026_06_13.CSV 
 ```
 
+
+## NAPPNU Mobile Application
+- Automatic scanning and connection to **MotionLogger** devices.
+- Remote **START**, **STOP**controls for data logging.
+- Wireless browsing, downloading, and deletion of CSV log files.
+- Reliable BLE file transfer.
+- Local storage of downloaded files on the smartphone.
+- Simple and user-friendly interface developed using Flutter.
+- Eliminates the need to remove the microSD card for data access and management.

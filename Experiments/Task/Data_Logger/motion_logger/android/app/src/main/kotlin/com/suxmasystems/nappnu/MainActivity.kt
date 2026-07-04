@@ -1,4 +1,4 @@
-package com.example.motion_logger
+package com.suxmasystems.nappnu
 
 import android.content.Intent
 import android.provider.Settings

@@ -3,5 +3,6 @@
   "templater-obsidian",
   "auto-journal",
   "obsidian-style-settings",
-  "obsidian-excalidraw-plugin"
+  "obsidian-excalidraw-plugin",
+  "obsidian-plugin-toc"
 ]

@@ -8,30 +8,6 @@
         "type": "tabs",
         "children": [
           {
-            "id": "9d0dfcfa05221f3e",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Reports.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": true,
-                "backlinkOpts": {
-                  "collapseAll": false,
-                  "extraContext": false,
-                  "sortOrder": "alphabetical",
-                  "showSearch": false,
-                  "searchQuery": "",
-                  "backlinkCollapsed": false,
-                  "unlinkedCollapsed": true
-                }
-              },
-              "icon": "lucide-file",
-              "title": "Reports"
-            }
-          },
-          {
             "id": "7878223b5f867d91",
             "type": "leaf",
             "state": {
@@ -61,7 +37,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Journal/2026/July/02 -.md",
+                "file": "[[Experiments/Task/Data_Logger/motion_logger/build/app/outputs/flutter-apk/app-release.apk|app-release]].md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -76,11 +52,10 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "02 -"
+              "title": "app-release.apk|app-release]]"
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -256,43 +231,46 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "9d0ecf3bb5d02a45",
+  "active": "7878223b5f867d91",
   "lastOpenFiles": [
+    "Experiments/Task/Data_Logger/motion_logger/build/shared_preferences_android/intermediates/merged_res/release/mergeReleaseResources/drawable-xhdpi-v4/abc_text_select_handle_right_mtrl_dark.png",
+    "Experiments/Task/Data_Logger/motion_logger/build/shared_preferences_android/intermediates/merged_res/release/mergeReleaseResources/drawable-xhdpi-v4/notify_panel_notification_icon_bg.png",
+    "Experiments/Task/Data_Logger/motion_logger/build/shared_preferences_android/intermediates/merged_res/release/mergeReleaseResources/drawable-xhdpi-v4/abc_scrubber_track_mtrl_alpha.9.png",
+    "Android Screen.png",
+    "Reports.md",
+    "[[Experiments/Task/Data_Logger/motion_logger/build/app/outputs/flutter-apk/app-release.apk|app-release]].md",
+    "Experiments/Task/Data Logger.md",
+    "[[Experiments/Task/Data_Logger/motion_logger/build/app/outputs/flutter-apk",
+    "[[Experiments/Task/Data_Logger/motion_logger/build/app/outputs",
+    "[[Experiments/Task/Data_Logger/motion_logger/build/app",
+    "[[Experiments/Task/Data_Logger/motion_logger/build",
+    "[[Experiments/Task/Data_Logger/motion_logger",
+    "[[Experiments/Task/Data_Logger",
+    "[[Experiments/Task",
+    "[[Experiments",
+    "Experiments/Task/Data_Logger/motion_logger/build/app/intermediates/apk_ide_redirect_file/release/createReleaseApkListingFileRedirect/redirect.txt",
+    "Experiments/Task/Data_Logger/motion_logger/build/app/intermediates/apk_ide_redirect_file/release/createReleaseApkListingFileRedirect",
+    "Experiments/Task/Data_Logger/motion_logger/build/url_launcher_android/intermediates/merged_res/release/mergeReleaseResources/drawable-hdpi-v4/notification_oversize_large_icon_bg.png",
+    "Experiments/Task/Data_Logger/motion_logger/build/url_launcher_android/intermediates/merged_res/release/mergeReleaseResources/drawable-hdpi-v4/notify_panel_notification_icon_bg.png",
+    "Experiments/Task/Data_Logger/motion_logger/build/url_launcher_android/intermediates/merged_res/release/mergeReleaseResources/drawable-hdpi-v4/notification_bg_normal_pressed.9.png",
+    "Experiments/Task/Data_Logger/motion_logger/build/url_launcher_android/intermediates/merged_res/release/mergeReleaseResources/drawable-hdpi-v4/notification_bg_low_pressed.9.png",
+    "Experiments/Task/Data_Logger/motion_logger/build/url_launcher_android/intermediates/merged_res/release/mergeReleaseResources/drawable-hdpi-v4/notification_bg_normal.9.png",
+    "Experiments/Task/Data_Logger/motion_logger/build/url_launcher_android/intermediates/merged_res/release/mergeReleaseResources/drawable-hdpi-v4/notification_bg_low_normal.9.png",
+    "Experiments/Task/Data_Logger/motion_logger/build/url_launcher_android/intermediates/merged_res/release/mergeReleaseResources/drawable-mdpi-v4/notification_bg_low_pressed.9.png",
+    "Journal/2026/July/05 -.md",
     "Journal/2026/July/04 -.md",
-    "Experiments/Task/Data_Logger/motion_logger/build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/io/flutter/plugins/GeneratedPluginRegistrant.dex",
-    "Experiments/Task/Data_Logger/motion_logger/build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/com/example/motion_logger/MainActivity.dex",
-    "Experiments/Task/Data_Logger/motion_logger/build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/io/flutter/plugins",
-    "Experiments/Task/Data_Logger/motion_logger/build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/com/example/motion_logger",
-    "Experiments/Task/Data_Logger/motion_logger/build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/io/flutter",
-    "Experiments/Task/Data_Logger/motion_logger/build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/com/example",
-    "Experiments/Task/Data_Logger/motion_logger/build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/io",
-    "Experiments/Task/Data_Logger/motion_logger/build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/com",
-    "Experiments/Task/Data_Logger/motion_logger/build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/267748b7b2895bef0abfa18a2f653732e46581d8167b21e61bf3fd712b56769b_5.jar",
-    "Experiments/Task/Data_Logger/motion_logger/build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/267748b7b2895bef0abfa18a2f653732e46581d8167b21e61bf3fd712b56769b_4.jar",
-    "Experiments/Task/Data_Logger/motion_logger/build/app/intermediates/packaged_res/debug/packageDebugResources/mipmap-mdpi-v4/ic_launcher.png",
-    "Experiments/Task/Data_Logger/motion_logger/build/app/intermediates/packaged_res/debug/packageDebugResources/mipmap-xhdpi-v4/ic_launcher.png",
-    "Experiments/Task/Data_Logger/motion_logger/build/app/intermediates/packaged_res/debug/packageDebugResources/mipmap-xxxhdpi-v4/ic_launcher.png",
-    "Experiments/Task/Data_Logger/motion_logger/build/app/intermediates/packaged_res/debug/packageDebugResources/mipmap-xxhdpi-v4/ic_launcher.png",
-    "Experiments/Task/Data_Logger/motion_logger/build/app/intermediates/packaged_res/debug/packageDebugResources/mipmap-hdpi-v4/ic_launcher.png",
+    "Journal/2026/July/02 -.md",
     "Journal/2026/June/29 -.md",
     "Journal/2026/June/25 -.md",
     "Journal/2026/Check-Ins/July -.md",
-    "Journal/2026/July/02 -.md",
-    "Experiments/Task/Data_Logger/motion_logger/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
-    "Experiments/Task/Data_Logger/motion_logger/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
-    "Experiments/Task/Data_Logger/motion_logger/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
-    "Experiments/Task/Data_Logger/motion_logger/android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
-    "Experiments/Task/Data_Logger/motion_logger/android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
     "Experiments/Task/Data_Logger/motion_logger/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
     "Experiments/Task/Data_Logger/motion_logger/README.md",
     "Experiments/Task/Data_Logger/venv/lib/python3.14/site-packages/pip-26.1.2.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md",
     "Experiments/Task/Data_Logger/venv/lib/python3.14/site-packages/pip/_vendor/idna/LICENSE.md",
-    "Reports.md",
     "Journal/2026/June/03 -.md",
     "Journal/2026/June/17 -.md",
     "Journal/2026/June/20 -.md",
     "Journal/2026/June/19 -.md",
-    "Experiments/Task/Data Logger.md",
     "Excalidraw/BLE Motion Logger.excalidraw.md",
     "Excalidraw/Untitled.md",
     "LT Spice/Op-Amp/Selection of Components.md",
@@ -301,9 +279,6 @@
     "Journal/2026/June/11 -.md",
     "Journal/2026/June/09 -.md",
     "Experiments/Arduino.md",
-    "Journal/2026/June/08 -.md",
-    "Journal/2026/June/05 -.md",
-    "Journal/2026/June/02 -.md",
     "Untitled.canvas",
     "noted.canvas"
   ]

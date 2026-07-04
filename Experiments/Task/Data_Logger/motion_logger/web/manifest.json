@@ -1,6 +1,6 @@
 {
-    "name": "motion_logger",
-    "short_name": "motion_logger",
+    "name": "NAPPNU",
+    "short_name": "nappnu",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

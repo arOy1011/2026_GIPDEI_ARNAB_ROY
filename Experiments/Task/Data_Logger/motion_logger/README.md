@@ -1,6 +1,6 @@
-# motion_logger
+# NAPPNU
 
-A new Flutter project.
+NAPPNU - Motion logging companion for XIAO nRF52840 Sense.
 
 ## Getting Started
 
