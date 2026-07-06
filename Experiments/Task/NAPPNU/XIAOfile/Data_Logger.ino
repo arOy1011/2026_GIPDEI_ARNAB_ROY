@@ -6,7 +6,10 @@
 #include <nrf_soc.h>
 #include <nrf_gpio.h>
 #define BUTTON_PIN D3
-#define STATUS_LED_PIN D0
+/* Optional status LED on D0. If you want to disable it entirely, you can
+   just comment out this block and the related calls in setup(), loop(),
+   and enterDeepSleep(). */
+// #define STATUS_LED_PIN D0
 #define SD_CS D7
 
 /*
@@ -54,8 +57,9 @@ unsigned long pressStartTime = 0;
 bool longPressActive = false;
 const unsigned long LONG_PRESS_TIME = 1500;
 
-unsigned long lastStatusBlink = 0;
-bool statusLedOn = false;
+/* Status LED state kept here only if the LED block is enabled. */
+// unsigned long lastStatusBlink = 0;
+// bool statusLedOn = false;
 
 /* -------------------------------------------------- */
 /* SESSION MANAGEMENT */
@@ -369,6 +373,7 @@ void stopBLE()
       Serial.println("BLE OFF");
   }
 
+/*
 void updateStatusLed()
   {
       if (logging)
@@ -389,6 +394,7 @@ void updateStatusLed()
           digitalWrite(STATUS_LED_PIN, LOW);
       }
   }
+*/
 
 void enterDeepSleep()
   {
@@ -398,7 +404,7 @@ void enterDeepSleep()
       {
           stopLogging();
       }
-      digitalWrite(STATUS_LED_PIN, LOW);
+      /* digitalWrite(STATUS_LED_PIN, LOW); */
       digitalWrite(LED_BUILTIN, LOW);
       pinMode(BUTTON_PIN, INPUT_PULLUP);
       /* Configure wake-on-pin for system-off: convert Arduino pin to MCU pin
@@ -418,9 +424,9 @@ void setup()
   {
     Serial.begin(115200);
     pinMode(BUTTON_PIN, INPUT_PULLUP);
-    pinMode(STATUS_LED_PIN, OUTPUT);
+    /* pinMode(STATUS_LED_PIN, OUTPUT); */
     pinMode(LED_BUILTIN, OUTPUT);
-    digitalWrite(STATUS_LED_PIN, LOW);
+    /* digitalWrite(STATUS_LED_PIN, LOW); */
     digitalWrite(LED_BUILTIN, LOW);
 
      /* RTC: force I2C pins to match wiring (SDA=D2, SCL=D1).
@@ -618,7 +624,8 @@ void loop() {
     pressCount = 0;
   }
 
-  updateStatusLed();
+  /* Status LED updates are disabled. If you want them back, uncomment the
+     updateStatusLed() function and the related calls. */
 
   /* 10 Hz Logging */
   if (logging &&
