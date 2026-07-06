@@ -1,3 +1,19 @@
+/*
+  NAPPNU - Motion Logger Flutter App (main.dart)
+
+  This file implements the mobile UI that connects to the MotionLogger
+  hardware over Bluetooth Low Energy (BLE). Key responsibilities:
+  - Scan and connect to the MotionLogger device
+  - Expose controls to start/stop logging remotely
+  - List, download and delete CSV files stored on the device
+  - Stream live IMU data when connected
+
+  Important UUIDs (must match firmware):
+  - Service UUID: serviceUuid
+  - Command characteristic: cmdUuid (write commands)
+  - File/notification characteristic: fileUuid (notifications for LIST/GET/DELETE)
+*/
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
@@ -11,10 +27,12 @@ import 'package:file_picker/file_picker.dart';
 
 enum AppThemeMode { light, dark, graphite }
 
+// BLE identifiers used by both app and firmware; keep in sync with device
 final Guid serviceUuid = Guid('12345678-1234-1234-1234-1234567890ab');
 final Guid cmdUuid = Guid('12345678-1234-1234-1234-1234567890ae');
 final Guid fileUuid = Guid('12345678-1234-1234-1234-1234567890ad');
 
+// App entry point
 void main() {
   runApp(const MotionLoggerApp());
 }
@@ -35,6 +53,7 @@ class _MotionLoggerAppState extends State<MotionLoggerApp> {
     _loadTheme();
   }
 
+  /* Load saved theme mode from SharedPreferences and apply it */
   Future<void> _loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
     final index = prefs.getInt('theme_mode') ?? 0;
@@ -46,11 +65,13 @@ class _MotionLoggerAppState extends State<MotionLoggerApp> {
     });
   }
 
+  /* Persist selected theme mode in SharedPreferences */
   Future<void> _saveTheme(AppThemeMode theme) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('theme_mode', theme.index);
   }
 
+  /* Build and return ThemeData for the app based on `AppThemeMode` */
   ThemeData buildTheme(AppThemeMode mode) {
     Color seed;
     Brightness brightness;
@@ -148,6 +169,7 @@ class _HomePageState extends State<HomePage> {
   Timer? _autoScanTimer;
   Timer? _fileRefreshTimer;
   final Set<String> _loggedDevices = {};
+  /* Periodically attempt to auto-scan and auto-connect when idle */
   void _startAutoScanTimer() {
     _autoScanTimer?.cancel();
 
@@ -160,6 +182,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  /* Periodically refresh file list while logging is active */
   void _startFileRefreshTimer() {
     _fileRefreshTimer?.cancel();
 
@@ -172,6 +195,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  /* Stop periodic file-refresh timer */
   void _stopFileRefreshTimer() {
     _fileRefreshTimer?.cancel();
     _fileRefreshTimer = null;
@@ -181,6 +205,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
+    /* Listen for adapter on/off changes so the app can reset when BLE is disabled */
     _adapterStateSub = FlutterBluePlus.adapterState.listen((state) {
       if (!mounted) return;
 
@@ -298,6 +323,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  /* Ensure Bluetooth and location permissions are granted and adapter is ON */
   Future<bool> _prepareBluetoothAndPermissions() async {
     await Permission.bluetoothScan.request();
     await Permission.bluetoothConnect.request();
@@ -369,12 +395,15 @@ class _HomePageState extends State<HomePage> {
     return true;
   }
 
+  /* Scan for nearby BLE devices and update `devices` list */
   Future<void> scanDevices() async {
+    /* Prevent overlapping scans because BLE scanning is resource-intensive */
     if (_isScanning) {
       showMsg('Scan already in progress');
       return;
     }
 
+    /* Ensure Bluetooth and permissions are ready before scanning */
     if (!await _prepareBluetoothAndPermissions()) {
       return;
     }
@@ -393,6 +422,7 @@ class _HomePageState extends State<HomePage> {
       });
     }
 
+    /* Subscribe to scan results to build the device list */
     _scanSubscription = FlutterBluePlus.scanResults.listen((results) {
       if (!mounted) return;
 
@@ -405,6 +435,7 @@ class _HomePageState extends State<HomePage> {
 
         final lowerNameForLog = deviceName.toLowerCase();
 
+        /* Only log and show devices matching the MotionLogger naming patterns */
         final isOurDevice =
             lowerNameForLog.startsWith('motionlo') ||
             lowerNameForLog.startsWith('motion') ||
@@ -419,6 +450,7 @@ class _HomePageState extends State<HomePage> {
         if (deviceName.isEmpty) continue;
 
         if (!updated.any((d) => d.remoteId == r.device.remoteId)) {
+          /* Keep the list unique by remoteId so duplicates do not appear */
           updated.add(r.device);
         }
 
@@ -435,6 +467,7 @@ class _HomePageState extends State<HomePage> {
                 lowerName.contains('motion lo') ||
                 lowerName.contains('motionlogger') ||
                 lowerName.contains('nappnu'))) {
+          /* Auto-connect once to the first matching NAPPNU device found */
           _lastAutoConnect = DateTime.now();
           _autoConnecting = true;
 
@@ -482,7 +515,10 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  /* Connect to the selected device or disconnect if already selected. On connect,
+     discover characteristics and set up connection listeners. */
   Future<void> toggleDevice(BluetoothDevice device) async {
+    /* If already connected to this device, behave as a disconnect toggle */
     if (selectedDevice?.remoteId == device.remoteId) {
       try {
         await device.disconnect();
@@ -521,6 +557,7 @@ class _HomePageState extends State<HomePage> {
 
       final services = await device.discoverServices();
 
+      /* Find the required BLE characteristics for command and file transfer */
       for (final s in services) {
         if (s.uuid == serviceUuid) {
           for (final c in s.characteristics) {
@@ -587,6 +624,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  /* Public helper: retrieve file list from the device and populate UI */
   Future<void> listFiles() async {
     if (!connected || fileChar == null || cmdChar == null) {
       showMsg('Connect to MotionLogger first');
@@ -604,6 +642,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  /* Internal: enable notifications on `fileChar` and collect filenames until EOF */
   Future<void> _loadFileList({bool clearBeforeLoad = true}) async {
     final receivedFiles = <String>[];
     final receivedIndexes = <String, int>{};
@@ -629,6 +668,7 @@ class _HomePageState extends State<HomePage> {
     late final StreamSubscription<List<int>> sub;
     sub = fileChar!.onValueReceived.listen(
       (data) {
+        /* Each notification may contain one or more filenames or markers */
         final packet = utf8.decode(data, allowMalformed: true).trim();
         debugPrint('BLE LIST PACKET: $packet');
 
@@ -700,6 +740,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  /* Trigger a file download: request the index and save received bytes via file picker */
   Future<void> downloadFile(String filename) async {
     if (!connected || cmdChar == null || fileChar == null) {
       showMsg('Connect to MotionLogger first');
@@ -712,11 +753,13 @@ class _HomePageState extends State<HomePage> {
 
     final fileIndex = _fileIndexes[filename];
     if (fileIndex == null) {
+      /* Prevent downloads while file indexes are stale */
       showMsg('Refresh files and try again');
       return;
     }
 
     if (isLogging) {
+      /* Warn the user when downloading while logging may still be active */
       final confirmed =
           await showDialog<bool>(
             context: context,
@@ -775,7 +818,10 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  /* Low-level download implementation: subscribe to `fileChar` and collect binary chunks
+     between BEGIN:<size> and END/EOF markers */
   Future<Uint8List> _receiveDownload(int index) async {
+    /* Download a file by index and assemble raw bytes from BLE notifications */
     final completer = Completer<Uint8List>();
     final content = BytesBuilder(copy: false);
     var started = false;
@@ -814,11 +860,13 @@ class _HomePageState extends State<HomePage> {
         }
 
         if (marker.startsWith('BEGIN:')) {
+          /* BEGIN marker means the device is about to stream file bytes */
           started = true;
           return;
         }
 
         if (marker == 'END' || marker == 'EOF') {
+          /* File transfer finished; complete the download promise */
           completeWithContent();
           return;
         }
@@ -868,6 +916,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  /* Extract CSV filenames from a text packet received over BLE */
   List<String> _extractCsvNames(String packet) {
     final names = <String>[];
     final matches = RegExp(
@@ -899,6 +948,7 @@ class _HomePageState extends State<HomePage> {
     return '$cleaned.csv';
   }
 
+  /* Send delete command for the selected file and update UI on success */
   Future<void> deleteFile(String filename) async {
     if (!connected || cmdChar == null) {
       showMsg('Connect to MotionLogger first');
@@ -956,6 +1006,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  /* Send START command to device to begin logging; enable periodic refresh */
   void startLogging() async {
     if (!connected || cmdChar == null) {
       showMsg('Connect to MotionLogger first');
@@ -982,6 +1033,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  /* Send STOP command to device to stop logging; disable periodic refresh */
   void stopLogging() async {
     if (!connected || cmdChar == null) {
       showMsg('Connect to MotionLogger first');
@@ -1007,6 +1059,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  /* Query device status (LOGGING/STOPPED) via fileChar notifications */
   Future<void> getStatus() async {
     if (!connected || cmdChar == null || fileChar == null) {
       showMsg('Connect to MotionLogger first');
@@ -1038,6 +1091,7 @@ class _HomePageState extends State<HomePage> {
     await cmdChar!.write('STATUS'.codeUnits, withoutResponse: false);
   }
 
+  /* Clean up timers, subscriptions, and BLE listeners when the page is removed */
   @override
   void dispose() {
     _autoScanTimer?.cancel();
@@ -1049,6 +1103,7 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
+  /* Build the main screen with connection status, files, and logging controls */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1071,7 +1126,7 @@ class _HomePageState extends State<HomePage> {
                 applicationIcon: const Icon(Icons.sensors_rounded),
                 children: [
                   const Text(
-                    'Motion logging companion for XIAO nRF52840 Sense.',
+                    'Motion recorder developed by SUXMA Systems.',
                   ),
                   const SizedBox(height: 16),
                   const Text('Developed by'),
@@ -1102,10 +1157,12 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      /* Floating action button group for theme selection */
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
+          /* Display theme options when the palette menu is open */
           if (_themeMenuOpen) ...[
             FloatingActionButton.small(
               heroTag: 'light_theme',
@@ -1175,7 +1232,8 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Compact Discovery/Connect section
+                  /* Compact Discovery/Connect section
+                     shows scan status, device selector, and connect state. */
                   Card(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -1242,6 +1300,8 @@ class _HomePageState extends State<HomePage> {
                           Expanded(
                             child: Row(
                               children: [
+                                /* Dropdown lists discovered BLE devices.
+                                   Selecting one attempts to connect. */
                                 Expanded(
                                   flex: 3,
                                   child:
@@ -1284,6 +1344,7 @@ class _HomePageState extends State<HomePage> {
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
+                                    /* Status text and manual disconnect button */
                                     Text(
                                       connected
                                           ? 'Connected'
@@ -1344,6 +1405,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 8),
 
+                  /* File list header and refresh control */
                   Card(
                     child: Padding(
                       padding: const EdgeInsets.all(12),
@@ -1393,6 +1455,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
+                  /* Build a list of downloaded motion log files */
                   if (files.isNotEmpty)
                     ListView.builder(
                       shrinkWrap: true,
@@ -1429,6 +1492,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                               ),
+                              /* Download or delete the selected CSV file */
                               IconButton(
                                 tooltip: 'Download',
                                 icon: const Icon(
@@ -1460,6 +1524,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   const SizedBox(height: 10),
 
+                  /* Control panel for starting/stopping logging */
                   Card(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(

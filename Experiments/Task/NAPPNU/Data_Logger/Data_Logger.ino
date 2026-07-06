@@ -1,24 +1,36 @@
 #include <Wire.h>
 #include <LSM6DS3.h>
-#include <ThreeWire.h>
-#include <RtcDS1302.h>
+#include <RtcDS3231.h>
 #include <SdFat.h>
 #include <bluefruit.h>
+#include <nrf_soc.h>
+#include <nrf_gpio.h>
 #define BUTTON_PIN D3
+#define STATUS_LED_PIN D0
 #define SD_CS D7
 
-// RTC
-ThreeWire myWire(D1, D2, D0);   // DAT, CLK, RST
-RtcDS1302<ThreeWire> rtc(myWire);
+/*
+  Data Logger sketch (brief):
+  - Samples IMU at `SAMPLE_INTERVAL` and timestamps with DS3231 RTC.
+  - Logs CSV files to SD card (one file per day: LOG_YYYY_MM_DD.CSV).
+  - Exposes BLE commands for START/STOP, STATUS, LIST, DELETE (D:<n>) and
+    GET (G:<n>) to transfer files using a simple BEGIN/END protocol.
+  - Single button on `BUTTON_PIN` supports: single press (start/stop),
+    double press (BLE advertise toggle), long press (>LONG_PRESS_TIME) to
+    enter deep sleep. `STATUS_LED_PIN` shows logging/advertising state.
+*/
 
-// IMU
+/* RTC */
+RtcDS3231<TwoWire> rtc(Wire);
+
+/* IMU */
 LSM6DS3 imu(I2C_MODE, 0x6A);
 
-// SD
+/* SD */
 SdFat sd;
 File32 logFile;
 
-// BLUETOOTH
+/* BLUETOOTH */
 BLEService motionService(
 "12345678-1234-1234-1234-1234567890AB"
 );
@@ -32,17 +44,24 @@ BLECharacteristic fileChar(
 "12345678-1234-1234-1234-1234567890AD"
 );
 
-// Logging
+/* Logging */
 bool logging = false;
 bool lastButtonState = HIGH;
 unsigned long lastSampleTime = 0;
-const unsigned long SAMPLE_INTERVAL = 100; // 10 Hz
+const unsigned long SAMPLE_INTERVAL = 100; /* 10 Hz */
 
-// --------------------------------------------------
-// SESSION MANAGEMENT
-// --------------------------------------------------
+unsigned long pressStartTime = 0;
+bool longPressActive = false;
+const unsigned long LONG_PRESS_TIME = 1500;
 
-// GLOBAL VARIABLES
+unsigned long lastStatusBlink = 0;
+bool statusLedOn = false;
+
+/* -------------------------------------------------- */
+/* SESSION MANAGEMENT */
+/* -------------------------------------------------- */
+
+/* GLOBAL VARIABLES */
 uint8_t currentDay = 0;
 uint8_t currentMonth = 0;
 uint16_t currentYear = 0;
@@ -56,20 +75,24 @@ unsigned long lastPressTime = 0;
 uint8_t pressCount = 0;
 unsigned long advertiseStartTime = 0;
 
-// LOGGING
+/*
+  startLogging()
+  - Ensure SD card is initialized, open a dated CSV (LOG_YYYY_MM_DD.CSV),
+    write header if new, and mark `logging=true`.
+*/
 void startLogging() {
 
-  // Re-initialize SD card
+  /* Re-initialize SD card (may have been unmounted) */
   if (!sd.begin(SD_CS)) {
     Serial.println("SD NOT FOUND");
     return;
   }
-  // Get current date
+  /* Get current date */
   RtcDateTime now = rtc.GetDateTime();
   currentDay   = now.Day();
   currentMonth = now.Month();
   currentYear  = now.Year();
-  // Create filename based on date
+  /* Create filename based on date */
   char filename[32];
   sprintf(filename,
           "LOG_%04u_%02u_%02u.CSV",
@@ -77,25 +100,29 @@ void startLogging() {
           now.Month(),
           now.Day());
   bool fileExists = sd.exists(filename);
-  // Open file
+  /* Open file */
   logFile = sd.open(filename, O_RDWR | O_CREAT);
   if (!logFile) {
     Serial.println("FILE OPEN FAILED");
     return;
   }
-  // Move to end for appending
+  /* Move to end for appending */
   logFile.seekEnd();
-  // Write header only if file is new
+  /* Write header only if file is new */
   if (!fileExists) {
     logFile.println("Date,Time,Millis,Ax,Ay,Az,Gx,Gy,Gz");
   }
-  // Optional session marker
+  /* Optional session marker */
   logFile.println("# SESSION START");
   logFile.flush();
   logging = true;
   Serial.print("Logging to: ");
   Serial.println(filename);
 }
+/*
+  stopLogging()
+  - Write a session stop marker, flush buffers and close the file.
+*/
 void stopLogging() {
   if (logFile) {
     logFile.println("# SESSION STOP");
@@ -105,7 +132,10 @@ void stopLogging() {
   logging = false;
   Serial.println("Logging Stopped");
 }
-// NEW DAY CHECK
+/*
+  checkForNewDay()
+  - When logging, detect calendar day rollover and rotate to a new file.
+*/
 void checkForNewDay() {
   if (!logging)
     return;
@@ -121,8 +151,9 @@ void checkForNewDay() {
     logging = false;
     delay(100);
     startLogging();
-  }}
-  // callback
+  }
+}
+  /* callback */
 void commandCallback(uint16_t conn_hdl,
                      BLECharacteristic* chr,
                      uint8_t* data,
@@ -134,17 +165,17 @@ void commandCallback(uint16_t conn_hdl,
   cmd[len] = '\0';
   Serial.print("CMD: ");
   Serial.println(cmd);
-  if (strcmp(cmd, "START") == 0) // START
+  if (strcmp(cmd, "START") == 0) /* START */
   {
     if (!logging)
       startLogging();
   }
-  else if (strcmp(cmd, "STOP") == 0) // STOP
+  else if (strcmp(cmd, "STOP") == 0) /* STOP */
   {
     if (logging)
       stopLogging();
   }
-  else if (strcmp(cmd, "STATUS") == 0) // STATUS
+  else if (strcmp(cmd, "STATUS") == 0) /* STATUS */
   {
     if (logging)
     {
@@ -157,8 +188,10 @@ void commandCallback(uint16_t conn_hdl,
       fileChar.notify("STOPPED");
     }
   }
-  else if (strcmp(cmd, "LIST") == 0) // LIST
-{
+  else if (strcmp(cmd, "LIST") == 0) /* LIST */
+  {
+    /* LIST: enumerate CSV files on the root and notify each filename
+       over `fileChar`. Client expects an "EOF" notification at the end. */
     Serial.println("LIST REQUEST");
 
     File32 dir;
@@ -188,17 +221,18 @@ void commandCallback(uint16_t conn_hdl,
     fileChar.notify("EOF");
     dir.close();
 }
-  else if (strncmp(cmd, "D:", 2) == 0) // DELETE
+  else if (strncmp(cmd, "D:", 2) == 0) /* DELETE */
 {
     int index = atoi(cmd + 2);
 
     Serial.print("DELETE INDEX: ");
     Serial.println(index);
 
-    if (logging) //Prevent while logging
+    /* Prevent deletion while logging to avoid corrupting active file */
+    if (logging)
     {
-        fileChar.notify("DELETE_DENIED_LOGGING");
-        return;
+      fileChar.notify("DELETE_DENIED_LOGGING");
+      return;
     }
 
     if (index < 0 || index >= listedFileCount)
@@ -218,7 +252,7 @@ void commandCallback(uint16_t conn_hdl,
         Serial.println("DELETE FAILED");
     }
 }
-  else if (strncmp(cmd, "G:", 2) == 0) // GET
+  else if (strncmp(cmd, "G:", 2) == 0) /* GET */
 {
     cancelTransfer = false;
 
@@ -247,13 +281,16 @@ void commandCallback(uint16_t conn_hdl,
     }
     uint32_t fileSize = file.fileSize();
 
+    /* File transfer protocol:
+       1) Send a single-line header "BEGIN:<filesize>" so client can prepare.
+       2) Stream raw binary chunks (up to `fileChar` max length).
+       3) Send an "END" notification to mark completion.
+       If `cancelTransfer` becomes true, send "END" and abort. */
     char beginMsg[32];
     sprintf(beginMsg, "BEGIN:%lu", fileSize);
-
-    while (Bluefruit.connected() && !fileChar.notify(beginMsg))
-    {
-        delay(2);
-        yield();
+    while (Bluefruit.connected() && !fileChar.notify(beginMsg)) {
+      delay(2);
+      yield();
     }
 
     delay(5);
@@ -263,15 +300,14 @@ void commandCallback(uint16_t conn_hdl,
 
     while (file.available())
     {
-        if (cancelTransfer)
-        {
-            Serial.println("TRANSFER TERMINATED");
-
-            file.close();
-
-            fileChar.notify("END");
-            return;
-        }
+      /* honor transfer cancel request (set via BLE command) */
+      if (cancelTransfer)
+      {
+        Serial.println("TRANSFER TERMINATED");
+        file.close();
+        fileChar.notify("END");
+        return;
+      }
 
         int n = file.read(buffer, sizeof(buffer));
 
@@ -311,7 +347,7 @@ void commandCallback(uint16_t conn_hdl,
     Serial.println("FILE SENT");
 }
 }
-// BLE setup
+/* BLE setup */
 void startBLE()
   {
     if (bleEnabled)
@@ -332,16 +368,67 @@ void stopBLE()
       bleEnabled = false;
       Serial.println("BLE OFF");
   }
-//-------------------------------------------------
-// SETUP
-// --------------------------------------------------
+
+void updateStatusLed()
+  {
+      if (logging)
+      {
+          digitalWrite(STATUS_LED_PIN, HIGH);
+      }
+      else if (bleEnabled)
+      {
+          if (millis() - lastStatusBlink >= 500)
+          {
+              lastStatusBlink = millis();
+              statusLedOn = !statusLedOn;
+          }
+          digitalWrite(STATUS_LED_PIN, statusLedOn ? HIGH : LOW);
+      }
+      else
+      {
+          digitalWrite(STATUS_LED_PIN, LOW);
+      }
+  }
+
+void enterDeepSleep()
+  {
+      Serial.println("ENTERING DEEP SLEEP");
+      stopBLE();
+      if (logging)
+      {
+          stopLogging();
+      }
+      digitalWrite(STATUS_LED_PIN, LOW);
+      digitalWrite(LED_BUILTIN, LOW);
+      pinMode(BUTTON_PIN, INPUT_PULLUP);
+      /* Configure wake-on-pin for system-off: convert Arduino pin to MCU pin
+        and enable sense for LOW (button to GND). Ensure button wiring
+        pulls the pin to GND when pressed. */
+      nrf_gpio_cfg_sense_input(digitalPinToPinName(BUTTON_PIN), NRF_GPIO_PIN_PULLUP, NRF_GPIO_PIN_SENSE_LOW);
+      delay(10);
+      /* Enter system-off deep sleep. Device continues to consume minimal
+        power and will wake only from the configured sense input. */
+      sd_power_system_off();
+      while (1);
+  }
+/*-------------------------------------------------
+  SETUP
+  --------------------------------------------------*/
 void setup()
   {
     Serial.begin(115200);
     pinMode(BUTTON_PIN, INPUT_PULLUP);
+    pinMode(STATUS_LED_PIN, OUTPUT);
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(STATUS_LED_PIN, LOW);
+    digitalWrite(LED_BUILTIN, LOW);
 
-    // RTC
-    rtc.Begin();
+     /* RTC: force I2C pins to match wiring (SDA=D2, SCL=D1).
+       Some nRF52 cores use different default Wire pins; setting pins
+       explicitly avoids I2C communication issues with the DS3231. */
+     Wire.setPins(D2, D1);
+     Wire.begin();
+     rtc.Begin();
 
     if (!rtc.IsDateTimeValid())
     {
@@ -378,21 +465,21 @@ void setup()
     Serial.print(":");
     Serial.println(now.Second());
 
-    // IMU
+    /* IMU */
     if (imu.begin() != 0)
     {
       Serial.println("IMU FAIL");
       while (1);
     }
 
-    // SD
+    /* SD */
     if (!sd.begin(SD_CS))
     {
       Serial.println("SD FAIL");
       while (1);
     }
 
-    // BLE STACK ONLY
+    /* BLE STACK ONLY */
     Bluefruit.configPrphBandwidth(BANDWIDTH_MAX);
     Bluefruit.begin();
     Bluefruit.Periph.setConnInterval(6, 6);
@@ -400,7 +487,7 @@ void setup()
     Bluefruit.setName("MotionLogger");
     motionService.begin();
 
-    // IMU CHARACTERISTIC
+    /* IMU CHARACTERISTIC */
     imuChar.setProperties(
       CHR_PROPS_NOTIFY |
       CHR_PROPS_READ
@@ -413,7 +500,7 @@ void setup()
     imuChar.setMaxLen(80);
     imuChar.begin();
 
-    // COMMAND CHARACTERISTIC
+    /* COMMAND CHARACTERISTIC */
     cmdChar.setProperties(
       CHR_PROPS_WRITE |
       CHR_PROPS_WRITE_WO_RESP
@@ -428,7 +515,7 @@ void setup()
     );
     cmdChar.begin();
 
-    // FILE CHARACTERISTIC
+    /* FILE CHARACTERISTIC */
     fileChar.setProperties(
       CHR_PROPS_NOTIFY |
       CHR_PROPS_READ
@@ -443,7 +530,7 @@ void setup()
 
     fileChar.begin();
 
-    // Configure advertising
+    /* Configure advertising */
     Bluefruit.Advertising.addFlags(
       BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE
     );
@@ -454,36 +541,59 @@ void setup()
 
     Bluefruit.Advertising.addName();
 
-    // IMPORTANT
+    /* IMPORTANT */
     Bluefruit.Advertising.stop();
 
     Serial.println("READY");
     Serial.println("BLE OFF");
   }
-// --------------------------------------------------
-// LOOP
-// --------------------------------------------------
+/* -------------------------------------------------- */
+/* LOOP */
+/* -------------------------------------------------- */
 void loop() {
   checkForNewDay();
 
-  // BUTTON HANDLING
+  /* BUTTON HANDLING
+    - Single press: toggle logging (start/stop)
+    - Double press (two presses within 500ms): toggle BLE advertising
+    - Long press (> LONG_PRESS_TIME): enter deep sleep
+    The code measures press timing and counts presses to distinguish actions. */
   bool buttonState = digitalRead(BUTTON_PIN);
   if (lastButtonState == HIGH &&
       buttonState == LOW)
   {
-    unsigned long now = millis();
-    if (now - lastPressTime < 500)
+    pressStartTime = millis();
+  }
+
+  if (buttonState == LOW &&
+      !longPressActive &&
+      millis() - pressStartTime >= LONG_PRESS_TIME)
+  {
+    longPressActive = true;
+    enterDeepSleep();
+  }
+
+  if (lastButtonState == LOW &&
+      buttonState == HIGH)
+  {
+    if (!longPressActive)
     {
-      pressCount++;
+      unsigned long now = millis();
+      if (now - lastPressTime < 500)
+      {
+        pressCount++;
+      }
+      else
+      {
+        pressCount = 1;
+      }
+      lastPressTime = now;
     }
-    else
-    {
-      pressCount = 1;
-    }
-    lastPressTime = now;
+    longPressActive = false;
   }
   lastButtonState = buttonState;
-  // Process press sequence
+
+  /* Process press sequence */
   if (pressCount > 0 &&
       millis() - lastPressTime > 500)
   {
@@ -508,7 +618,9 @@ void loop() {
     pressCount = 0;
   }
 
-  // 10 Hz Logging
+  updateStatusLed();
+
+  /* 10 Hz Logging */
   if (logging &&
       millis() - lastSampleTime >= SAMPLE_INTERVAL) {
     lastSampleTime = millis();
@@ -520,7 +632,7 @@ void loop() {
     float gy = imu.readFloatGyroY();
     float gz = imu.readFloatGyroZ();
 
-    // BLE LIVE STREAM
+    /* BLE LIVE STREAM */
     char bleData[80];
     snprintf(
       bleData,
@@ -537,7 +649,7 @@ void loop() {
       imuChar.notify(bleData);
     }
     if (logFile) {
-      // Date
+      /* Date */
       logFile.print(now.Year());
       logFile.print("-");
       if (now.Month() < 10) logFile.print("0");
@@ -546,7 +658,7 @@ void loop() {
       if (now.Day() < 10) logFile.print("0");
       logFile.print(now.Day());
       logFile.print(",");
-      // Time
+      /* Time */
       if (now.Hour() < 10) logFile.print("0");
       logFile.print(now.Hour());
       logFile.print(":");
@@ -556,7 +668,7 @@ void loop() {
       if (now.Second() < 10) logFile.print("0");
       logFile.print(now.Second());
       logFile.print(",");
-      // millis
+      /* millis */
       logFile.print(millis());
       logFile.print(",");
       logFile.print(ax, 4);
@@ -570,10 +682,10 @@ void loop() {
       logFile.print(gy, 4);
       logFile.print(",");
       logFile.println(gz, 4);
-      // Write to card periodically
+      /* Write to card periodically */
       static uint32_t flushCounter = 0;
       flushCounter++;
-      if (flushCounter >= 50) { // every ~5 seconds
+      if (flushCounter >= 50) { /* every ~5 seconds */
         logFile.flush();
         flushCounter = 0;
       }
