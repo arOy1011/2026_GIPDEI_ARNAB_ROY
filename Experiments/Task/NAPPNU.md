@@ -28,6 +28,7 @@
   - [[#Remote Commands|Remote Commands]]
   - [[#Error Recovery|Error Recovery]]
 - [[#Python Desktop Client|Python Desktop Client]]
+- [[#PCB Design|PCB Design]]
 - [[#Project Structure|Project Structure]]
 - [[#Acknowledgements|Acknowledgements]]
 ## Overview
@@ -146,27 +147,36 @@ The firmware is event-driven and continuously monitors the push button, Bluetoot
 
 ```mermaid
 flowchart TD
+A([Power_ON]) --> B[Initialize]
+B --> C[Idle]
 
-A([Power ON]) --> B[Initialize Hardware]
-B --> C[Idle State - LED OFF]
+C -->|Single| D[Logging_On]
+D --> E[Sample_IMU]
+E --> F[Write_CSV]
+F -->|Single| G[Logging_Off]
+G --> C
 
-C -->|Single Press| D[Start Logging - LED ON]
-C -->|Double Press| E[Enable BLE]
-C -->|Long Press 5 s| F[Enter Deep Sleep]
+C -->|Double| H[BLE_On]
+H --> I[BLE_Client]
+I --> J[BLE_Commands]
+J -->|START| D
+J -->|STOP| G
+J -->|STATUS_LIST_GET_DELETE| J
+J -->|Double| K[BLE_Off]
+K --> C
 
-D --> G[Sample IMU at 10 Hz]
-G --> H[Write Timestamped CSV]
-H -->|Stop Logging| C
+C -->|Long 1.5s| L[Wait_Button_Release]
+D -->|Long 1.5s| L
+H -->|Long 1.5s| L
 
-E --> I[BLE Advertising - LED Blinking]
-I --> J[Wait for BLE Client]
-J --> K[Execute BLE Commands]
-K -->|Disable BLE| C
+L --> M[Stop_Logging]
+M --> N[Disable_BLE]
+N --> O[Configure_Wakeup]
+O --> P[System_OFF]
 
-F --> L[System OFF - LED OFF]
-L -->|Button Press| M[Wake Up]
-M --> N[Restart from setup]
-N --> B
+P -->|Single| Q[Wake]
+Q --> R[Setup]
+R --> B
 ```
 
 ---
@@ -174,11 +184,11 @@ N --> B
 
 The logger is controlled using a single push button.
 
-| Action       | Function                 |
-| ------------ | ------------------------ |
-| Single Press | Start/Stop data logging  |
-| Double Press | Enable BLE communication |
-| Long Press   | Enable/Disable Deepsleep |
+| Action       | Function                                         |
+| ------------ | ------------------------------------------------ |
+| Single Press | Start/Stop data logging<br>Wakeup from Deepsleep |
+| Double Press | Enable BLE communication                         |
+| Long Press   | Enable Deepsleep                                 |
 
 ---
 ### Data Logging
@@ -362,6 +372,66 @@ Supported operations include:
 - Delete CSV files
 
 The desktop client implements the same BLE command protocol as the Android application, providing an alternative interface for file management and real-time monitoring.
+
+---
+## PCB Design
+
+To improve the portability and reliability of the Motion Data Logger, a custom PCB was designed using **KiCad**. The PCB replaces the breadboard prototype by providing a compact and organized hardware layout for connecting the development board, RTC module, microSD module, battery, and external peripherals.
+
+### PCB Design Process
+
+The PCB development involved the following steps:
+
+- Circuit schematic creation
+- Footprint assignment
+- Electrical Rules Check (ERC)
+- PCB layout design
+- Component placement
+- Signal routing
+- Design Rules Check (DRC)
+- Gerber file generation for PCB fabrication
+
+### Main Footprints Used
+
+| Component | Footprint |
+|----------|-----------|
+| 1×7 Pin Socket | PinSocket_1x07_P2.54mm_Vertical |
+| 1×6 Pin Header | PinHeader_1x06_P2.54mm_Vertical |
+| 1×4 Pin Header | PinHeader_1x04_P2.54mm_Vertical |
+| 1×2 Pin Header | PinHeader_1x02_P2.54mm_Vertical |
+| JST Battery Connector | JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical |
+
+---
+
+### Circuit Schematic
+
+The complete circuit schematic showing the electrical connections between the Seeed XIAO nRF52840 Sense, RTC module, microSD module, battery connector, and other peripherals.
+
+![[nappnu-schematic.png]]
+
+---
+
+### PCB Layout
+
+The routed PCB layout illustrating component placement and signal routing.
+
+![[nappnu-pcb.png]]
+
+---
+
+### 3D Top View
+
+Three-dimensional top view of the designed PCB.
+
+![[nappnu-pcb-3d-topview.png]]
+
+---
+
+### 3D Bottom View
+
+Three-dimensional bottom view of the designed PCB.
+
+![[nappnu-pcb-3d-bottomview.png]]
 
 ---
 ## Project Structure

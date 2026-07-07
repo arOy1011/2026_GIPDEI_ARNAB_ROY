@@ -34,18 +34,10 @@ SdFat sd;
 File32 logFile;
 
 /* BLUETOOTH */
-BLEService motionService(
-"12345678-1234-1234-1234-1234567890AB"
-);
-BLECharacteristic imuChar(
-"12345678-1234-1234-1234-1234567890AC"
-);
-BLECharacteristic cmdChar(
-"12345678-1234-1234-1234-1234567890AE"
-);
-BLECharacteristic fileChar(
-"12345678-1234-1234-1234-1234567890AD"
-);
+BLEService motionService("12345678-1234-1234-1234-1234567890AB"); //for connection service
+BLECharacteristic imuChar("12345678-1234-1234-1234-1234567890AC"); //for IMU data 
+BLECharacteristic cmdChar("12345678-1234-1234-1234-1234567890AE"); //for command input
+BLECharacteristic fileChar("12345678-1234-1234-1234-1234567890AD"); //for file transfer
 
 /* Logging */
 bool logging = false;
@@ -78,6 +70,7 @@ uint8_t listedFileCount = 0;
 unsigned long lastPressTime = 0;
 uint8_t pressCount = 0;
 unsigned long advertiseStartTime = 0;
+bool waitForButtonRelease = true;
 
 /*
   startLogging()
@@ -405,17 +398,27 @@ void enterDeepSleep()
           stopLogging();
       }
       /* digitalWrite(STATUS_LED_PIN, LOW); */
-      digitalWrite(LED_BUILTIN, LOW);
       pinMode(BUTTON_PIN, INPUT_PULLUP);
+      
+      while (digitalRead(BUTTON_PIN) == LOW)
+      {
+          delay(10);
+      }
+      delay(20);
       /* Configure wake-on-pin for system-off: convert Arduino pin to MCU pin
         and enable sense for LOW (button to GND). Ensure button wiring
         pulls the pin to GND when pressed. */
       nrf_gpio_cfg_sense_input(digitalPinToPinName(BUTTON_PIN), NRF_GPIO_PIN_PULLUP, NRF_GPIO_PIN_SENSE_LOW);
       delay(10);
+      
       /* Enter system-off deep sleep. Device continues to consume minimal
         power and will wake only from the configured sense input. */
       sd_power_system_off();
-      while (1);
+      
+      while (1)
+      {
+          delay(1000);
+      }
   }
 /*-------------------------------------------------
   SETUP
@@ -423,11 +426,18 @@ void enterDeepSleep()
 void setup()
   {
     Serial.begin(115200);
+    while (!Serial)
+    {
+      delay(10);
+    }
+
+    delay(500);
+    Serial.println("BOOT");
+
     pinMode(BUTTON_PIN, INPUT_PULLUP);
+    
     /* pinMode(STATUS_LED_PIN, OUTPUT); */
-    pinMode(LED_BUILTIN, OUTPUT);
     /* digitalWrite(STATUS_LED_PIN, LOW); */
-    digitalWrite(LED_BUILTIN, LOW);
 
      /* RTC: force I2C pins to match wiring (SDA=D2, SCL=D1).
        Some nRF52 cores use different default Wire pins; setting pins
@@ -557,6 +567,17 @@ void setup()
 /* LOOP */
 /* -------------------------------------------------- */
 void loop() {
+  if (waitForButtonRelease)
+  {
+    if (digitalRead(BUTTON_PIN) == HIGH)
+    {
+      waitForButtonRelease = false;
+    }
+    else
+    {
+      return;
+    }
+  }
   checkForNewDay();
 
   /* BUTTON HANDLING

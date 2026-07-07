@@ -1,4 +1,4 @@
-![[Pasted image 20260602111519.png]]
+![[arduino uno.png]]
 Board pin breakdown:
 ## **Arduino Uno Pin Breakdown**
 
