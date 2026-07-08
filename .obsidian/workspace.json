@@ -4,11 +4,41 @@
     "type": "split",
     "children": [
       {
+        "id": "ef8d2abbc59d6ab1",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3e2158669eccefaa",
+            "type": "leaf",
+            "state": {
+              "type": "excalidraw",
+              "state": {
+                "file": "Excalidraw/XIAO Diagram.md"
+              },
+              "icon": "excalidraw-icon",
+              "title": "XIAO Diagram"
+            }
+          }
+        ]
+      },
+      {
         "id": "81c95ee8ac4e2659",
         "type": "tabs",
         "children": [
           {
-            "id": "0c6327d939cecd2d",
+            "id": "e258d107d3ea87af",
+            "type": "leaf",
+            "state": {
+              "type": "excalidraw",
+              "state": {
+                "file": "Excalidraw/System Workflow.md"
+              },
+              "icon": "excalidraw-icon",
+              "title": "System Workflow"
+            }
+          },
+          {
+            "id": "29d90d871700f3a6",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -31,7 +61,8 @@
               "title": "Internship Report"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -88,7 +119,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 342.5
+    "width": 357.5
   },
   "right": {
     "id": "3ae26cd8c8aba1b6",
@@ -207,54 +238,54 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "0c6327d939cecd2d",
+  "active": "3e2158669eccefaa",
   "lastOpenFiles": [
-    "[[NAPPNU]].md",
+    "Experiments/Task/KiCAD.zip",
+    "img/XIAO Diagram.png",
+    "Pasted Image 20260708160638_836.png",
     "Internship Report.md",
-    "[[Familiar.md",
-    "Experiments/Familiar with Arduino.md",
+    "Excalidraw/XIAO Diagram.md",
     "Experiments/Task/NAPPNU.md",
+    "Excalidraw/Logging State Machine.md",
+    "Excalidraw/BLE Architecture.md",
+    "Excalidraw/Data Logging.md",
+    "Excalidraw/BLE Motion Logger.md",
+    "Excalidraw/System Workflow.md",
+    "Excalidraw/Selection of Components 2026-06-02 10.10.49.excalidraw.md",
+    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/ServiceManager.class",
+    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/ServiceManager$SuccessCallback.class",
+    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/PermissionUtils.class",
+    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/PermissionManager.class",
+    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/PermissionManager$ShouldShowRequestPermissionRationaleSuccessCallback.class",
+    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/PermissionManager$RequestPermissionsSuccessCallback.class",
+    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/PermissionManager$CheckPermissionsSuccessCallback.class",
+    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/PermissionHandlerPlugin.class",
+    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/PermissionConstants.class",
+    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/release/compileReleaseJavaWithJavac/classes/com/baseflow/permissionhandler/PermissionHandlerPlugin.class",
+    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xxxhdpi-v4/ic_call_answer_video.png",
+    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xxxhdpi-v4/ic_call_decline_low.png",
+    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xxxhdpi-v4/ic_call_decline.png",
+    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xxxhdpi-v4/ic_call_answer_video_low.png",
+    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xxxhdpi-v4/ic_call_answer_low.png",
+    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xxxhdpi-v4/ic_call_answer.png",
+    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xxhdpi-v4/ic_call_answer_video.png",
+    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xxhdpi-v4/ic_call_decline_low.png",
+    "Experiments/Familiar with Arduino.md",
+    "Journal/2026/July/08 -.md",
+    "[[NAPPNU]].md",
+    "[[Familiar.md",
     "Experiments/Arduino.md",
-    "img/arduino uno.png",
-    "img/nappnu-pcb-3d-bottomview.png",
-    "img/nappnu-pcb-3d-topview.png",
-    "img/nappnu-pcb.png",
-    "img/nappnu-schematic.png",
     "7-segment-display.png.md",
-    "PHOTO-2026-06-25-17-35-07.jpg",
-    "Screenshot_Obsidian_06.07.2026_000648.png",
     "[[led_matrix.ino]].md",
     "[[weather_forecast.ino]].md",
-    "Experiments/exp1/ELP305 Exp No - 1.pdf",
     "[[Experiments/exp1]].md",
-    "[[Experiments",
     "![[NAPPNU]].md",
-    "Experiments/Task/NAPPNU/Data_Logger/Data_Logger.ino",
-    "Experiments/Task/NAPPNU/Data_Logger",
-    "Experiments/Task/NAPPNU/XIAOfile/Data_Logger/Data_Logger.ino",
-    "Experiments/Task/NAPPNU/XIAOfile/Data_Logger",
     "Journal/2026/July/07 -.md",
-    "Experiments/Task/NAPPNU/XIAOfile/Data_Logger.ino",
-    "Experiments/Task/NAPPNU/XIAOfile",
-    "Excalidraw/BLE Motion Logger.excalidraw.md",
-    "Experiments/Task/NAPPNU/motion_logger/build/app 2/kotlinToolingMetadata/kotlin-tooling-metadata.json",
-    "Experiments/Task/NAPPNU/motion_logger/build/app 2/kotlinToolingMetadata",
-    "Experiments/Task/NAPPNU/motion_logger/build/file_picker 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xhdpi-v4/notification_bg_low_pressed.9.png",
-    "Experiments/Task/NAPPNU/motion_logger/build/file_picker 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xhdpi-v4/notification_bg_normal_pressed.9.png",
-    "Experiments/Task/NAPPNU/motion_logger/build/file_picker 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xhdpi-v4/notify_panel_notification_icon_bg.png",
     "Journal/2026/July/06 -.md",
     "[[Experiments/Task/Data_Logger/motion_logger/build/app/outputs/flutter-apk/app-release.apk|app-release]].md",
     "Journal/2026/July/05 -.md",
     "Journal/2026/July/04 -.md",
     "Journal/2026/July/02 -.md",
-    "Journal/2026/June/29 -.md",
-    "Journal/2026/June/25 -.md",
-    "Journal/2026/Check-Ins/July -.md",
-    "Experiments/Task/NAPPNU/motion_logger/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
-    "Experiments/Task/NAPPNU/motion_logger/README.md",
-    "Experiments/Task/NAPPNU/venv/lib/python3.14/site-packages/pip-26.1.2.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md",
-    "Experiments/Task/NAPPNU/venv/lib/python3.14/site-packages/pip/_vendor/idna/LICENSE.md",
-    "Journal/2026/June/03 -.md",
     "Untitled.canvas",
     "noted.canvas"
   ]

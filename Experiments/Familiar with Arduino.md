@@ -170,7 +170,7 @@ void loop()
 
 ### Screenshot
 
-![7 Segment Display Output](Experiments/exp0/7_segment_display/7-segment-display.png)
+![7 Segment Display Output](7-segment-display.png)
 
 ---
 

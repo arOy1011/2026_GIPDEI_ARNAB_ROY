@@ -3,7 +3,6 @@
 *A compact Bluetooth-enabled motion data logger capable of recording inertial sensor data with accurate timestamps, storing measurements on a microSD card, and wirelessly managing recordings through a custom Android application.*
 
 ---
-
 ## Table of Contents
 
 - [[#Overview|Overview]]
@@ -29,8 +28,9 @@
   - [[#Error Recovery|Error Recovery]]
 - [[#Python Desktop Client|Python Desktop Client]]
 - [[#PCB Design|PCB Design]]
-- [[#Project Structure|Project Structure]]
 - [[#Acknowledgements|Acknowledgements]]
+
+---
 ## Overview
 
 The **Motion Data Logger** is a portable motion acquisition system built around the **Seeed XIAO nRF52840 Sense**. It continuously acquires acceleration and angular velocity from the onboard IMU, timestamps every measurement using a **DS3231 Real-Time Clock (RTC)**, and stores the data in CSV format on a microSD card. Buttons and LEDs are incorported for management of functions.
@@ -88,7 +88,7 @@ A dedicated Flutter application, **NAPPNU**, together with a desktop Python clie
 
 ---
 ## System Architecture
-![[BLE Motion Logger.excalidraw]]
+![[BLE Motion Logger]]
 
 The firmware acts as the central controller, coordinating sensor acquisition, timestamp generation, SD card storage, and Bluetooth communication.
 
@@ -145,39 +145,7 @@ The firmware is event-driven and continuously monitors the push button, Bluetoot
 ---
 ### System Workflow
 
-```mermaid
-flowchart TD
-A([Power_ON]) --> B[Initialize]
-B --> C[Idle]
-
-C -->|Single| D[Logging_On]
-D --> E[Sample_IMU]
-E --> F[Write_CSV]
-F -->|Single| G[Logging_Off]
-G --> C
-
-C -->|Double| H[BLE_On]
-H --> I[BLE_Client]
-I --> J[BLE_Commands]
-J -->|START| D
-J -->|STOP| G
-J -->|STATUS_LIST_GET_DELETE| J
-J -->|Double| K[BLE_Off]
-K --> C
-
-C -->|Long 1.5s| L[Wait_Button_Release]
-D -->|Long 1.5s| L
-H -->|Long 1.5s| L
-
-L --> M[Stop_Logging]
-M --> N[Disable_BLE]
-N --> O[Configure_Wakeup]
-O --> P[System_OFF]
-
-P -->|Single| Q[Wake]
-Q --> R[Setup]
-R --> B
-```
+![[System Workflow]]
 
 ---
 ### User Controls
@@ -195,42 +163,7 @@ The logger is controlled using a single push button.
 
 When logging starts, the firmware performs the following sequence:
 
-```mermaid
-flowchart TD
-
-    A([Idle])
-
-    A -->|Button Press| B[Initialize Logging Session]
-
-    B --> C{SD Card Available?}
-
-    C -->|No| X[Display Error]
-    X --> A
-
-    C -->|Yes| D[Open or Create Daily CSV]
-
-    D --> E[Write Session Start]
-
-    E --> F[Read RTC Time]
-
-    F --> G[Acquire IMU Data]
-
-    G --> H[Generate CSV Record]
-
-    H --> I[Write Record to SD Card]
-
-    I --> J{Stop Button Pressed?}
-
-    J -->|No<br/>Wait 100 ms| F
-
-    J -->|Yes| K[Write Session End]
-
-    K --> L[Flush Buffer]
-
-    L --> M[Close CSV File]
-
-    M --> A
-```
+![[Data Logging]]
 
 Each record contains:
 
@@ -255,23 +188,7 @@ This provides a balance between storage efficiency, Bluetooth throughput, and mo
 ---
 ### Logging State Machine
 
-```mermaid
-stateDiagram-v2
-
-    [*] --> Idle
-
-    Idle --> Logging : Button Press
-
-    state Logging {
-        [*] --> Acquire_IMU
-        Acquire_IMU --> Timestamp
-        Timestamp --> Write_CSV
-        Write_CSV --> Acquire_IMU : Every 100 ms
-    }
-
-    Logging --> Close_File : Button Press Again
-    Close_File --> Idle
-```
+![[Logging State Machine]]
 
 ---
 ### Session Management
@@ -307,26 +224,7 @@ If no client connects within the advertising timeout, Bluetooth is automatically
 ---
 ### BLE Architecture
 
-```mermaid
-flowchart TD
-
-    A[Smartphone or PC]
-
-    A --> B[BLE Service]
-
-    B --> C[Command Characteristic]
-    B --> D[Data Characteristic]
-
-    C --> E[Start Logging]
-    C --> F[Stop Logging]
-    C --> G[List Files]
-    C --> H[Download File]
-    C --> I[Delete File]
-    C --> J[Device Status]
-
-    D --> K[IMU Streaming]
-    D --> L[CSV File Transfer]
-```
+![[BLE Architecture]]
 
 The firmware exposes dedicated BLE characteristics for command handling, live sensor streaming, and file transfer, allowing independent operation of each communication channel.
 
@@ -432,42 +330,6 @@ Three-dimensional top view of the designed PCB.
 Three-dimensional bottom view of the designed PCB.
 
 ![[nappnu-pcb-3d-bottomview.png]]
-
----
-## Project Structure
-
-```text
-Motion-Data-Logger/
-│
-├── Firmware/
-│   └── Data_Logger.ino
-│
-├── Android/
-│   ├── lib/
-│   ├── assets/
-│   ├── android/
-│   ├── ios/
-│   ├── pubspec.yaml
-│   └── README.md
-│
-├── Desktop/
-│   └── connect.py
-│
-├── Hardware/
-│   ├── Motion-datalogger.kicad_sch
-│   ├── Motion_datalogger.kicad_pcb
-│   └── gerber.zip
-│
-├── Sample Data/
-│   ├── LOG_2026_07_01.CSV
-│   ├── LOG_2026_07_02.CSV
-│   └── LOG_2026_07_03.CSV
-│
-├── Documentation/
-│   └── Data Logger.md
-│
-└── README.md
-```
 
 ---
 ## Acknowledgements

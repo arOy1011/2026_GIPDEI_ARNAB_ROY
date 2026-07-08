@@ -3,36 +3,61 @@
 **Roll Number:** 2024UG010  
 **Programme:** BS-MS in Computer Science  
 **Institute:** Indian Association for the Cultivation of Science (IACS)  
-**Internship:** GIPEDI Internship Programme  
+**Internship:** GIPEDI Internship Programme, IIT Delhi
 **Duration:** 18/05/2026-13/07/2026
 
 ---
 
 # Table of Contents
 
-1. Introduction
-2. Development Environment
-3. Hardware and Software Resources
-4. Development Tools and Libraries
-5. Knowledge and Technologies Acquired
-6. Work Completed During the Internship
-    - 6.1 Digital Electronics Laboratory Tasks
-    - 6.2 Embedded Systems Development
-7. Motion Data Logger Project
-8. Challenges Encountered
-9. Skills Developed
-10. Conclusion
-11. References
-12. Appendix
+- [[#Introduction|Introduction]]
+
+- [[#Hardware and Software Resources|Hardware and Software Resources]]
+  - [[#Development Boards|Development Boards]]
+  - [[#Sensors|Sensors]]
+  - [[#Communication Modules|Communication Modules]]
+  - [[#Storage Devices|Storage Devices]]
+  - [[#Displays|Displays]]
+  - [[#Other Components|Other Components]]
+
+- [[#Development Tools and Libraries|Development Tools and Libraries]]
+  - [[#Development Software|Development Software]]
+  - [[#Documentation and Design Tools|Documentation and Design Tools]]
+  - [[#Arduino Board Support Packages|Arduino Board Support Packages]]
+  - [[#Arduino Libraries|Arduino Libraries]]
+    - [[#Core Libraries|Core Libraries]]
+    - [[#Sensor Libraries|Sensor Libraries]]
+    - [[#Communication Libraries|Communication Libraries]]
+    - [[#RTC Libraries|RTC Libraries]]
+    - [[#Display Libraries|Display Libraries]]
+    - [[#Input Libraries|Input Libraries]]
+  - [[#Flutter Packages|Flutter Packages]]
+  - [[#Development Utilities|Development Utilities]]
+  - [[#Programming Languages|Programming Languages]]
+  - [[#Bill of Materials (BOM)|Bill of Materials (BOM)]]
+
+- [[#Knowledge and Technologies Acquired|Knowledge and Technologies Acquired]]
+
+- [[#Work Completed During the Internship|Work Completed During the Internship]]
+  - [[#Simulation and Practical Application of Embedded Circuits|Simulation and Practical Application of Embedded Circuits]]
+  - [[#Motion Data Logger Project|Motion Data Logger Project]]
+
+- [[#Challenges Encountered|Challenges Encountered]]
+
+- [[#Skills Developed|Skills Developed]]
+  - [[#Technical Skills|Technical Skills]]
+
+- [[#Conclusion|Conclusion]]
+
+- [[#References|References]]
 
 ---
 # Introduction
 
 During this internship, I worked on a variety of embedded systems projects using the Arduino Uno, ESP32, and Seeed XIAO nRF52840 Sense development boards. The internship focused on building practical skills in embedded programming, hardware interfacing, sensor integration, communication protocols, and system design through hands-on implementation of multiple projects.
 
-I began by developing a series of embedded applications using the Arduino Uno and ESP32, which included digital output and display interfacing, temperature monitoring and weather alert systems, a scientific calculator, a waveform generator, an RTC-based monitoring and automation system, and an audio playback system. These projects provided practical experience in interfacing different hardware peripherals, implementing control logic, and developing firmware for embedded systems. The documentation mentioned here ->![[Familiar with Arduino]]
-Building on the knowledge gained from these projects, I developed a Bluetooth-enabled Motion Data Logger using the **Seeed XIAO nRF52840 Sense**. The system acquires motion data from the onboard IMU sensor, records timestamped data on a microSD card using a Real-Time Clock (RTC), communicates with an Android application over Bluetooth Low Energy (BLE), and incorporates deep sleep functionality for low-power operation. As part of this project, I also developed the companion Android application, designed a custom PCB for the hardware, and prepared comprehensive technical documentation. Document is mentioned here ->
-![[NAPPNU]]
+I began by developing a series of embedded applications using the Arduino Uno and ESP32, which included digital output and display interfacing, temperature monitoring and weather alert systems, a scientific calculator, a waveform generator, an RTC-based monitoring and automation system, and an audio playback system. These projects provided practical experience in interfacing different hardware peripherals, implementing control logic, and developing firmware for embedded systems.
+Building on the knowledge gained from these projects, I developed a Bluetooth-enabled Motion Data Logger using the **Seeed XIAO nRF52840 Sense**. The system acquires motion data from the onboard IMU sensor, records timestamped data on a microSD card using a Real-Time Clock (RTC), communicates with an Android application over Bluetooth Low Energy (BLE), and incorporates deep sleep functionality for low-power operation. As part of this project, I also developed the companion Android application, designed a custom PCB for the hardware, and prepared comprehensive technical documentation.
 
 This report presents the hardware platforms, software tools, technologies, and libraries used during the internship, along with the projects completed, challenges encountered, and the practical knowledge and skills acquired throughout the internship.
 
@@ -216,6 +241,26 @@ This chapter describes the software tools, development environments, frameworks,
 | YAML | Flutter project configuration |
 
 ---
+## Bill of Materials (BOM)
+
+The table below lists the major hardware components used in the development of the Motion Data Logger.
+
+| Sl. No. | Component                                 |  Quantity   | Purpose                                          |
+| :-----: | ----------------------------------------- | :---------: | ------------------------------------------------ |
+|    1    | Seeed XIAO nRF52840 Sense                 |      1      | Main microcontroller with onboard IMU            |
+|    2    | DS3231 Real-Time Clock (RTC) Module       |      1      | Accurate timestamp generation                    |
+|    3    | microSD Card Module                       |      1      | Storage interface for logged data                |
+|    4    | microSD Card                              |      1      | Motion data storage                              |
+|    5    | Li-Po Battery (3.7 V)                     |      1      | Portable power supply                            |
+|    6    | Battery Charging/Power Management Circuit |      1      | Battery charging and power management            |
+|    7    | Push Button                               |      1      | User input for logging, BLE mode, and deep sleep |
+|    8    | Custom Printed Circuit Board (PCB)        |      1      | Hardware integration                             |
+|    9    | USB Type-C Connector                      |      1      | Programming and battery charging                 |
+|   10    | Pin Headers / Connectors                  | As required | External electrical connections                  |
+|   11    | Decoupling Capacitors                     | As required | Power supply filtering and stability             |
+|   12    | Pull-up/Pull-down Resistors               | As required | Signal conditioning and input stabilization      |
+
+---
 
 # Knowledge and Technologies Acquired
 
@@ -260,8 +305,6 @@ The following embedded system applications were designed and implemented during 
 - Audio Playback System
 
 Each task focused on understanding different hardware interfaces, communication protocols, peripheral integration, and embedded programming techniques.
-
----
 
 ## 2.Project of Data Recorder
 
@@ -341,22 +384,9 @@ The knowledge acquired during this internship has strengthened my understanding 
 
 # References
 
-- Arduino Documentation
-- Seeed Studio Documentation
-- Nordic Semiconductor Documentation
-- Flutter Documentation
-- KiCad Documentation
-- Component Datasheets
-- Library Documentation
-
----
-
-# Appendix
-
-- Circuit Diagrams
-- Flowcharts
-- PCB Layouts
-- Mobile Application Screenshots
-- Hardware Photographs
-- Firmware Repository
-- Additional Documentation
+- [Arduino Documentation](https://robotix.ah-oui.org/user_docs/2003/Arduinodocumentation.pdf)
+- [Seeed Studio Documentation](https://wiki.seeedstudio.com/XIAO_BLE/)
+- [Flutter](https://docs.flutter.dev/install)
+- [KiCad Tutorial](https://youtube.com/playlist?list=PLimTcXK6kSUzTT5V02NmA9vwVjA3je0_Z&si=jcBhqJkpOJ2Hj28Z)
+- Component Datasheets([DS1302](https://docs.rs-online.com/46c9/0900766b80025c86.pdf), [DS3231](https://www.analog.com/media/en/technical-documentation/data-sheets/ds3231.pdf), [XIAO nRF52840 Sense](https://files.seeedstudio.com/wiki/XIAO/Seeed-Studio-XIAO-Series-SOM-Datasheet.pdf), [ESP32](https://documentation.espressif.com/esp32_datasheet_en.pdf), [Display](https://www.vishay.com/docs/37484/lcd016n002bcfhet.pdf))
+- AI([ChatGPT](https://chatgpt.com/), [Copilot](https://github.com/features/copilot))
