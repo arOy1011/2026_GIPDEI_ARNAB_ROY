@@ -23,24 +23,12 @@
             "id": "f9f2217728df8bf1",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "pdf",
               "state": {
-                "file": "Journal/2026/July/09 -.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": true,
-                "backlinkOpts": {
-                  "collapseAll": false,
-                  "extraContext": false,
-                  "sortOrder": "alphabetical",
-                  "showSearch": false,
-                  "searchQuery": "",
-                  "backlinkCollapsed": false,
-                  "unlinkedCollapsed": true
-                }
+                "file": "Arnab_Roy_GIPEDI_Batch2_2026_report.pdf"
               },
-              "icon": "lucide-file",
-              "title": "09 -"
+              "icon": "lucide-file-text",
+              "title": "Arnab_Roy_GIPEDI_Batch2_2026_report"
             }
           }
         ],
@@ -101,7 +89,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 234.5
+    "width": 373.5
   },
   "right": {
     "id": "3ae26cd8c8aba1b6",
@@ -220,8 +208,11 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "f9f2217728df8bf1",
+  "active": "63c6391e6c9cb4e4",
   "lastOpenFiles": [
+    "Journal/2026/July/09 -.md",
+    "Arnab_Roy_GIPEDI_Batch2_2026_report.pdf",
+    "Journal/2026/July/10 -.md",
     "Journal/2026/July/08 -.md",
     "Journal/2026/July/07 -.md",
     "Journal/2026/July/06 -.md",
@@ -243,7 +234,6 @@
     "Journal/2026/June/03 -.md",
     "Journal/2026/June/02 -.md",
     "Journal/2026/June/01 -.md",
-    "Journal/2026/July/09 -.md",
     "README.md",
     "readme.pdf",
     "README.pdf",
@@ -265,9 +255,6 @@
     "img/VIDEO-2026-07-09-14-52-40-encoded.mp4",
     "img/VIDEO-2026-07-09-14-50-51.mp4",
     "Excalidraw/XIAO Diagram.md",
-    "Experiments/Task/KiCAD.zip",
-    "Internship Report.md",
-    "Experiments/Task/NAPPNU.md",
     "Untitled.canvas",
     "noted.canvas"
   ]
