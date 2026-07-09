@@ -4,46 +4,28 @@
     "type": "split",
     "children": [
       {
-        "id": "ef8d2abbc59d6ab1",
+        "id": "db824f92c3d28072",
         "type": "tabs",
         "children": [
           {
-            "id": "3e2158669eccefaa",
+            "id": "f8fc8228001d7b7e",
             "type": "leaf",
             "state": {
-              "type": "excalidraw",
+              "type": "image",
               "state": {
-                "file": "Excalidraw/XIAO Diagram.md"
+                "file": "img/XIAO Diagram.png"
               },
-              "icon": "excalidraw-icon",
+              "icon": "lucide-image",
               "title": "XIAO Diagram"
-            }
-          }
-        ]
-      },
-      {
-        "id": "81c95ee8ac4e2659",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "e258d107d3ea87af",
-            "type": "leaf",
-            "state": {
-              "type": "excalidraw",
-              "state": {
-                "file": "Excalidraw/System Workflow.md"
-              },
-              "icon": "excalidraw-icon",
-              "title": "System Workflow"
             }
           },
           {
-            "id": "29d90d871700f3a6",
+            "id": "f9f2217728df8bf1",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Internship Report.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -58,7 +40,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "Internship Report"
+              "title": "README"
             }
           }
         ],
@@ -119,7 +101,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 357.5
+    "width": 234.5
   },
   "right": {
     "id": "3ae26cd8c8aba1b6",
@@ -238,13 +220,31 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "3e2158669eccefaa",
+  "active": "f9f2217728df8bf1",
   "lastOpenFiles": [
-    "Experiments/Task/KiCAD.zip",
+    "readme.pdf",
+    "README.pdf",
+    "README.md",
+    "  .pdf",
+    "img/app-function.jpeg",
     "img/XIAO Diagram.png",
-    "Pasted Image 20260708160638_836.png",
-    "Internship Report.md",
+    "img/control(logging).jpeg",
+    "img/desktop-client.png",
+    "img/7f3157c205fc62ee3fc1ee7c81fa8535dc9d2381a0cdb8de4c6d3ac7e1a34504.png",
+    "img/connected.png",
+    "img/First-screen(connected).jpeg",
+    "img/file-download.gif",
+    "img/ezgif.com-video-to-gif-converter.gif",
+    "img/VIDEO-2026-07-09-14-52-40.mp4",
+    "img/VIDEO-2026-07-09-14-52-40.gif",
+    "img/VIDEO-2026-07-09-14-50-51-encoded.mp4.sb-61ee830c-o6oj51",
+    "img/VIDEO-2026-07-09-14-50-51-encoded.mp4",
+    "img/VIDEO-2026-07-09-14-52-40-encoded.mp4.sb-61ee830c-uKvTRq",
+    "img/VIDEO-2026-07-09-14-52-40-encoded.mp4",
+    "img/VIDEO-2026-07-09-14-50-51.mp4",
     "Excalidraw/XIAO Diagram.md",
+    "Experiments/Task/KiCAD.zip",
+    "Internship Report.md",
     "Experiments/Task/NAPPNU.md",
     "Excalidraw/Logging State Machine.md",
     "Excalidraw/BLE Architecture.md",
@@ -253,23 +253,6 @@
     "Excalidraw/System Workflow.md",
     "Excalidraw/Selection of Components 2026-06-02 10.10.49.excalidraw.md",
     "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/ServiceManager.class",
-    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/ServiceManager$SuccessCallback.class",
-    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/PermissionUtils.class",
-    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/PermissionManager.class",
-    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/PermissionManager$ShouldShowRequestPermissionRationaleSuccessCallback.class",
-    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/PermissionManager$RequestPermissionsSuccessCallback.class",
-    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/PermissionManager$CheckPermissionsSuccessCallback.class",
-    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/PermissionHandlerPlugin.class",
-    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/PermissionConstants.class",
-    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/release/compileReleaseJavaWithJavac/classes/com/baseflow/permissionhandler/PermissionHandlerPlugin.class",
-    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xxxhdpi-v4/ic_call_answer_video.png",
-    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xxxhdpi-v4/ic_call_decline_low.png",
-    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xxxhdpi-v4/ic_call_decline.png",
-    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xxxhdpi-v4/ic_call_answer_video_low.png",
-    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xxxhdpi-v4/ic_call_answer_low.png",
-    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xxxhdpi-v4/ic_call_answer.png",
-    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xxhdpi-v4/ic_call_answer_video.png",
-    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/merged_res/release/mergeReleaseResources/drawable-xxhdpi-v4/ic_call_decline_low.png",
     "Experiments/Familiar with Arduino.md",
     "Journal/2026/July/08 -.md",
     "[[NAPPNU]].md",
@@ -285,7 +268,6 @@
     "[[Experiments/Task/Data_Logger/motion_logger/build/app/outputs/flutter-apk/app-release.apk|app-release]].md",
     "Journal/2026/July/05 -.md",
     "Journal/2026/July/04 -.md",
-    "Journal/2026/July/02 -.md",
     "Untitled.canvas",
     "noted.canvas"
   ]
