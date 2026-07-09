@@ -25,7 +25,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "Journal/2026/July/08 -.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -40,7 +40,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "08 -"
             }
           }
         ],
@@ -222,9 +222,13 @@
   },
   "active": "f9f2217728df8bf1",
   "lastOpenFiles": [
+    "Journal/2026/July/07 -.md",
+    "Journal/2026/July/06 -.md",
+    "Journal/2026/July/05 -.md",
+    "Journal/2026/July/08 -.md",
+    "README.md",
     "readme.pdf",
     "README.pdf",
-    "README.md",
     "  .pdf",
     "img/app-function.jpeg",
     "img/XIAO Diagram.png",
@@ -252,9 +256,7 @@
     "Excalidraw/BLE Motion Logger.md",
     "Excalidraw/System Workflow.md",
     "Excalidraw/Selection of Components 2026-06-02 10.10.49.excalidraw.md",
-    "Experiments/Task/NAPPNU/motion_logger/build/permission_handler_android 2/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/baseflow/permissionhandler/ServiceManager.class",
     "Experiments/Familiar with Arduino.md",
-    "Journal/2026/July/08 -.md",
     "[[NAPPNU]].md",
     "[[Familiar.md",
     "Experiments/Arduino.md",
@@ -263,10 +265,7 @@
     "[[weather_forecast.ino]].md",
     "[[Experiments/exp1]].md",
     "![[NAPPNU]].md",
-    "Journal/2026/July/07 -.md",
-    "Journal/2026/July/06 -.md",
     "[[Experiments/Task/Data_Logger/motion_logger/build/app/outputs/flutter-apk/app-release.apk|app-release]].md",
-    "Journal/2026/July/05 -.md",
     "Journal/2026/July/04 -.md",
     "Untitled.canvas",
     "noted.canvas"
