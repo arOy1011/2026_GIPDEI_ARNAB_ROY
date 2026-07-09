@@ -25,7 +25,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Journal/2026/July/08 -.md",
+                "file": "Journal/2026/July/09 -.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -40,7 +40,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "08 -"
+              "title": "09 -"
             }
           }
         ],
@@ -222,10 +222,28 @@
   },
   "active": "f9f2217728df8bf1",
   "lastOpenFiles": [
+    "Journal/2026/July/08 -.md",
     "Journal/2026/July/07 -.md",
     "Journal/2026/July/06 -.md",
     "Journal/2026/July/05 -.md",
-    "Journal/2026/July/08 -.md",
+    "Journal/2026/July/04 -.md",
+    "Journal/2026/July/03 -.md",
+    "Journal/2026/July/02 -.md",
+    "Journal/2026/July/01 -.md",
+    "Journal/2026/June/29 -.md",
+    "Journal/2026/June/25 -.md",
+    "Journal/2026/June/20 -.md",
+    "Journal/2026/June/19 -.md",
+    "Journal/2026/June/17 -.md",
+    "Journal/2026/June/14 -.md",
+    "Journal/2026/June/11 -.md",
+    "Journal/2026/June/09 -.md",
+    "Journal/2026/June/08 -.md",
+    "Journal/2026/June/05 -.md",
+    "Journal/2026/June/03 -.md",
+    "Journal/2026/June/02 -.md",
+    "Journal/2026/June/01 -.md",
+    "Journal/2026/July/09 -.md",
     "README.md",
     "readme.pdf",
     "README.pdf",
@@ -250,23 +268,6 @@
     "Experiments/Task/KiCAD.zip",
     "Internship Report.md",
     "Experiments/Task/NAPPNU.md",
-    "Excalidraw/Logging State Machine.md",
-    "Excalidraw/BLE Architecture.md",
-    "Excalidraw/Data Logging.md",
-    "Excalidraw/BLE Motion Logger.md",
-    "Excalidraw/System Workflow.md",
-    "Excalidraw/Selection of Components 2026-06-02 10.10.49.excalidraw.md",
-    "Experiments/Familiar with Arduino.md",
-    "[[NAPPNU]].md",
-    "[[Familiar.md",
-    "Experiments/Arduino.md",
-    "7-segment-display.png.md",
-    "[[led_matrix.ino]].md",
-    "[[weather_forecast.ino]].md",
-    "[[Experiments/exp1]].md",
-    "![[NAPPNU]].md",
-    "[[Experiments/Task/Data_Logger/motion_logger/build/app/outputs/flutter-apk/app-release.apk|app-release]].md",
-    "Journal/2026/July/04 -.md",
     "Untitled.canvas",
     "noted.canvas"
   ]

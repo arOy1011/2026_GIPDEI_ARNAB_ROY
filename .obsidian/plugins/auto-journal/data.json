@@ -9,7 +9,7 @@
   "dailyNotesEnabled": true,
   "dailyNotesTemplateFile": "",
   "dailyNotesShouldNotify": false,
-  "dailyNotesBackfill": "None",
+  "dailyNotesBackfill": "For month",
   "monthlyNotesEnabled": true,
   "monthlyNotesTemplateFile": "",
   "monthlyNotesFolderName": "Check-Ins",
